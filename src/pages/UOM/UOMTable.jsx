@@ -20,7 +20,7 @@ const UOMTable = ({ uoms, onEdit, onDelete }) => {
             Edit
           </Button>
           <Button danger onClick={() => onDelete(record.id)}>
-            Delete
+          InActive
           </Button>
         </Space>
       ),

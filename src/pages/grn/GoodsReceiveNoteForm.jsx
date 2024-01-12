@@ -262,6 +262,11 @@ const GoodsReceiveNoteForm = () => {
               Submit
             </Button>
           </Form.Item>
+          <Form.Item >
+            <Button type="primary" danger htmlType="save" style={{ width: '200px', margin: 16 }}>
+              Print
+            </Button>
+          </Form.Item>
 
         </div>
       </Form>

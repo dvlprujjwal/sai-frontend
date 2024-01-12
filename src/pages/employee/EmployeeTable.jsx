@@ -24,7 +24,7 @@ const EmployeeTable = ({ employees, onEdit, onDelete }) => {
             Edit
           </Button>
           <Button danger onClick={() => onDelete(record.id)}>
-            Delete
+          InActive
           </Button>
         </Space>
       ),

@@ -107,7 +107,7 @@ const OrganizationTable = () => {
             Edit
           </Button>
           <Button danger onClick={() => handleDelete(record.key)}>
-            Delete
+          InActive
           </Button>
         </Space>
       ),

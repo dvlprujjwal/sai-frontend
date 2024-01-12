@@ -5,7 +5,7 @@ import { Table, Space, Button } from 'antd';
 const VendorTable = ({ vendors, onEdit, onDelete }) => {
   const columns = [
     { title: 'S NO.', dataIndex: 'id', key: 'id', fixed: 'left', },
-    { title: 'VENDOR ID', dataIndex: 'vendorId', key: 'vendorId', fixed: 'left',  },
+    { title: 'VENDOR ID', dataIndex: 'vendorId', key: 'vendorId', fixed: 'left', },
     { title: 'VENDOR NAME', dataIndex: 'vendorName', key: 'vendorName', fixed: 'left', },
     { title: 'CONTACT PERSON', dataIndex: 'contactPerson', key: 'contactPerson' },
     { title: 'ADDRESS', dataIndex: 'address', key: 'address' },
@@ -27,7 +27,7 @@ const VendorTable = ({ vendors, onEdit, onDelete }) => {
             Edit
           </Button>
           <Button danger onClick={() => onDelete(record.id)}>
-            Delete
+            InActive
           </Button>
         </Space>
       ),
