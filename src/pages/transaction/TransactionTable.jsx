@@ -29,7 +29,7 @@ const TransactionTable = ({ transactions, onEdit, onDelete }) => {
             Edit
           </Button>
           <Button danger onClick={() => onDelete(record.id)}>
-          InActive
+            InActive
           </Button>
         </Space>
       ),

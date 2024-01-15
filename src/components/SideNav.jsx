@@ -31,13 +31,23 @@ const menuItems = [
   { key: '2', icon: <EnvironmentOutlined />, label: 'Locations', path: '/location' },
   { key: '3', icon: <AppstoreAddOutlined />, label: 'Items', path: '/items' },
   { key: '4', icon: <SearchOutlined />, label: 'Locators', path: '/locator' },
-  { key: '13', icon: <AccountBookOutlined />, label: 'Department', path: '/department' },
+  { key: '14', icon: <AccountBookOutlined />, label: 'Department', path: '/department' },
   { key: '5', icon: <UserOutlined />, label: 'Users', path: '/user' },
   { key: '6', icon: <TeamOutlined />, label: 'Employees', path: '/employee' },
   { key: '7', icon: <DollarOutlined />, label: 'Taxes', path: '/tax' },
   {
     key: '8', icon: <TransactionOutlined />, label: 'Transactions', path: '/transaction', children: [
-      { key: '13.1', label: 'Good Recieve Note', path: '/grn' },
+      { key: '8.1', label: 'GRN', path: '/trans/grn' },
+      { key: '8.2', label: 'Demand', path: '/trans/demand' },
+      { key: '8.3', label: 'IRD Demand', path: '/trans/ird-demand' },
+      { key: '8.4', label: 'Issue Note', path: '/trans/issue' },
+      { key: '8.5', label: 'Outward Pass', path: '/trans/outward' },
+      { key: '8.6', label: 'Inward Pass', path: '/trans/inward' },
+      { key: '8.7', label: 'Return Voucher', path: '/trans/return' },
+      { key: '8.8', label: 'Inspection Report', path: '/trans/inspection' },
+      { key: '8.9', label: 'Acceptance Note', path: '/trans/acceptance' },
+      { key: '8.10', label: 'Rejection Note', path: '/trans/rejection' },
+
     ]
   },
   { key: '9', icon: <AppstoreOutlined />, label: 'UOM', path: '/uom' },

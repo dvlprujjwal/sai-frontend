@@ -6,6 +6,7 @@ import Location from '../pages/location/Location';
 import Items from '../pages/items/Items';
 import Locator from '../pages/locator/Locator';
 import User from '../pages/user/User';
+import DepartmentPage from '../pages/department/Department';
 import Employee from '../pages/employee/Employee';
 import Tax from '../pages/tax/Tax';
 import Transaction from '../pages/transaction/Transaction';
@@ -13,8 +14,9 @@ import UOM from '../pages/UOM/UOM';
 import Currency from '../pages/currency/Currency';
 import Vendor from '../pages/vendor/Vendor';
 import QuickCode from '../pages/quickCode/QuickCode';
-import GoodsReceiveNoteForm from '../pages/grn/GoodsReceiveNoteForm';
-import DepartmentPage from '../pages/department/Department';
+import GoodsReceiveNoteForm from '../pages/txnform/grn/GoodsReceiveNoteForm';
+import DemandNoteForm from '../pages/txnform/demandnote/DemandNoteForm';
+import IrdDemand from '../pages/txnform/irdDemand/IrdDemand';
 
 const RoutesComponent = () => {
   return (
@@ -32,7 +34,17 @@ const RoutesComponent = () => {
       <Route path="/currency" element={<Currency />} />
       <Route path="/Vendor" element={<Vendor />} />
       <Route path="/quickcode" element={<QuickCode />} />
-      <Route path="/grn" element={<GoodsReceiveNoteForm />} />
+      <Route path="/trans/grn" element={<GoodsReceiveNoteForm />} />
+      <Route path="/trans/demand" element={<DemandNoteForm />} />
+      <Route path="/trans/ird-demand" element={<IrdDemand />} />
+      <Route path="/trans/issue" element={<GoodsReceiveNoteForm />} />
+      <Route path="/trans/outward" element={<GoodsReceiveNoteForm />} />
+      <Route path="/trans/inward" element={<GoodsReceiveNoteForm />} />
+      <Route path="/trans/return" element={<GoodsReceiveNoteForm />} />
+      <Route path="/trans/inspection" element={<GoodsReceiveNoteForm />} />
+      <Route path="/trans/acceptance" element={<GoodsReceiveNoteForm />} />
+      <Route path="/trans/rejection" element={<GoodsReceiveNoteForm />} />
+
     </Routes>
   );
 };

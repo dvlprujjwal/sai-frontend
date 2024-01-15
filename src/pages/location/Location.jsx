@@ -1,5 +1,5 @@
 // LocationPage.js
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Button, Modal, Input } from 'antd';
 import LocationTable from './LocationTable';
 import LocationForm from './LocationForm';
@@ -26,10 +26,21 @@ const initialLocations = [
 ];
 
 const LocationPage = () => {
-  const [locations, setLocations] = useState(initialLocations);
+  const [locations, setLocations] = useState([]);
   const [visible, setVisible] = useState(false);
   const [editingLocation, setEditingLocation] = useState(null);
   const [searchText, setSearchText] = useState('');
+
+  useEffect(() => {
+    // Fetch data from API and update state
+    fetch('https://sai-services.azurewebsites.net/sai-inv-mgmt/master/getLocationMaster')
+      .then((response) => response.json())
+      .then((data) => {
+        setLocations(data.responseData);
+      })
+      .catch((error) => console.error('Error fetching data:', error));
+  }, []); // Empty dependency array ensures this effect runs once on component mount
+
 
   const handleEdit = (location) => {
     setEditingLocation(location);
