@@ -1,30 +1,24 @@
-// EmployeePage.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Modal, Input } from 'antd';
+import { connect } from 'react-redux';
+import { fetchEmployees, updateEmployee, saveEmployee, deleteEmployee } from '../../store/actions/EmployeeActions';
 import EmployeeTable from './EmployeeTable';
 import EmployeeForm from './EmployeeForm';
 
-const initialEmployees = [
-  {
-    id: 1,
-    employeeCode: 'E001',
-    firstName: 'John',
-    lastName: 'Doe',
-    contactNo: '9876543210',
-    email: 'john.doe@example.com',
-    department: 'IT',
-    joiningDate: '2023-01-01',
-    salaryInformation: '$60,000',
-    status: 'Active',
-  },
-  // Add more dummy data as needed
-];
-
-const EmployeePage = () => {
-  const [employees, setEmployees] = useState(initialEmployees);
+const EmployeePage = ({
+  employees,
+  fetchEmployees,
+  updateEmployee,
+  saveEmployee,
+  deleteEmployee,
+}) => {
   const [visible, setVisible] = useState(false);
   const [editingEmployee, setEditingEmployee] = useState(null);
   const [searchText, setSearchText] = useState('');
+
+  useEffect(() => {
+    fetchEmployees();
+  }, [fetchEmployees]);
 
   const handleEdit = (employee) => {
     setEditingEmployee(employee);
@@ -32,16 +26,22 @@ const EmployeePage = () => {
   };
 
   const handleDelete = (employeeId) => {
-    // Implement delete logic here
+    deleteEmployee(employeeId);
   };
 
-  const handleFormSubmit = (values) => {
-    if (editingEmployee) {
-      // Implement update logic here
-    } else {
-      // Implement create logic here
+  const handleFormSubmit = async (values) => {
+    try {
+      if (editingEmployee) {
+        await updateEmployee(editingEmployee.id, values);
+      } else {
+        await saveEmployee(values);
+      }
+
+      setVisible(false);
+      setEditingEmployee(null);
+    } catch (error) {
+      console.error('Error:', error);
     }
-    setVisible(false);
   };
 
   return (
@@ -80,4 +80,15 @@ const EmployeePage = () => {
   );
 };
 
-export default EmployeePage;
+const mapStateToProps = (state) => ({
+  employees: state.employees.employees,
+});
+
+const mapDispatchToProps = {
+  fetchEmployees,
+  updateEmployee,
+  saveEmployee,
+  deleteEmployee,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EmployeePage);

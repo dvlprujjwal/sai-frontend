@@ -16,7 +16,7 @@ const DepartmentForm = ({ onSubmit, initialValues }) => {
     <Form form={form} onFinish={onFinish} initialValues={initialValues} layout="vertical">
       <Row gutter={16}>
         <Col span={12}>
-          <Form.Item name="departmentId" label="Department ID" rules={[{ required: true, message: 'Please enter Department ID' }]}>
+          <Form.Item name="id" label="Department ID" rules={[{ required: true, message: 'Please enter Department ID' }]}>
             <Input />
           </Form.Item>
         </Col>

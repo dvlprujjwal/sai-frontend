@@ -14,25 +14,7 @@ const initialUOMs = [
     baseUomName: 'EACH',
     endDate: null,
   },
-  {
-    id: 2,
-    uomCode: 'DZ',
-    uomName: 'DOZEN',
-    uomDescription: 'DOZEN',
-    className: 'QUANTITY',
-    baseUomName: 'EACH',
-    endDate: null,
-  },
-  {
-    id: 3,
-    uomCode: 'KG',
-    uomName: 'KILOGRAM',
-    uomDescription: 'KILOGRAM',
-    className: 'WEIGHT',
-    baseUomName: 'GRAM',
-    endDate: null,
-  },
-  // Add more dummy data as needed
+ 
 ];
 
 const UOMPage = () => {

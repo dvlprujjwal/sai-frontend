@@ -17,6 +17,8 @@ import QuickCode from '../pages/quickCode/QuickCode';
 import GoodsReceiveNoteForm from '../pages/txnform/grn/GoodsReceiveNoteForm';
 import DemandNoteForm from '../pages/txnform/demandnote/DemandNoteForm';
 import IrdDemand from '../pages/txnform/irdDemand/IrdDemand';
+import RetunNote from '../pages/txnform/returnnote/ReturnNote';
+import InsepctionReport from '../pages/txnform/insepctionReport/InsepctionReport';
 
 const RoutesComponent = () => {
   return (
@@ -40,8 +42,8 @@ const RoutesComponent = () => {
       <Route path="/trans/issue" element={<GoodsReceiveNoteForm />} />
       <Route path="/trans/outward" element={<GoodsReceiveNoteForm />} />
       <Route path="/trans/inward" element={<GoodsReceiveNoteForm />} />
-      <Route path="/trans/return" element={<GoodsReceiveNoteForm />} />
-      <Route path="/trans/inspection" element={<GoodsReceiveNoteForm />} />
+      <Route path="/trans/return" element={<RetunNote />} />
+      <Route path="/trans/inspection" element={<InsepctionReport />} />
       <Route path="/trans/acceptance" element={<GoodsReceiveNoteForm />} />
       <Route path="/trans/rejection" element={<GoodsReceiveNoteForm />} />
 

@@ -16,7 +16,7 @@ const VendorForm = ({ onSubmit, initialValues }) => {
     <Form form={form} onFinish={onFinish} initialValues={initialValues} layout="vertical">
       <Row gutter={16}>
         <Col span={8}>
-          <Form.Item name="vendorId" label="Vendor ID" rules={[{ required: true, message: 'Please enter Vendor ID' }]}>
+          <Form.Item name="id" label="Vendor ID" rules={[{ required: true, message: 'Please enter Vendor ID' }]}>
             <Input />
           </Form.Item>
         </Col>
@@ -44,7 +44,7 @@ const VendorForm = ({ onSubmit, initialValues }) => {
           </Form.Item>
         </Col>
         <Col span={8}>
-          <Form.Item name="zipCode" label="Zip Code" rules={[{ required: true, message: 'Please enter Zip Code' }]}>
+          <Form.Item name="zipcode" label="Zip Code" rules={[{ required: true, message: 'Please enter Zip Code' }]}>
             <Input />
           </Form.Item>
         </Col>
@@ -52,17 +52,17 @@ const VendorForm = ({ onSubmit, initialValues }) => {
 
       <Row gutter={16}>
         <Col span={8}>
-          <Form.Item name="vendorEmail" label="Vendor Email" rules={[{ required: true, message: 'Please enter Vendor Email' }]}>
+          <Form.Item name="email" label="Vendor Email" rules={[{ required: true, message: 'Please enter Vendor Email' }]}>
             <Input />
           </Form.Item>
         </Col>
         <Col span={8}>
-          <Form.Item name="panNo" label="PAN No." rules={[{ required: true, message: 'Please enter PAN No.' }]}>
+          <Form.Item name="pan" label="PAN No." rules={[{ required: true, message: 'Please enter PAN No.' }]}>
             <Input />
           </Form.Item>
         </Col>
         <Col span={8}>
-          <Form.Item name="gstinNo" label="GSTIN No." rules={[{ required: true, message: 'Please enter GSTIN No.' }]}>
+          <Form.Item name="gstin" label="GSTIN No." rules={[{ required: true, message: 'Please enter GSTIN No.' }]}>
             <Input />
           </Form.Item>
         </Col>

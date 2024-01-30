@@ -1,29 +1,24 @@
-
-// LocatorPage.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Modal, Input } from 'antd';
+import { connect } from 'react-redux';
+import { fetchLocators, updateLocator, saveLocator, deleteLocator } from '../../store/actions/LocatorActions';
 import LocatorTable from './LocatorTable';
 import LocatorForm from './LocatorForm';
 
-const initialLocators = [
-  {
-    id: 1,
-    locatorCode: 'LOC001',
-    description: 'Main Aisle',
-    location: 'Warehouse',
-    capacity: 'High',
-    type: 'Rack',
-    status: 'Active',
-    owner: 'John Doe',
-  },
-  // Add more dummy data as needed
-];
-
-const LocatorPage = () => {
-  const [locators, setLocators] = useState(initialLocators);
+const LocatorPage = ({
+  locators,
+  fetchLocators,
+  updateLocator,
+  saveLocator,
+  deleteLocator,
+}) => {
   const [visible, setVisible] = useState(false);
   const [editingLocator, setEditingLocator] = useState(null);
   const [searchText, setSearchText] = useState('');
+
+  useEffect(() => {
+    fetchLocators();
+  }, [fetchLocators]);
 
   const handleEdit = (locator) => {
     setEditingLocator(locator);
@@ -31,16 +26,22 @@ const LocatorPage = () => {
   };
 
   const handleDelete = (locatorId) => {
-    // Implement delete logic here
+    deleteLocator(locatorId);
   };
 
-  const handleFormSubmit = (values) => {
-    if (editingLocator) {
-      // Implement update logic here
-    } else {
-      // Implement create logic here
+  const handleFormSubmit = async (values) => {
+    try {
+      if (editingLocator) {
+        await updateLocator(editingLocator.id, values);
+      } else {
+        await saveLocator(values);
+      }
+
+      setVisible(false);
+      setEditingLocator(null);
+    } catch (error) {
+      console.error('Error:', error);
     }
-    setVisible(false);
   };
 
   return (
@@ -52,13 +53,13 @@ const LocatorPage = () => {
           onChange={(e) => setSearchText(e.target.value)}
           style={{ width: '200px' }}
         />
-        <Button type="primary" style={{backgroundColor:'#ff8a00'}} onClick={() => setVisible(true)}>
+        <Button type="primary" style={{ backgroundColor: '#ff8a00' }} onClick={() => setVisible(true)}>
           Add Locator
         </Button>
       </div>
       <LocatorTable
         locators={locators.filter((locator) =>
-          locator.description.toLowerCase().includes(searchText.toLowerCase())
+          locator.locatorCd.toLowerCase().includes(searchText.toLowerCase())
         )}
         onEdit={handleEdit}
         onDelete={handleDelete}
@@ -79,4 +80,15 @@ const LocatorPage = () => {
   );
 };
 
-export default LocatorPage;
+const mapStateToProps = (state) => ({
+  locators: state.locators.locators,
+});
+
+const mapDispatchToProps = {
+  fetchLocators,
+  updateLocator,
+  saveLocator,
+  deleteLocator,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LocatorPage);

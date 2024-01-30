@@ -1,50 +1,59 @@
 // DepartmentPage.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Modal, Input } from 'antd';
+import { connect } from 'react-redux';
 import DepartmentTable from './DepartmentTable';
 import DepartmentForm from './DepartmentForm';
+import { fetchDepartments, updateDepartment, saveDepartment, deleteDepartment } from '../../store/actions/DepartmentActions';
 
-const initialUsers = [
-  {
-    id: 1,
-    departmentId: 'O001',
-    departmentName: 'DPT1',
-    location: 'Location1',
-    userStatus: 'Active',
-
-  },
-  // Add more dummy data as needed
-];
-
-const DepartmentPage = () => {
-  const [departments, setDepartments] = useState(initialUsers);
+const DepartmentPage = ({
+  departments,
+  fetchDepartments,
+  updateDepartment,
+  saveDepartment,
+  deleteDepartment,
+}) => {
   const [visible, setVisible] = useState(false);
-  const [editingUser, setEditingUser] = useState(null);
+  const [editingDepartment, setEditingDepartment] = useState(null);
   const [searchText, setSearchText] = useState('');
 
-  const handleEdit = (user) => {
-    setEditingUser(user);
+  useEffect(() => {
+    // Fetch data from Redux store on component mount
+    fetchDepartments();
+  }, [fetchDepartments]);
+
+  const handleEdit = (department) => {
+    setEditingDepartment(department);
     setVisible(true);
   };
 
-  const handleDelete = (userId) => {
-    // Implement delete logic here
+  const handleDelete = (departmentId) => {
+    // Implement delete logic using the Redux action
+    deleteDepartment(departmentId);
   };
 
-  const handleFormSubmit = (values) => {
-    if (editingUser) {
-      // Implement update logic here
-    } else {
-      // Implement create logic here
+  const handleFormSubmit = async (values) => {
+    try {
+      if (editingDepartment) {
+        // Update logic using the Redux action
+        await updateDepartment(editingDepartment.id, values);
+      } else {
+        // Create logic using the Redux action
+        await saveDepartment(values);
+      }
+
+      setVisible(false); // Close the modal
+      setEditingDepartment(null); // Reset the editing department
+    } catch (error) {
+      console.error('Error:', error);
     }
-    setVisible(false);
   };
 
   return (
     <div>
       <div style={{ marginBottom: '16px', display: 'flex', justifyContent: 'space-between' }}>
         <Input
-          placeholder="Search users"
+          placeholder="Search departments"
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
           style={{ width: '200px' }}
@@ -54,26 +63,37 @@ const DepartmentPage = () => {
         </Button>
       </div>
       <DepartmentTable
-        departments={departments.filter((departments) =>
-          departments.departmentName.toLowerCase().includes(searchText.toLowerCase())
+        departments={departments.filter((department) =>
+          department.departmentName.toLowerCase().includes(searchText.toLowerCase())
         )}
         onEdit={handleEdit}
         onDelete={handleDelete}
       />
 
       <Modal
-        title={editingUser ? 'Edit Department' : 'Add Department'}
+        title={editingDepartment ? 'Edit Department' : 'Add Department'}
         visible={visible}
         onCancel={() => {
-          setEditingUser(null);
+          setEditingDepartment(null);
           setVisible(false);
         }}
         footer={null}
       >
-        <DepartmentForm onSubmit={handleFormSubmit} initialValues={editingUser} />
+        <DepartmentForm onSubmit={handleFormSubmit} initialValues={editingDepartment} />
       </Modal>
     </div>
   );
 };
 
-export default DepartmentPage;
+const mapStateToProps = (state) => ({
+  departments: state.departments.departments,
+});
+
+const mapDispatchToProps = {
+  fetchDepartments,
+  updateDepartment,
+  saveDepartment,
+  deleteDepartment,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DepartmentPage);

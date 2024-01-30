@@ -1,33 +1,24 @@
-// VendorPage.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Modal, Input } from 'antd';
+import { connect } from 'react-redux';
+import { fetchVendors, updateVendor, saveVendor, deleteVendor } from '../../store/actions/VendorActions';
 import VendorTable from './VendorTable';
 import VendorForm from './VendorForm';
 
-const initialVendors = [
-  {
-    id: 1,
-    vendorId: 'V001',
-    vendorName: 'Vendor 1',
-    contactPerson: 'John Doe',
-    address: '456 Market St',
-    contactNo: '9876543210',
-    zipCode: '54321',
-    vendorEmail: 'vendor1@example.com',
-    panNo: 'ABCDE1234F',
-    gstinNo: 'GSTIN54321',
-    type: 'Supplier',
-    approval: 'Approved',
-    status: 'Active',
-  },
-  // Add more dummy data as needed
-];
-
-const VendorPage = () => {
-  const [vendors, setVendors] = useState(initialVendors);
+const VendorPage = ({
+  vendors,
+  fetchVendors,
+  updateVendor,
+  saveVendor,
+  deleteVendor,
+}) => {
   const [visible, setVisible] = useState(false);
   const [editingVendor, setEditingVendor] = useState(null);
   const [searchText, setSearchText] = useState('');
+
+  useEffect(() => {
+    fetchVendors();
+  }, [fetchVendors]);
 
   const handleEdit = (vendor) => {
     setEditingVendor(vendor);
@@ -35,16 +26,22 @@ const VendorPage = () => {
   };
 
   const handleDelete = (vendorId) => {
-    // Implement delete logic here
+    deleteVendor(vendorId);
   };
 
-  const handleFormSubmit = (values) => {
-    if (editingVendor) {
-      // Implement update logic here
-    } else {
-      // Implement create logic here
+  const handleFormSubmit = async (values) => {
+    try {
+      if (editingVendor) {
+        await updateVendor(editingVendor.id, values);
+      } else {
+        await saveVendor(values);
+      }
+
+      setVisible(false);
+      setEditingVendor(null);
+    } catch (error) {
+      console.error('Error:', error);
     }
-    setVisible(false);
   };
 
   return (
@@ -83,4 +80,15 @@ const VendorPage = () => {
   );
 };
 
-export default VendorPage;
+const mapStateToProps = (state) => ({
+  vendors: state.vendors.vendors,
+});
+
+const mapDispatchToProps = {
+  fetchVendors,
+  updateVendor,
+  saveVendor,
+  deleteVendor,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(VendorPage);
