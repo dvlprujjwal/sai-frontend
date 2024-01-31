@@ -1,46 +1,26 @@
 // LocationPage.js
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Modal, Input } from 'antd';
+import { connect } from 'react-redux';
+import { fetchLocations, updateLocation, saveLocation, deleteLocation } from '../../store/actions/LocationAction';
 import LocationTable from './LocationTable';
 import LocationForm from './LocationForm';
 
-const initialLocations = [
-  {
-    id: 1,
-    locationId: 'L001',
-    locationName: 'Office 1',
-    address: '123 Main St',
-    city: 'Cityville',
-    zipCode: '12345',
-    state: 'Stateville',
-    panNo: 'ABCDE1234F',
-    emailId: 'office1@example.com',
-    contactNo: '9876543210',
-    gstinNo: 'GSTIN12345',
-    status: 'Active',
-    endDate: '2023-12-31',
-    latitude: '12.345',
-    longitude: '67.890',
-  },
-  // Add more dummy data as needed
-];
-
-const LocationPage = () => {
-  const [locations, setLocations] = useState([]);
+const LocationPage = ({
+  locations,
+  fetchLocations,
+  updateLocation,
+  saveLocation,
+  deleteLocation,
+}) => {
   const [visible, setVisible] = useState(false);
   const [editingLocation, setEditingLocation] = useState(null);
   const [searchText, setSearchText] = useState('');
 
   useEffect(() => {
-    // Fetch data from API and update state
-    fetch('https://sai-services.azurewebsites.net/sai-inv-mgmt/master/getLocationMaster')
-      .then((response) => response.json())
-      .then((data) => {
-        setLocations(data.responseData);
-      })
-      .catch((error) => console.error('Error fetching data:', error));
-  }, []); // Empty dependency array ensures this effect runs once on component mount
-
+    // Fetch data from Redux store on component mount
+    fetchLocations();
+  }, [fetchLocations]);
 
   const handleEdit = (location) => {
     setEditingLocation(location);
@@ -48,16 +28,25 @@ const LocationPage = () => {
   };
 
   const handleDelete = (locationId) => {
-    // Implement delete logic here
+    // Implement delete logic using the Redux action
+    deleteLocation(locationId);
   };
 
-  const handleFormSubmit = (values) => {
-    if (editingLocation) {
-      // Implement update logic here
-    } else {
-      // Implement create logic here
+  const handleFormSubmit = async (values) => {
+    try {
+      if (editingLocation) {
+        // Update logic using the Redux action
+        await updateLocation(editingLocation.id, values);
+      } else {
+        // Create logic using the Redux action
+        await saveLocation(values);
+      }
+
+      setVisible(false); // Close the modal
+      setEditingLocation(null); // Reset the editing location
+    } catch (error) {
+      console.error('Error:', error);
     }
-    setVisible(false);
   };
 
   return (
@@ -85,7 +74,7 @@ const LocationPage = () => {
         title={editingLocation ? 'Edit Location' : 'Add Location'}
         visible={visible}
         onCancel={() => {
-          setEditingLocation(null);
+          setEditingLocation(null); 
           setVisible(false);
         }}
         footer={null}
@@ -96,4 +85,15 @@ const LocationPage = () => {
   );
 };
 
-export default LocationPage;
+const mapStateToProps = (state) => ({
+  locations: state.locations.locations,
+});
+
+const mapDispatchToProps = {
+  fetchLocations,
+  updateLocation,
+  saveLocation,
+  deleteLocation,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LocationPage);

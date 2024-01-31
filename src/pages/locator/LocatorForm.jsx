@@ -16,12 +16,12 @@ const LocatorForm = ({ onSubmit, initialValues }) => {
     <Form form={form} onFinish={onFinish} initialValues={initialValues} layout="vertical">
       <Row gutter={16}>
         <Col span={12}>
-          <Form.Item name="locatorCode" label="Locator Code" rules={[{ required: true, message: 'Please enter Locator Code' }]}>
+          <Form.Item name="locatorCd" label="Locator Code" rules={[{ required: true, message: 'Please enter Locator Code' }]}>
             <Input />
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item name="description" label="Description" rules={[{ required: true, message: 'Please enter Description' }]}>
+          <Form.Item name="locatorDesc" label="Description" rules={[{ required: true, message: 'Please enter Description' }]}>
             <Input />
           </Form.Item>
         </Col>
@@ -58,7 +58,7 @@ const LocatorForm = ({ onSubmit, initialValues }) => {
 
       <Row gutter={16}>
         <Col span={12}>
-          <Form.Item name="owner" label="Owner/Responsible Party" rules={[{ required: true, message: 'Please enter Owner/Responsible Party' }]}>
+          <Form.Item name="ownership" label="Owner/Responsible Party" rules={[{ required: true, message: 'Please enter Owner/Responsible Party' }]}>
             <Input />
           </Form.Item>
         </Col>

@@ -1,14 +1,20 @@
 // LocationForm.js
 import React from 'react';
 import { Form, Input, Button, Select, DatePicker, Row, Col } from 'antd';
+import moment from 'moment';
 
 const { Option } = Select;
 
 const LocationForm = ({ onSubmit, initialValues }) => {
   const [form] = Form.useForm();
-
   const onFinish = (values) => {
-    onSubmit(values);
+    const formattedValues = {
+      ...values,
+      endDate: values.endDate ? moment(values.endDate).format('DD/MM/YYYY') : null,
+      userId: '123457',
+    };
+
+    onSubmit(formattedValues);
     form.resetFields();
   };
 
@@ -21,7 +27,7 @@ const LocationForm = ({ onSubmit, initialValues }) => {
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item name="address" label="Address" rules={[{ required: true, message: 'Please enter Address' }]}>
+          <Form.Item name="locationAddr" label="Address" rules={[{ required: true, message: 'Please enter Address' }]}>
             <Input />
           </Form.Item>
         </Col>
@@ -34,7 +40,7 @@ const LocationForm = ({ onSubmit, initialValues }) => {
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item name="zipCode" label="Zip Code" rules={[{ required: true, message: 'Please enter Zip Code' }]}>
+          <Form.Item name="pincode" label="Pin Code" rules={[{ required: true, message: 'Please enter Zip Code' }]}>
             <Input />
           </Form.Item>
         </Col>
@@ -47,7 +53,7 @@ const LocationForm = ({ onSubmit, initialValues }) => {
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item name="panNo" label="PAN No." rules={[{ required: true, message: 'Please enter PAN No.' }]}>
+          <Form.Item name="pan" label="PAN No." rules={[{ required: true, message: 'Please enter PAN No.' }]}>
             <Input />
           </Form.Item>
         </Col>
@@ -55,7 +61,7 @@ const LocationForm = ({ onSubmit, initialValues }) => {
 
       <Row gutter={16}>
         <Col span={12}>
-          <Form.Item name="emailId" label="Email ID" rules={[{ required: true, message: 'Please enter Email ID' }]}>
+          <Form.Item name="email" label="Email ID" rules={[{ required: true, message: 'Please enter Email ID' }]}>
             <Input />
           </Form.Item>
         </Col>
@@ -68,7 +74,7 @@ const LocationForm = ({ onSubmit, initialValues }) => {
 
       <Row gutter={16}>
         <Col span={12}>
-          <Form.Item name="gstinNo" label="GSTIN No." rules={[{ required: true, message: 'Please enter GSTIN No.' }]}>
+          <Form.Item name="gstin" label="GSTIN No." rules={[{ required: true, message: 'Please enter GSTIN No.' }]}>
             <Input />
           </Form.Item>
         </Col>

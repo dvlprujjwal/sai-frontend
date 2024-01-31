@@ -1,12 +1,12 @@
-// RetunNote.js
+// InsepctionReport.js
 import React, { useState, } from 'react';
 import { Form, Input, Select, DatePicker, Button, Row, Col, } from 'antd';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
-
-
-
 const { Option } = Select;
-const RetunNote = () => {
+
+
+
+const InsepctionReport = () => {
   const [Type, setType] = useState('1');
   const onFinish = (values) => {
     console.log('Received values:', values);
@@ -29,10 +29,15 @@ const RetunNote = () => {
             </Form.Item>
           </Col>
           <Col span={6}>
-
+            <Form.Item label="Type" name="type">
+              <Select>
+                <Option value="1">1. Purchase Order</Option>
+                <Option value="2">2. Inter-Org Transaction</Option>
+              </Select>
+            </Form.Item>
           </Col>
           <Col span={6} offset={12}>
-            <Form.Item label="RETURN VOUCHER NO." name="grnNo">
+            <Form.Item label="Insepction Report No." name="inspectionReportNo">
               <Input />
             </Form.Item>
           </Col>
@@ -40,7 +45,9 @@ const RetunNote = () => {
 
         <Row gutter={24}>
           <Col span={8}>
-
+            <Form.Item label="Consignee Detail :" name="consigneeDetail">
+              <Input />
+            </Form.Item>
             <Form.Item label="REGIONAL CENTER CODE :" name="regionalCenterCode">
               <Input />
             </Form.Item>
@@ -55,31 +62,73 @@ const RetunNote = () => {
             </Form.Item>
           </Col>
 
+          {Type === '1' && (
+            <Col span={8}>
+              <Form.Item label="CONSIGNOR DETAIL :" name="consignorDetail">
+                <Input />
+              </Form.Item>
+              <Form.Item label="Supplier Code :" name="supplierCode">
+                <Input />
+              </Form.Item>
+              <Form.Item label="Supplier Name :" name="supplierName">
+                <Input />
+              </Form.Item>
+              <Form.Item label="Address:" name="supplierAddress">
+                <Input />
+              </Form.Item>
+            </Col>
+          )}
 
 
+          {Type === '2' && (
+            <Col span={8}>
+              <Form.Item label="Consignor Detail" name="consignorDetail">
+                <Input />
+              </Form.Item>
+              <Form.Item label="Regional Center Code" name="regionalCenterCodeConsignor">
+                <Input />
+              </Form.Item>
+              <Form.Item label="Regional Center Name" name="regionalCenterNameConsignor">
+                <Input />
+              </Form.Item>
+              <Form.Item label="ADDRESS :" name="consignorAddress">
+                <Input />
+              </Form.Item>
+              <Form.Item label="ZIP CODE :" name="consignorZipCode">
+                <Input />
+              </Form.Item>
+            </Col>
+          )}
 
           <Col span={8}>
-            <Form.Item label="CONSUMER NAME :" name="consumerName">
+
+            <Form.Item label="INWARD GATE PASS No." name="inwardGatePass">
               <Input />
             </Form.Item>
-            <Form.Item label="CONTACT NO. :" name="contactNo">
+            <Form.Item label="CHALLAN /INVOICE NO :" name="modeOfDelivery">
               <Input />
             </Form.Item>
-          </Col>
-
-
-
-
-          <Col span={8}>
-            <Form.Item label="ISSUE NOTE NO." name="grnNo">
+            <Form.Item label="MODE OF DELIVERY :" name="modeOfDelivery">
               <Input />
             </Form.Item>
-            <Form.Item label="Issue Date :" name="Issue Date ">
-              <DatePicker style={{ width: '100%' }} />
-            </Form.Item>
+
           </Col>
         </Row>
+        <Row gutter={24}>
+          <Col span={8}>
+            <Form.Item label="Date Of Inspection :" name="noaDate">
+              <DatePicker style={{ width: '100%' }} />
+            </Form.Item>
+            <Form.Item label="Date of Delivery" name="dateOfDelivery">
+              <DatePicker style={{ width: '100%' }} />
+            </Form.Item>
+            <Form.Item label="Type of Inspection :" name="modeOfDelivery">
+            <Input />
+          </Form.Item>
+          
+          </Col>
 
+        </Row>
         {/* Item Details */}
         <h2>Item Details</h2>
 
@@ -115,17 +164,17 @@ const RetunNote = () => {
                       </Form.Item>
                     </Col>
                     <Col span={6}>
-                      <Form.Item {...restField} label="Return Quantity" name={[name, 'returnQuantity']}>
+                      <Form.Item {...restField} label="Received Quantity" name={[name, 'receivedQuantity']}>
                         <Input />
                       </Form.Item>
                     </Col>
                     <Col span={6}>
-                      <Form.Item {...restField} label="Approval Required For NO. Of Days" name={[name, 'APPROVAL REQUIRED FOR NO. OF DAYS']}>
+                      <Form.Item {...restField} label="Budget Head Procurement" name={[name, 'budgetHeadProcurement']}>
                         <Input />
                       </Form.Item>
                     </Col>
                     <Col span={6}>
-                      <Form.Item {...restField} label="Condition Of Goods" name={[name, 'conditionOfgoods']}>
+                      <Form.Item {...restField} label="Locator" name={[name, 'locator']}>
                         <Input />
                       </Form.Item>
                     </Col>
@@ -145,10 +194,10 @@ const RetunNote = () => {
         </Form.List>
 
         {/* Condition of Goods */}
-        <h2>Terms and Conditon</h2>
+        <h2>Condition of Goods</h2>
         <Row gutter={24}>
           <Col span={12}>
-            <Form.Item label="Terms and Conditon" name="termsAndCondition">
+            <Form.Item label="Condition of Goods" name="conditionOfGoods">
               <Input.TextArea />
             </Form.Item>
           </Col>
@@ -164,7 +213,7 @@ const RetunNote = () => {
         <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>
           <div  >
             <div className='goods-receive-note-signature'>
-              Returned By :<Form><Input /></Form>
+              Generated By :<Form><Input /></Form>
             </div>
             <div className='goods-receive-note-signature'>
               NAME & SIGNATURE :<Form><Input /></Form>
@@ -176,7 +225,7 @@ const RetunNote = () => {
 
           <div >
             <div className='goods-receive-note-signature'>
-              Varified By :<Form><Input /></Form>
+              Received By (Custodian) :<Form><Input /></Form>
             </div>
             <div className='goods-receive-note-signature'>
               NAME & SIGNATURE :<Form><Input /></Form>
@@ -217,4 +266,4 @@ const RetunNote = () => {
   );
 };
 
-export default RetunNote;
+export default InsepctionReport;

@@ -5,17 +5,17 @@ import { Table, Space, Button } from 'antd';
 const LocationTable = ({ locations, onEdit, onDelete }) => {
   const columns = [
     { title: 'S NO.', dataIndex: 'id', key: 'id', fixed: 'left', width: 80 },
-    { title: 'LOCATION ID', dataIndex: 'locationId', key: 'locationId', fixed: 'left',  },
-    { title: 'LOCATION NAME', dataIndex: 'locationName', key: 'locationName', fixed: 'left',  },
-    { title: 'ADDRESS', dataIndex: 'address', key: 'address' },
+    { title: 'LOCATION ID', dataIndex: 'id', key: 'id', fixed: 'left' },
+    { title: 'LOCATION NAME', dataIndex: 'locationName', key: 'locationName', fixed: 'left' },
+    { title: 'ADDRESS', dataIndex: 'locationAddr', key: 'locationAddr' },
     { title: 'CITY', dataIndex: 'city', key: 'city' },
-    { title: 'ZIP CODE', dataIndex: 'zipCode', key: 'zipCode' },
+    { title: 'ZIP CODE', dataIndex: 'pincode', key: 'pincode' },
     { title: 'STATE', dataIndex: 'state', key: 'state' },
-    { title: 'PAN NO.', dataIndex: 'panNo', key: 'panNo' },
-    { title: 'EMAIL ID', dataIndex: 'emailId', key: 'emailId' },
+    { title: 'PAN NO.', dataIndex: 'pan', key: 'pan' },
+    { title: 'EMAIL ID', dataIndex: 'email', key: 'email' },
     { title: 'CONTACT NO.', dataIndex: 'contactNo', key: 'contactNo' },
     { title: 'Location Type', dataIndex: 'locationType', key: 'locationType' },
-    { title: 'GSTIN NO.', dataIndex: 'gstinNo', key: 'gstinNo' },
+    { title: 'GSTIN NO.', dataIndex: 'gstin', key: 'gstin' },
     { title: 'STATUS', dataIndex: 'status', key: 'status' },
     { title: 'END DATE', dataIndex: 'endDate', key: 'endDate' },
     { title: 'LATITUDE', dataIndex: 'latitude', key: 'latitude' },
@@ -23,14 +23,15 @@ const LocationTable = ({ locations, onEdit, onDelete }) => {
     {
       title: 'Actions',
       key: 'actions',
-      fixed:'right',
+      fixed: 'right',
       render: (_, record) => (
-        <Space >
-          <Button type="primary" className='saitheme-btn' onClick={() => onEdit(record)}>
+        <Space>
+          <Button type="primary" className='saitheme-btn' onClick={() => onEdit(record.id)}>
             Edit
           </Button>
+
           <Button danger onClick={() => onDelete(record.id)}>
-          InActive
+            Delete
           </Button>
         </Space>
       ),
