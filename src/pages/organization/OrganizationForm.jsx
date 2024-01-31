@@ -1,5 +1,5 @@
-import React from 'react';
-import { Form, Input, Button, Select, Row, Col } from 'antd';
+import React from "react";
+import { Form, Input, Button, Select, Row, Col } from "antd";
 
 const { Option } = Select;
 
@@ -9,22 +9,33 @@ const OrganizationForm = ({ onSubmit, initialValues }) => {
   const onFinish = (values) => {
     const formattedValues = {
       ...values,
-      userId: '123457',
+      userId: "123457",
     };
     onSubmit(formattedValues);
     form.resetFields();
   };
 
   return (
-    <Form form={form} onFinish={onFinish} initialValues={initialValues} layout="vertical">
+    <Form
+      form={form}
+      onFinish={onFinish}
+      initialValues={initialValues}
+      layout="vertical"
+    >
       <Row gutter={16}>
         <Col span={12}>
-          <Form.Item name="organizationName" label="Organization Name" rules={[{ required: true, message: 'Please enter Organization Name' }]}>
+          <Form.Item
+            name="organizationName"
+            label="Organization Name"
+            rules={[
+              { required: true, message: "Please enter Organization Name" },
+            ]}
+          >
             <Input />
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item name="parentOrganizationId" label="Parent Organization ID">
+          <Form.Item name="parentOrgId" label="Parent Organization ID">
             <Input />
           </Form.Item>
         </Col>
@@ -32,12 +43,16 @@ const OrganizationForm = ({ onSubmit, initialValues }) => {
 
       <Row gutter={16}>
         <Col span={12}>
-          <Form.Item name="location" label="Location" rules={[{ required: true, message: 'Please enter Location' }]}>
+          <Form.Item
+            name="location"
+            label="Location"
+            rules={[{ required: true, message: "Please enter Location" }]}
+          >
             <Input />
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item name="locationAddress" label="Location Address">
+          <Form.Item name="locationAddr" label="Location Address">
             <Input />
           </Form.Item>
         </Col>
@@ -45,12 +60,20 @@ const OrganizationForm = ({ onSubmit, initialValues }) => {
 
       <Row gutter={16}>
         <Col span={12}>
-          <Form.Item name="contactNo" label="Contact No." rules={[{ required: true, message: 'Please enter Contact No.' }]}>
+          <Form.Item
+            name="contactNo"
+            label="Contact No."
+            rules={[{ required: true, message: "Please enter Contact No." }]}
+          >
             <Input />
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item name="email" label="Email" rules={[{ required: true, message: 'Please enter Email' }]}>
+          <Form.Item
+            name="email"
+            label="Email"
+            rules={[{ required: true, message: "Please enter Email" }]}
+          >
             <Input />
           </Form.Item>
         </Col>
@@ -63,7 +86,11 @@ const OrganizationForm = ({ onSubmit, initialValues }) => {
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item name="status" label="Status" rules={[{ required: true, message: 'Please select Status' }]}>
+          <Form.Item
+            name="status"
+            label="Status"
+            rules={[{ required: true, message: "Please select Status" }]}
+          >
             <Select>
               <Option value="Active">Active</Option>
               <Option value="Inactive">Inactive</Option>

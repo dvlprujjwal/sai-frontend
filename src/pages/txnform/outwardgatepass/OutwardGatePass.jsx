@@ -1,12 +1,14 @@
-// PrintGrnform.js
-import React, { useState, forwardRef } from 'react';
+// OutwardGatePass.js
+import React, { useState, } from 'react';
 import { Form, Input, Select, DatePicker, Button, Row, Col, } from 'antd';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
-import './GoodsReceiveNoteForm.css';
-
 const { Option } = Select;
-const PrintGrnform = forwardRef((props, ref) => {
+
+
+
+const OutwardGatePass = () => {
   const [Type, setType] = useState('1');
+  const [selectedOption, setSelectedOption] = useState(null);
   const onFinish = (values) => {
     console.log('Received values:', values);
   };
@@ -15,8 +17,15 @@ const PrintGrnform = forwardRef((props, ref) => {
     setType(allValues.type);
   };
 
+  const handleSelectChange = (value) => {
+    setSelectedOption(value);
+  };
+
   return (
-    <div ref={ref} bodyClass="print-agreement">
+
+    <div className="goods-receive-note-form-container">
+      <h1>Sports Authority of India - Outward Gate Pass</h1>
+
       <Form onFinish={onFinish} className="goods-receive-note-form" onValuesChange={handleValuesChange} layout="vertical">
         <Row>
           <Col span={6} offset={18}>
@@ -34,7 +43,7 @@ const PrintGrnform = forwardRef((props, ref) => {
             </Form.Item>
           </Col>
           <Col span={6} offset={12}>
-            <Form.Item label="GRN No." name="grnNo">
+            <Form.Item label="OUTER GATE PASS NO." name="grnNo">
               <Input />
             </Form.Item>
           </Col>
@@ -42,7 +51,7 @@ const PrintGrnform = forwardRef((props, ref) => {
 
         <Row gutter={24}>
           <Col span={8}>
-            <Form.Item label="CONSIGNEE DETAIL :" name="consigneeDetail">
+            <Form.Item label="CONSIGNOR DETAIL :" name="consigneeDetail">
               <Input />
             </Form.Item>
             <Form.Item label="REGIONAL CENTER CODE :" name="regionalCenterCode">
@@ -89,7 +98,7 @@ const PrintGrnform = forwardRef((props, ref) => {
 
           {Type === '3' && (
             <Col span={8}>
-              <Form.Item label="CONSIGNOR DETAIL" name="consignorDetail">
+              <Form.Item label="CONSIGNEE DETAIL" name="consignorDetail">
                 <Input />
               </Form.Item>
               <Form.Item label="REGIONAL CENTER CODE" name="regionalCenterCodeConsignor">
@@ -119,9 +128,21 @@ const PrintGrnform = forwardRef((props, ref) => {
               </Form.Item>
             )}
             {Type === '3' && (
-              <Form.Item label="INWARD GATE PASS" name="inwardGatePass">
-                <Input />
-              </Form.Item>
+              <>
+                <Form.Item label="Select Note Type" name="noteType">
+                  <Select onChange={handleSelectChange}>
+                    <Option value="ISSUE">ISSUE NOTE NO.</Option>
+                    <Option value="REJECTION">REJECTION NOTE NO.</Option>
+                  </Select>
+                </Form.Item>
+
+                <Form.Item
+                  label={selectedOption === 'ISSUE' ? 'ISSUE NOTE NO.' : 'REJECTION NOTE NO.'}
+                  name="inwardGatePass"
+                >
+                  <Input />
+                </Form.Item>
+              </>
             )}
             <Form.Item label="NOA No." name="noaNo">
               <Input />
@@ -246,10 +267,30 @@ const PrintGrnform = forwardRef((props, ref) => {
 
 
 
+        {/* Submit Button */}
+        <div className='goods-receive-note-button-container'>
 
+          <Form.Item >
+            <Button type="primary" htmlType="save" style={{ width: '200px', margin: 16 }}>
+              Save
+            </Button>
+          </Form.Item>
+
+          <Form.Item >
+            <Button type="primary" htmlType="submit" style={{ backgroundColor: '#4CAF50', borderColor: '#4CAF50', width: '200px', margin: 16 }}>
+              Submit
+            </Button>
+          </Form.Item>
+          <Form.Item >
+            <Button type="primary" danger htmlType="save" style={{ width: '200px', margin: 16 }}>
+              Print
+            </Button>
+          </Form.Item>
+
+        </div>
       </Form>
-    </div>
+    </div >
   );
-});
+};
 
-export default PrintGrnform;
+export default OutwardGatePass;

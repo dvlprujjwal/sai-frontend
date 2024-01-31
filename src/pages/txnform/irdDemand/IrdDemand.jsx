@@ -34,13 +34,13 @@ const DemandNoteForm = () => {
 
         <Row gutter={24}>
           <Col span={8}>
-            <Form.Item label="CONSIGNEE Detail :" name="consigneeDetail">
+            <Form.Item label="CONSIGNEE DETAIL :" name="consigneeDetail">
               <Input />
             </Form.Item>
             <Form.Item label="REGIONAL CENTER CODE :" name="regionalCenterCode">
               <Input />
             </Form.Item>
-            <Form.Item label="REGIONAL CENTER NAME :" name="regionalCenterName">
+            <Form.Item label="REGIONAL CENTER NAME  :" name="regionalCenterName">
               <Input />
             </Form.Item>
             <Form.Item label="ADDRESS :" name="consigneeAddress">

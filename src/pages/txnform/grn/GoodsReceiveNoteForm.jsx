@@ -1,5 +1,5 @@
 // GoodsReceiveNoteForm.js
-import React, { useState,  } from 'react';
+import React, { useState, } from 'react';
 import { Form, Input, Select, DatePicker, Button, Row, Col, } from 'antd';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import './GoodsReceiveNoteForm.css';
@@ -47,13 +47,13 @@ const GoodsReceiveNoteForm = () => {
 
         <Row gutter={24}>
           <Col span={8}>
-            <Form.Item label="Consignee Detail :" name="consigneeDetail">
+            <Form.Item label="CONSIGNEE DETAIL :" name="consigneeDetail">
               <Input />
             </Form.Item>
             <Form.Item label="REGIONAL CENTER CODE :" name="regionalCenterCode">
               <Input />
             </Form.Item>
-            <Form.Item label="REGIONAL CENTER NAME :" name="regionalCenterName">
+            <Form.Item label="REGIONAL CENTER NAME  :" name="regionalCenterName">
               <Input />
             </Form.Item>
             <Form.Item label="ADDRESS :" name="consigneeAddress">
@@ -94,13 +94,13 @@ const GoodsReceiveNoteForm = () => {
 
           {Type === '3' && (
             <Col span={8}>
-              <Form.Item label="Consignor Detail" name="consignorDetail">
+              <Form.Item label="CONSIGNOR DETAIL" name="consignorDetail">
                 <Input />
               </Form.Item>
-              <Form.Item label="Regional Center Code" name="regionalCenterCodeConsignor">
+              <Form.Item label="REGIONAL CENTER CODE" name="regionalCenterCodeConsignor">
                 <Input />
               </Form.Item>
-              <Form.Item label="Regional Center Name" name="regionalCenterNameConsignor">
+              <Form.Item label="REGIONAL CENTER NAME " name="regionalCenterNameConsignor">
                 <Input />
               </Form.Item>
               <Form.Item label="ADDRESS :" name="consignorAddress">
@@ -266,7 +266,7 @@ const GoodsReceiveNoteForm = () => {
             </Button>
           </Form.Item>
           <Form.Item >
-            <Button type="primary" danger htmlType="save"  style={{ width: '200px', margin: 16 }}>
+            <Button type="primary" danger htmlType="save" style={{ width: '200px', margin: 16 }}>
               Print
             </Button>
           </Form.Item>

@@ -19,6 +19,8 @@ import DemandNoteForm from '../pages/txnform/demandnote/DemandNoteForm';
 import IrdDemand from '../pages/txnform/irdDemand/IrdDemand';
 import RetunNote from '../pages/txnform/returnnote/ReturnNote';
 import InsepctionReport from '../pages/txnform/insepctionReport/InsepctionReport';
+import IssueNote from '../pages/txnform/issuenote/IssueNote';
+import OutwardGatePass from '../pages/txnform/outwardgatepass/OutwardGatePass';
 
 const RoutesComponent = () => {
   return (
@@ -39,8 +41,8 @@ const RoutesComponent = () => {
       <Route path="/trans/grn" element={<GoodsReceiveNoteForm />} />
       <Route path="/trans/demand" element={<DemandNoteForm />} />
       <Route path="/trans/ird-demand" element={<IrdDemand />} />
-      <Route path="/trans/issue" element={<GoodsReceiveNoteForm />} />
-      <Route path="/trans/outward" element={<GoodsReceiveNoteForm />} />
+      <Route path="/trans/issue" element={<IssueNote />} />
+      <Route path="/trans/outward" element={<OutwardGatePass />} />
       <Route path="/trans/inward" element={<GoodsReceiveNoteForm />} />
       <Route path="/trans/return" element={<RetunNote />} />
       <Route path="/trans/inspection" element={<InsepctionReport />} />

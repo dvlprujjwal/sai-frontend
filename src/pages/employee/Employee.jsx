@@ -1,9 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Modal, Input } from 'antd';
-import { connect } from 'react-redux';
-import { fetchEmployees, updateEmployee, saveEmployee, deleteEmployee } from '../../store/actions/EmployeeActions';
-import EmployeeTable from './EmployeeTable';
-import EmployeeForm from './EmployeeForm';
+import React, { useState, useEffect } from "react";
+import { Button, Modal, Input } from "antd";
+import { connect } from "react-redux";
+import {
+  fetchEmployees,
+  updateEmployee,
+  saveEmployee,
+  deleteEmployee,
+} from "../../store/actions/EmployeeActions";
+import EmployeeTable from "./EmployeeTable";
+import EmployeeForm from "./EmployeeForm";
+import dayjs from "dayjs";
 
 const EmployeePage = ({
   employees,
@@ -14,14 +20,22 @@ const EmployeePage = ({
 }) => {
   const [visible, setVisible] = useState(false);
   const [editingEmployee, setEditingEmployee] = useState(null);
-  const [searchText, setSearchText] = useState('');
+  const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
     fetchEmployees();
   }, [fetchEmployees]);
 
   const handleEdit = (employee) => {
-    setEditingEmployee(employee);
+    const dateObject = new Date(employee.endDate);
+    const year = dateObject.getFullYear();
+    const month = dateObject.getMonth();
+    const date = dateObject.getDate();
+    const tempItem = {
+      ...employee,
+      endDate: dayjs(new Date(year, month, date)),
+    };
+    setEditingEmployee(tempItem);
     setVisible(true);
   };
 
@@ -40,20 +54,30 @@ const EmployeePage = ({
       setVisible(false);
       setEditingEmployee(null);
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   };
 
   return (
     <div>
-      <div style={{ marginBottom: '16px', display: 'flex', justifyContent: 'space-between' }}>
+      <div
+        style={{
+          marginBottom: "16px",
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
         <Input
           placeholder="Search employees"
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
-          style={{ width: '200px' }}
+          style={{ width: "200px" }}
         />
-        <Button type="primary" className='saitheme-btn' onClick={() => setVisible(true)}>
+        <Button
+          type="primary"
+          className="saitheme-btn"
+          onClick={() => setVisible(true)}
+        >
           Add Employee
         </Button>
       </div>
@@ -66,7 +90,7 @@ const EmployeePage = ({
       />
 
       <Modal
-        title={editingEmployee ? 'Edit Employee' : 'Add Employee'}
+        title={editingEmployee ? "Edit Employee" : "Add Employee"}
         visible={visible}
         onCancel={() => {
           setEditingEmployee(null);
@@ -74,7 +98,11 @@ const EmployeePage = ({
         }}
         footer={null}
       >
-        <EmployeeForm onSubmit={handleFormSubmit} initialValues={editingEmployee} />
+        <EmployeeForm
+          key={editingEmployee ? `edit-${editingEmployee.id}` : "add"}
+          onSubmit={handleFormSubmit}
+          initialValues={editingEmployee}
+        />
       </Modal>
     </div>
   );
