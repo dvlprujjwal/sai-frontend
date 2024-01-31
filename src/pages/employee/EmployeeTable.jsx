@@ -4,6 +4,8 @@ import { Table, Space, Button } from 'antd';
 
 const EmployeeTable = ({ employees, onEdit, onDelete }) => {
   const columns = [
+    
+    { title: 'ID', dataIndex: 'id', key: 'id', },
     { title: 'EMPLOYEE ID', dataIndex: 'employeeId', key: 'employeeCode', fixed: 'left', },
     { title: 'FIRST NAME', dataIndex: 'firstName', key: 'firstName', fixed: 'left', },
     { title: 'LAST NAME', dataIndex: 'lastName', key: 'lastName' },

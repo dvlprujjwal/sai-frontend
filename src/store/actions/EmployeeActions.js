@@ -30,8 +30,10 @@ export const updateEmployee = (employeeId, values) => async (dispatch) => {
     });
 
     if (updateResponse.ok) {
-      dispatch(fetchEmployees()); // Refresh the employee list after updating
+      alert('Employee updated successfully')
+      dispatch(fetchEmployees()); 
     } else {
+      alert('Update Failed')
       console.error('Update failed:', updateResponse.statusText);
     }
   } catch (error) {
@@ -50,8 +52,10 @@ export const saveEmployee = (values) => async (dispatch) => {
     });
 
     if (createResponse.ok) {
-      dispatch(fetchEmployees()); // Refresh the employee list after creating
+      alert("Employee Added successfully")
+      dispatch(fetchEmployees()); 
     } else {
+      alert("something went wrong")
       console.error('Create failed:', createResponse.statusText);
     }
   } catch (error) {
@@ -67,13 +71,16 @@ export const deleteEmployee = (employeeId) => async (dispatch) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        employeeId,
+        userId: 'string', 
+        id: employeeId,
       }),
     });
 
     if (deleteResponse.ok) {
-      dispatch(fetchEmployees()); // Refresh the employee list after deletion
+      alert("Employee deleted successfully")
+      dispatch(fetchEmployees());
     } else {
+      alert("Failed to delete employee")
       console.error('Delete failed:', deleteResponse.statusText);
     }
   } catch (error) {

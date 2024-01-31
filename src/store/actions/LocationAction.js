@@ -31,8 +31,10 @@ export const updateLocation = (locationId, values) => async (dispatch) => {
     });
 
     if (updateResponse.ok) {
-      dispatch(fetchLocations()); // Refresh the location list after updating
+      alert('Location updated successfully')
+      dispatch(fetchLocations()); 
     } else {
+      alert('Update Failed')
       console.error('Update failed:', updateResponse.statusText);
     }
   } catch (error) {
@@ -51,8 +53,10 @@ export const saveLocation = (values) => async (dispatch) => {
     });
 
     if (createResponse.ok) {
-      dispatch(fetchLocations()); // Refresh the location list after creating
+      alert('Location Added Successfully')
+      dispatch(fetchLocations()); 
     } else {
+      alert('Location Added Failed')
       console.error('Create failed:', createResponse.statusText);
     }
   } catch (error) {
@@ -68,14 +72,16 @@ export const deleteLocation = (locationId) => async (dispatch) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        userId: 'string', // Replace 'string' with the actual user ID
+        userId: 'string', 
         locationId,
       }),
     });
 
     if (deleteResponse.ok) {
-      dispatch(fetchLocations()); // Refresh the location list after deletion
+      alert('Location deleted successfully')
+      dispatch(fetchLocations());
     } else {
+      alert('failed to delete Location')
       console.error('Delete failed:', deleteResponse.statusText);
     }
   } catch (error) {

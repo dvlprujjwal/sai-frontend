@@ -8,7 +8,11 @@ const LocatorForm = ({ onSubmit, initialValues }) => {
   const [form] = Form.useForm();
 
   const onFinish = (values) => {
-    onSubmit(values);
+    const formattedValues = {
+      ...values,
+      userId: '123457',
+    };
+    onSubmit(formattedValues);
     form.resetFields();
   };
 

@@ -8,7 +8,11 @@ const VendorForm = ({ onSubmit, initialValues }) => {
   const [form] = Form.useForm();
 
   const onFinish = (values) => {
-    onSubmit(values);
+    const formattedValues = {
+      ...values,
+      userId: '123457',
+    };
+    onSubmit(formattedValues);
     form.resetFields();
   };
 
@@ -16,8 +20,8 @@ const VendorForm = ({ onSubmit, initialValues }) => {
     <Form form={form} onFinish={onFinish} initialValues={initialValues} layout="vertical">
       <Row gutter={16}>
         <Col span={8}>
-          <Form.Item name="id" label="Vendor ID" rules={[{ required: true, message: 'Please enter Vendor ID' }]}>
-            <Input />
+          <Form.Item name="id" label="Vendor ID" >
+            <Input disabled={true} />
           </Form.Item>
         </Col>
         <Col span={8}>

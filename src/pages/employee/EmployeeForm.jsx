@@ -11,8 +11,10 @@ const EmployeeForm = ({ onSubmit, initialValues }) => {
   const onFinish = (values) => {
     const formattedValues = {
       ...values,
+      organizationId: 0,
+      departmentId:0,
       endDate: values.endDate ? moment(values.endDate).format('DD/MM/YYYY') : null,
-    
+      userId: '123457',
     };
     onSubmit(formattedValues);
     form.resetFields();
