@@ -31,8 +31,10 @@ export const updateLocator = (locatorId, values) => async (dispatch) => {
     });
 
     if (updateResponse.ok) {
-      dispatch(fetchLocators()); // Refresh the locator list after updating
+      alert('Locator updated successfully')
+      dispatch(fetchLocators());
     } else {
+      alert('Update Failed')
       console.error('Update failed:', updateResponse.statusText);
     }
   } catch (error) {
@@ -51,8 +53,10 @@ export const saveLocator = (values) => async (dispatch) => {
     });
 
     if (createResponse.ok) {
-      dispatch(fetchLocators()); // Refresh the locator list after creating
+      alert('Locator Added Successfully')
+      dispatch(fetchLocators()); 
     } else {
+      alert('Locator Added Failed')
       console.error('Create failed:', createResponse.statusText);
     }
   } catch (error) {
@@ -68,14 +72,16 @@ export const deleteLocator = (locatorId) => async (dispatch) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        userId: 'string', // Replace 'string' with the actual user ID
-        locatorMasterId: locatorId,
+        userId: 'string', 
+        id: locatorId,
       }),
     });
 
     if (deleteResponse.ok) {
-      dispatch(fetchLocators()); // Refresh the locator list after deletion
+      alert('Locator deleted successfully')
+      dispatch(fetchLocators()); 
     } else {
+      alert('failed to delete Locator')
       console.error('Delete failed:', deleteResponse.statusText);
     }
   } catch (error) {

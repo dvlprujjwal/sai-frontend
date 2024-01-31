@@ -31,8 +31,10 @@ export const updateDepartment = (departmentId, values) => async (dispatch) => {
     });
 
     if (updateResponse.ok) {
-      dispatch(fetchDepartments()); // Refresh the department list after updating
+      alert('Department updated successfully')
+      dispatch(fetchDepartments()); 
     } else {
+      alert('Update Failed')
       console.error('Update failed:', updateResponse.statusText);
     }
   } catch (error) {
@@ -51,8 +53,10 @@ export const saveDepartment = (values) => async (dispatch) => {
     });
 
     if (createResponse.ok) {
-      dispatch(fetchDepartments()); // Refresh the department list after creating
+      alert('Department Added Successfully')
+      dispatch(fetchDepartments());
     } else {
+      alert('Department Added Failed')
       console.error('Create failed:', createResponse.statusText);
     }
   } catch (error) {
@@ -68,14 +72,16 @@ export const deleteDepartment = (departmentId) => async (dispatch) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        userId: 'string', // Replace 'string' with the actual user ID
+        userId: 'string', 
         departmentId,
       }),
     });
 
     if (deleteResponse.ok) {
-      dispatch(fetchDepartments()); // Refresh the department list after deletion
+      alert('Department deleted successfully')
+      dispatch(fetchDepartments()); 
     } else {
+      alert('failed to delete department')
       console.error('Delete failed:', deleteResponse.statusText);
     }
   } catch (error) {

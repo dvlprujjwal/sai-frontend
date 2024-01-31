@@ -7,7 +7,11 @@ const OrganizationForm = ({ onSubmit, initialValues }) => {
   const [form] = Form.useForm();
 
   const onFinish = (values) => {
-    onSubmit(values);
+    const formattedValues = {
+      ...values,
+      userId: '123457',
+    };
+    onSubmit(formattedValues);
     form.resetFields();
   };
 
@@ -20,7 +24,7 @@ const OrganizationForm = ({ onSubmit, initialValues }) => {
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item name="parentOrgId" label="Parent Organization ID">
+          <Form.Item name="parentOrganizationId" label="Parent Organization ID">
             <Input />
           </Form.Item>
         </Col>
@@ -33,7 +37,7 @@ const OrganizationForm = ({ onSubmit, initialValues }) => {
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item name="locationAddr" label="Location Address">
+          <Form.Item name="locationAddress" label="Location Address">
             <Input />
           </Form.Item>
         </Col>

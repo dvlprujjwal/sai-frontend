@@ -3,6 +3,7 @@ import { Table, Space, Button } from 'antd';
 
 const OrganizationTable = ({ organizations, onEdit, onDelete }) => {
   const columns = [
+    { title: 'ID', dataIndex: 'id', key: 'organizationId' },
     { title: 'Organization Name', dataIndex: 'organizationName', key: 'organizationName' },
     { title: 'Parent Org ID', dataIndex: 'parentOrgId', key: 'parentOrgId' },
     { title: 'Location', dataIndex: 'location', key: 'location' },

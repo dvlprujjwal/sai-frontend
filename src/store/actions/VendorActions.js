@@ -30,8 +30,10 @@ export const updateVendor = (vendorId, values) => async (dispatch) => {
     });
 
     if (updateResponse.ok) {
-      dispatch(fetchVendors()); // Refresh the vendor list after updating
+      alert('Vendors updated successfully')
+      dispatch(fetchVendors()); 
     } else {
+      alert('Update Failed')
       console.error('Update failed:', updateResponse.statusText);
     }
   } catch (error) {
@@ -50,8 +52,10 @@ export const saveVendor = (values) => async (dispatch) => {
     });
 
     if (createResponse.ok) {
-      dispatch(fetchVendors()); // Refresh the vendor list after creating
+      alert('Vendors Added Successfully')
+      dispatch(fetchVendors());
     } else {
+      alert('Vendors Added Failed')
       console.error('Create failed:', createResponse.statusText);
     }
   } catch (error) {
@@ -67,13 +71,16 @@ export const deleteVendor = (vendorId) => async (dispatch) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        vendorId,
+        userId: 'string',
+        id: vendorId,
       }),
     });
 
     if (deleteResponse.ok) {
-      dispatch(fetchVendors()); // Refresh the vendor list after deletion
+      alert('Vendors deleted successfully')
+      dispatch(fetchVendors()); 
     } else {
+      alert('failed to delete Vendors')
       console.error('Delete failed:', deleteResponse.statusText);
     }
   } catch (error) {

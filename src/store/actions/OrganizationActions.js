@@ -30,8 +30,10 @@ export const updateOrganization = (organizationId, values) => async (dispatch) =
     });
 
     if (updateResponse.ok) {
-      dispatch(fetchOrganizations()); // Refresh the organization list after updating
+      alert('Organizations updated successfully')
+      dispatch(fetchOrganizations()); 
     } else {
+      alert('Update Failed')
       console.error('Update failed:', updateResponse.statusText);
     }
   } catch (error) {
@@ -50,8 +52,10 @@ export const saveOrganization = (values) => async (dispatch) => {
     });
 
     if (createResponse.ok) {
-      dispatch(fetchOrganizations()); // Refresh the organization list after creating
+      alert('Organizations Added Successfully')
+      dispatch(fetchOrganizations()); 
     } else {
+      alert('Organizations Added Failed')
       console.error('Create failed:', createResponse.statusText);
     }
   } catch (error) {
@@ -67,13 +71,16 @@ export const deleteOrganization = (organizationId) => async (dispatch) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        organizationId,
+        userId: "12345",
+        id:organizationId,
       }),
     });
 
     if (deleteResponse.ok) {
+      alert('Organizations deleted successfully')
       dispatch(fetchOrganizations()); // Refresh the organization list after deletion
     } else {
+      alert('failed to delete Organizations')
       console.error('Delete failed:', deleteResponse.statusText);
     }
   } catch (error) {
