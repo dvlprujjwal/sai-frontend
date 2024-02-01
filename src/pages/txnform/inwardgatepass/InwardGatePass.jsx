@@ -1,4 +1,4 @@
-// InsepctionReport.js
+// InwardGatePass.js
 import React, { useState, } from 'react';
 import { Form, Input, Select, DatePicker, Button, Row, Col, } from 'antd';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
@@ -6,8 +6,9 @@ const { Option } = Select;
 
 
 
-const InsepctionReport = () => {
+const InwardGatePass = () => {
   const [Type, setType] = useState('1');
+  const [selectedOption, setSelectedOption] = useState(null);
   const onFinish = (values) => {
     console.log('Received values:', values);
   };
@@ -16,10 +17,14 @@ const InsepctionReport = () => {
     setType(allValues.type);
   };
 
+  const handleSelectChange = (value) => {
+    setSelectedOption(value);
+  };
+
   return (
 
     <div className="goods-receive-note-form-container">
-      <h1>Sports Authority of India - Inspection Report</h1>
+      <h1>Sports Authority of India - Inward Gate Pass</h1>
 
       <Form onFinish={onFinish} className="goods-receive-note-form" onValuesChange={handleValuesChange} layout="vertical">
         <Row>
@@ -31,13 +36,14 @@ const InsepctionReport = () => {
           <Col span={6}>
             <Form.Item label="Type" name="type">
               <Select>
-                <Option value="1">1. Purchase Order</Option>
-                <Option value="2">2. Inter-Org Transaction</Option>
+                <Option value="1">1. Issue/Return</Option>
+                <Option value="2">2. Purchase Order</Option>
+                <Option value="3">3. Inter-Org Transaction</Option>
               </Select>
             </Form.Item>
           </Col>
           <Col span={6} offset={12}>
-            <Form.Item label="Insepction Report No." name="inspectionReportNo">
+            <Form.Item label="INWARD GATE PASS NO." name="grnNo">
               <Input />
             </Form.Item>
           </Col>
@@ -62,9 +68,9 @@ const InsepctionReport = () => {
             </Form.Item>
           </Col>
 
-          {Type === '1' && (
+          {Type === '2' && (
             <Col span={8}>
-              <Form.Item label="CONSIGNOR DETAIL :" name="consignorDetail">
+              <Form.Item label="CONSIGNOR DETAIL:" name="consignorDetail">
                 <Input />
               </Form.Item>
               <Form.Item label="Supplier Code :" name="supplierCode">
@@ -79,8 +85,18 @@ const InsepctionReport = () => {
             </Col>
           )}
 
+          {Type === '1' && (
+            <Col span={8}>
+              <Form.Item label="CONSUMER NAME :" name="consumerName">
+                <Input />
+              </Form.Item>
+              <Form.Item label="CONTACT NO. :" name="contactNo">
+                <Input />
+              </Form.Item>
+            </Col>
+          )}
 
-          {Type === '2' && (
+          {Type === '3' && (
             <Col span={8}>
               <Form.Item label="CONSIGNOR DETAIL" name="consignorDetail">
                 <Input />
@@ -101,29 +117,58 @@ const InsepctionReport = () => {
           )}
 
           <Col span={8}>
+            {Type === '1' && (
+              <Form.Item label="OUTWARD GATE PASS." name="outwardgatepass">
+                <Input />
+              </Form.Item>
+            )}
+            {Type === '2' && (
+              <Form.Item label="PURCHASE ORDER NO." name="purchaseorderno">
+                <Input />
+              </Form.Item>
+            )}
+            {Type === '3' && (
+              <>
+                <Form.Item label="Select Note Type" name="noteType">
+                  <Select onChange={handleSelectChange}>
+                    <Option value="ISSUE">ISSUE NOTE NO.</Option>
+                    <Option value="REJECTION">REJECTION NOTE NO.</Option>
+                  </Select>
+                </Form.Item>
 
-            <Form.Item label="INWARD GATE PASS No." name="inwardGatePass">
+                <Form.Item
+                  label={selectedOption === 'ISSUE' ? 'ISSUE NOTE NO.' : 'REJECTION NOTE NO.'}
+                  name="inwardGatePass"
+                >
+                  <Input />
+                </Form.Item>
+              </>
+            )}
+            <Form.Item label="NOA No." name="noaNo">
               <Input />
             </Form.Item>
-            <Form.Item label="CHALLAN /INVOICE NO :" name="modeOfDelivery">
-              <Input />
-            </Form.Item>
-            <Form.Item label="MODE OF DELIVERY :" name="modeOfDelivery">
-              <Input />
-            </Form.Item>
-            <Form.Item label="Date Of Inspection :" name="noaDate">
+            <Form.Item label="NOA Date" name="noaDate">
               <DatePicker style={{ width: '100%' }} />
             </Form.Item>
             <Form.Item label="Date of Delivery" name="dateOfDelivery">
               <DatePicker style={{ width: '100%' }} />
             </Form.Item>
-            <Form.Item label="Type of Inspection :" name="modeOfDelivery">
+          </Col>
+        </Row>
+        <Row gutter={24}>
+          <Col span={8}>
+            <Form.Item label=" CHALLAN / INVOICE NO. :" name="consignorDetail">
               <Input />
             </Form.Item>
 
           </Col>
+          <Col span={8}>
+
+            <Form.Item label="MODE OF DELIVERY  :" name="supplierCode">
+              <Input />
+            </Form.Item>
+          </Col>
         </Row>
-     
         {/* Item Details */}
         <h2>Item Details</h2>
 
@@ -159,20 +204,19 @@ const InsepctionReport = () => {
                       </Form.Item>
                     </Col>
                     <Col span={6}>
-                      <Form.Item {...restField} label="Received Quantity" name={[name, 'receivedQuantity']}>
+                      <Form.Item {...restField} label=" Quantity" name={[name, 'quantity']}>
                         <Input />
                       </Form.Item>
                     </Col>
-                    <Col span={6}>
-                      <Form.Item {...restField} label="Budget Head Procurement" name={[name, 'budgetHeadProcurement']}>
-                        <Input />
-                      </Form.Item>
-                    </Col>
-                    <Col span={6}>
-                      <Form.Item {...restField} label="Locator" name={[name, 'locator']}>
-                        <Input />
-                      </Form.Item>
-                    </Col>
+                    {Type === '1' && (
+                      <Col span={6}>
+                        <Form.Item {...restField} label="REQUIRED FOR NO. OF DAYS" name={[name, 'budgetHeadProcurement']}>
+                          <Input />
+                        </Form.Item>
+                      </Col>
+                    )}
+
+
                     <Col span={5}>
                       <Form.Item {...restField} label="Remark" name={[name, 'remark']}>
                         <Input />
@@ -189,10 +233,10 @@ const InsepctionReport = () => {
         </Form.List>
 
         {/* Condition of Goods */}
-        <h2>Condition of Goods</h2>
+      
         <Row gutter={24}>
           <Col span={12}>
-            <Form.Item label="Condition of Goods" name="conditionOfGoods">
+            <Form.Item label="Terms and Conditon :" name="conditionOfGoods">
               <Input.TextArea />
             </Form.Item>
           </Col>
@@ -208,25 +252,37 @@ const InsepctionReport = () => {
         <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>
           <div  >
             <div className='goods-receive-note-signature'>
-              Generated By :<Form><Input /></Form>
+              GENERATED  BY  :<Form><Input /></Form>
             </div>
             <div className='goods-receive-note-signature'>
               NAME & SIGNATURE :<Form><Input /></Form>
             </div>
             <div className='goods-receive-note-signature'>
-              Date & Time :<Form> <DatePicker showTime /></Form>
+              Date & Time :<Form> <Input /></Form>
             </div>
           </div>
-
           <div >
             <div className='goods-receive-note-signature'>
-              Received By (Custodian) :<Form><Input /></Form>
+              APPROVED BY :<Form><Input /></Form>
             </div>
             <div className='goods-receive-note-signature'>
               NAME & SIGNATURE :<Form><Input /></Form>
             </div>
             <div className='goods-receive-note-signature'>
-              Date & Time :<Form> <DatePicker showTime /></Form>
+              Date & Time :<Form> <Input /></Form>
+            </div>
+
+
+          </div>
+          <div >
+            <div className='goods-receive-note-signature'>
+              VARIFIED BY : <Form><Input /></Form>
+            </div>
+            <div className='goods-receive-note-signature'>
+              NAME & SIGNATURE :<Form><Input /></Form>
+            </div>
+            <div className='goods-receive-note-signature'>
+              Date & Time :<Form> <Input /></Form>
             </div>
 
 
@@ -261,4 +317,4 @@ const InsepctionReport = () => {
   );
 };
 
-export default InsepctionReport;
+export default InwardGatePass;
