@@ -4,7 +4,6 @@ import { Table, Space, Button } from 'antd';
 
 const LocationTable = ({ locations, onEdit, onDelete }) => {
   const columns = [
-    { title: 'S NO.', dataIndex: 'id', key: 'id', fixed: 'left', width: 80 },
     { title: 'LOCATION ID', dataIndex: 'id', key: 'id', fixed: 'left' },
     { title: 'LOCATION NAME', dataIndex: 'locationName', key: 'locationName', fixed: 'left' },
     { title: 'ADDRESS', dataIndex: 'locationAddr', key: 'locationAddr' },
