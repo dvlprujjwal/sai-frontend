@@ -1,7 +1,7 @@
 // LocationForm.js
-import React from 'react';
-import { Form, Input, Button, Select, DatePicker, Row, Col } from 'antd';
-import moment from 'moment';
+import React from "react";
+import { Form, Input, Button, Select, DatePicker, Row, Col } from "antd";
+import moment from "moment";
 
 const { Option } = Select;
 
@@ -10,8 +10,10 @@ const LocationForm = ({ onSubmit, initialValues }) => {
   const onFinish = (values) => {
     const formattedValues = {
       ...values,
-      endDate: values.endDate ? moment(values.endDate).format('DD/MM/YYYY') : null,
-      userId: '123457',
+      endDate: values.endDate
+        ? moment(values.endDate).format("DD/MM/YYYY")
+        : null,
+      userId: "123457",
     };
 
     onSubmit(formattedValues);
@@ -19,15 +21,28 @@ const LocationForm = ({ onSubmit, initialValues }) => {
   };
 
   return (
-    <Form form={form} onFinish={onFinish} initialValues={initialValues} layout="vertical">
+    <Form
+      form={form}
+      onFinish={onFinish}
+      initialValues={initialValues}
+      layout="vertical"
+    >
       <Row gutter={16}>
         <Col span={12}>
-          <Form.Item name="locationName" label="Location Name" rules={[{ required: true, message: 'Please enter Location Name' }]}>
+          <Form.Item
+            name="locationName"
+            label="Location Name"
+            rules={[{ required: true, message: "Please enter Location Name" }]}
+          >
             <Input />
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item name="locationAddr" label="Address" rules={[{ required: true, message: 'Please enter Address' }]}>
+          <Form.Item
+            name="locationAddr"
+            label="Address"
+            rules={[{ required: true, message: "Please enter Address" }]}
+          >
             <Input />
           </Form.Item>
         </Col>
@@ -35,25 +50,20 @@ const LocationForm = ({ onSubmit, initialValues }) => {
 
       <Row gutter={16}>
         <Col span={12}>
-          <Form.Item name="city" label="City" rules={[{ required: true, message: 'Please enter City' }]}>
+          <Form.Item
+            name="city"
+            label="City"
+            rules={[{ required: true, message: "Please enter City" }]}
+          >
             <Input />
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item name="pincode" label="Pin Code" rules={[{ required: true, message: 'Please enter Zip Code' }]}>
-            <Input />
-          </Form.Item>
-        </Col>
-      </Row>
-
-      <Row gutter={16}>
-        <Col span={12}>
-          <Form.Item name="state" label="State" rules={[{ required: true, message: 'Please enter State' }]}>
-            <Input />
-          </Form.Item>
-        </Col>
-        <Col span={12}>
-          <Form.Item name="pan" label="PAN No." rules={[{ required: true, message: 'Please enter PAN No.' }]}>
+          <Form.Item
+            name="zipcode"
+            label="Pin Code"
+            rules={[{ required: true, message: "Please enter Zip Code" }]}
+          >
             <Input />
           </Form.Item>
         </Col>
@@ -61,12 +71,20 @@ const LocationForm = ({ onSubmit, initialValues }) => {
 
       <Row gutter={16}>
         <Col span={12}>
-          <Form.Item name="email" label="Email ID" rules={[{ required: true, message: 'Please enter Email ID' }]}>
+          <Form.Item
+            name="state"
+            label="State"
+            rules={[{ required: true, message: "Please enter State" }]}
+          >
             <Input />
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item name="contactNo" label="Contact No." rules={[{ required: true, message: 'Please enter Contact No.' }]}>
+          <Form.Item
+            name="pan"
+            label="PAN No."
+            rules={[{ required: true, message: "Please enter PAN No." }]}
+          >
             <Input />
           </Form.Item>
         </Col>
@@ -74,15 +92,44 @@ const LocationForm = ({ onSubmit, initialValues }) => {
 
       <Row gutter={16}>
         <Col span={12}>
-          <Form.Item name="gstin" label="GSTIN No." rules={[{ required: true, message: 'Please enter GSTIN No.' }]}>
+          <Form.Item
+            name="email"
+            label="Email ID"
+            rules={[{ required: true, message: "Please enter Email ID" }]}
+          >
             <Input />
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item name="status" label="Status" rules={[{ required: true, message: 'Please select Status' }]}>
+          <Form.Item
+            name="contactNo"
+            label="Contact No."
+            rules={[{ required: true, message: "Please enter Contact No." }]}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
+      </Row>
+
+      <Row gutter={16}>
+        <Col span={12}>
+          <Form.Item
+            name="gstin"
+            label="GSTIN No."
+            rules={[{ required: true, message: "Please enter GSTIN No." }]}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+          <Form.Item
+            name="status"
+            label="Status"
+            rules={[{ required: true, message: "Please select Status" }]}
+          >
             <Select>
-              <Option value="Active">Active</Option>
-              <Option value="Inactive">Inactive</Option>
+              <Option value="A">Active</Option>
+              <Option value="IA">Inactive</Option>
             </Select>
           </Form.Item>
         </Col>

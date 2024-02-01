@@ -19,7 +19,7 @@ const InsepctionReport = () => {
   return (
 
     <div className="goods-receive-note-form-container">
-      <h1>Sports Authority of India - Goods Receive Note</h1>
+      <h1>Sports Authority of India - Inspection Report</h1>
 
       <Form onFinish={onFinish} className="goods-receive-note-form" onValuesChange={handleValuesChange} layout="vertical">
         <Row>
@@ -45,13 +45,13 @@ const InsepctionReport = () => {
 
         <Row gutter={24}>
           <Col span={8}>
-            <Form.Item label="Consignee Detail :" name="consigneeDetail">
+            <Form.Item label="CONSIGNEE DETAIL :" name="consigneeDetail">
               <Input />
             </Form.Item>
             <Form.Item label="REGIONAL CENTER CODE :" name="regionalCenterCode">
               <Input />
             </Form.Item>
-            <Form.Item label="REGIONAL CENTER NAME :" name="regionalCenterName">
+            <Form.Item label="REGIONAL CENTER NAME  :" name="regionalCenterName">
               <Input />
             </Form.Item>
             <Form.Item label="ADDRESS :" name="consigneeAddress">
@@ -82,13 +82,13 @@ const InsepctionReport = () => {
 
           {Type === '2' && (
             <Col span={8}>
-              <Form.Item label="Consignor Detail" name="consignorDetail">
+              <Form.Item label="CONSIGNOR DETAIL" name="consignorDetail">
                 <Input />
               </Form.Item>
-              <Form.Item label="Regional Center Code" name="regionalCenterCodeConsignor">
+              <Form.Item label="REGIONAL CENTER CODE" name="regionalCenterCodeConsignor">
                 <Input />
               </Form.Item>
-              <Form.Item label="Regional Center Name" name="regionalCenterNameConsignor">
+              <Form.Item label="REGIONAL CENTER NAME " name="regionalCenterNameConsignor">
                 <Input />
               </Form.Item>
               <Form.Item label="ADDRESS :" name="consignorAddress">
@@ -123,9 +123,9 @@ const InsepctionReport = () => {
               <DatePicker style={{ width: '100%' }} />
             </Form.Item>
             <Form.Item label="Type of Inspection :" name="modeOfDelivery">
-            <Input />
-          </Form.Item>
-          
+              <Input />
+            </Form.Item>
+
           </Col>
 
         </Row>

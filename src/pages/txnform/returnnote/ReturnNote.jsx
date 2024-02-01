@@ -19,7 +19,7 @@ const RetunNote = () => {
   return (
 
     <div className="goods-receive-note-form-container">
-      <h1>Sports Authority of India - Goods Receive Note</h1>
+      <h1>Sports Authority of India - Return Note</h1>
 
       <Form onFinish={onFinish} className="goods-receive-note-form" onValuesChange={handleValuesChange} layout="vertical">
         <Row>
@@ -32,7 +32,7 @@ const RetunNote = () => {
 
           </Col>
           <Col span={6} offset={12}>
-            <Form.Item label="RETURN VOUCHER NO." name="grnNo">
+            <Form.Item label="RETURN NOTE NO." name="grnNo">
               <Input />
             </Form.Item>
           </Col>
@@ -44,7 +44,7 @@ const RetunNote = () => {
             <Form.Item label="REGIONAL CENTER CODE :" name="regionalCenterCode">
               <Input />
             </Form.Item>
-            <Form.Item label="REGIONAL CENTER NAME :" name="regionalCenterName">
+            <Form.Item label="REGIONAL CENTER NAME  :" name="regionalCenterName">
               <Input />
             </Form.Item>
             <Form.Item label="ADDRESS :" name="consigneeAddress">

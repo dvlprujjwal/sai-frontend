@@ -1,9 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Modal, Input } from 'antd';
-import { connect } from 'react-redux';
-import { fetchVendors, updateVendor, saveVendor, deleteVendor } from '../../store/actions/VendorActions';
-import VendorTable from './VendorTable';
-import VendorForm from './VendorForm';
+import React, { useState, useEffect } from "react";
+import { Button, Modal, Input } from "antd";
+import { connect } from "react-redux";
+import {
+  fetchVendors,
+  updateVendor,
+  saveVendor,
+  deleteVendor,
+} from "../../store/actions/VendorActions";
+import VendorTable from "./VendorTable";
+import VendorForm from "./VendorForm";
 
 const VendorPage = ({
   vendors,
@@ -14,7 +19,7 @@ const VendorPage = ({
 }) => {
   const [visible, setVisible] = useState(false);
   const [editingVendor, setEditingVendor] = useState(null);
-  const [searchText, setSearchText] = useState('');
+  const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
     fetchVendors();
@@ -40,20 +45,30 @@ const VendorPage = ({
       setVisible(false);
       setEditingVendor(null);
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   };
 
   return (
     <div>
-      <div style={{ marginBottom: '16px', display: 'flex', justifyContent: 'space-between' }}>
+      <div
+        style={{
+          marginBottom: "16px",
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
         <Input
           placeholder="Search vendors"
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
-          style={{ width: '200px' }}
+          style={{ width: "200px" }}
         />
-        <Button type="primary" className='saitheme-btn' onClick={() => setVisible(true)}>
+        <Button
+          type="primary"
+          className="saitheme-btn"
+          onClick={() => setVisible(true)}
+        >
           Add Vendor
         </Button>
       </div>
@@ -66,7 +81,7 @@ const VendorPage = ({
       />
 
       <Modal
-        title={editingVendor ? 'Edit Vendor' : 'Add Vendor'}
+        title={editingVendor ? "Edit Vendor" : "Add Vendor"}
         visible={visible}
         onCancel={() => {
           setEditingVendor(null);
@@ -74,7 +89,11 @@ const VendorPage = ({
         }}
         footer={null}
       >
-        <VendorForm onSubmit={handleFormSubmit} initialValues={editingVendor} />
+        <VendorForm
+          key={editingVendor ? `edit-${editingVendor.id}` : "add"}
+          onSubmit={handleFormSubmit}
+          initialValues={editingVendor}
+        />
       </Modal>
     </div>
   );

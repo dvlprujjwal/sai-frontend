@@ -1,11 +1,15 @@
-// PrintGrnform.js
-import React, { useState, forwardRef } from 'react';
+// IssueNote.js
+import React, { useState, } from 'react';
 import { Form, Input, Select, DatePicker, Button, Row, Col, } from 'antd';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
-import './GoodsReceiveNoteForm.css';
+
+
 
 const { Option } = Select;
-const PrintGrnform = forwardRef((props, ref) => {
+
+
+
+const IssueNote = () => {
   const [Type, setType] = useState('1');
   const onFinish = (values) => {
     console.log('Received values:', values);
@@ -16,7 +20,10 @@ const PrintGrnform = forwardRef((props, ref) => {
   };
 
   return (
-    <div ref={ref} bodyClass="print-agreement">
+
+    <div className="goods-receive-note-form-container">
+      <h1>Sports Authority of India - Issue Note</h1>
+
       <Form onFinish={onFinish} className="goods-receive-note-form" onValuesChange={handleValuesChange} layout="vertical">
         <Row>
           <Col span={6} offset={18}>
@@ -27,14 +34,14 @@ const PrintGrnform = forwardRef((props, ref) => {
           <Col span={6}>
             <Form.Item label="Type" name="type">
               <Select>
-                <Option value="1">1. Issue/Return</Option>
-                <Option value="2">2. Purchase Order</Option>
-                <Option value="3">3. Inter-Org Transaction</Option>
+                <Option value="1">1. RETURNABLE</Option>
+                <Option value="2">2. NON RETURNABLE</Option>
+                <Option value="3">3. INTER - ORG. TANSFER</Option>
               </Select>
             </Form.Item>
           </Col>
           <Col span={6} offset={12}>
-            <Form.Item label="GRN No." name="grnNo">
+            <Form.Item label="ISSUE NOTE NO." name="issueNoteNo">
               <Input />
             </Form.Item>
           </Col>
@@ -42,7 +49,7 @@ const PrintGrnform = forwardRef((props, ref) => {
 
         <Row gutter={24}>
           <Col span={8}>
-            <Form.Item label="CONSIGNEE DETAIL :" name="consigneeDetail">
+            <Form.Item label="CONSIGNOR DETAIL :" name="consignorDetail">
               <Input />
             </Form.Item>
             <Form.Item label="REGIONAL CENTER CODE :" name="regionalCenterCode">
@@ -61,16 +68,10 @@ const PrintGrnform = forwardRef((props, ref) => {
 
           {Type === '2' && (
             <Col span={8}>
-              <Form.Item label="CONSIGNOR DETAIL :" name="consignorDetail">
+              <Form.Item label="CONSUMER NAME :" name="consumerName">
                 <Input />
               </Form.Item>
-              <Form.Item label="Supplier Code :" name="supplierCode">
-                <Input />
-              </Form.Item>
-              <Form.Item label="Supplier Name :" name="supplierName">
-                <Input />
-              </Form.Item>
-              <Form.Item label="Address:" name="supplierAddress">
+              <Form.Item label="CONTACT NO. :" name="contactNo">
                 <Input />
               </Form.Item>
             </Col>
@@ -89,13 +90,13 @@ const PrintGrnform = forwardRef((props, ref) => {
 
           {Type === '3' && (
             <Col span={8}>
-              <Form.Item label="CONSIGNOR DETAIL" name="consignorDetail">
+              <Form.Item label="CONSIGNEE DETAIL" name="consignorDetail">
                 <Input />
               </Form.Item>
-              <Form.Item label="REGIONAL CENTER CODE" name="regionalCenterCodeConsignor">
+              <Form.Item label="REGIONAL CENTER CODE :" name="regionalCenterCode">
                 <Input />
               </Form.Item>
-              <Form.Item label="REGIONAL CENTER NAME " name="regionalCenterNameConsignor">
+              <Form.Item label="REGIONAL CENTER NAME  :" name="regionalCenterName">
                 <Input />
               </Form.Item>
               <Form.Item label="ADDRESS :" name="consignorAddress">
@@ -109,29 +110,31 @@ const PrintGrnform = forwardRef((props, ref) => {
 
           <Col span={8}>
             {Type === '1' && (
-              <Form.Item label="RETURN VOUCHER NO" name="returnVoucherNo">
-                <Input />
-              </Form.Item>
+              <>
+                <Form.Item label="DEMAND NOTE NO." name="demandNoteNo">
+                  <Input />
+                </Form.Item>
+                <Form.Item label="DEMAND NOTE DATE :" name="demandNoteDate">
+                  <Input />
+                </Form.Item>
+              </>
             )}
             {Type === '2' && (
-              <Form.Item label="ACCEPTANCE NOTE NO." name="acceptanceNoteNo">
-                <Input />
-              </Form.Item>
+              <>
+                <Form.Item label="DEMAND NOTE NO." name="demandNoteNo">
+                  <Input />
+                </Form.Item>
+                <Form.Item label="DEMAND NOTE DATE :" name="demandNoteDate">
+                  <Input />
+                </Form.Item>
+              </>
             )}
             {Type === '3' && (
-              <Form.Item label="INWARD GATE PASS" name="inwardGatePass">
+              <Form.Item label="INTER RD DEMAND NOTE :" name="interRdDemandNote">
                 <Input />
               </Form.Item>
             )}
-            <Form.Item label="NOA No." name="noaNo">
-              <Input />
-            </Form.Item>
-            <Form.Item label="NOA Date" name="noaDate">
-              <DatePicker style={{ width: '100%' }} />
-            </Form.Item>
-            <Form.Item label="Date of Delivery" name="dateOfDelivery">
-              <DatePicker style={{ width: '100%' }} />
-            </Form.Item>
+
           </Col>
         </Row>
 
@@ -170,20 +173,17 @@ const PrintGrnform = forwardRef((props, ref) => {
                       </Form.Item>
                     </Col>
                     <Col span={6}>
-                      <Form.Item {...restField} label="Received Quantity" name={[name, 'receivedQuantity']}>
+                      <Form.Item {...restField} label=" Quantity" name={[name, 'quantity']}>
                         <Input />
                       </Form.Item>
                     </Col>
                     <Col span={6}>
-                      <Form.Item {...restField} label="Budget Head Procurement" name={[name, 'budgetHeadProcurement']}>
+                      <Form.Item {...restField} label="REQUIRED FOR NO. OF DAYS" name={[name, 'budgetHeadProcurement']}>
                         <Input />
                       </Form.Item>
                     </Col>
-                    <Col span={6}>
-                      <Form.Item {...restField} label="Locator" name={[name, 'locator']}>
-                        <Input />
-                      </Form.Item>
-                    </Col>
+
+
                     <Col span={5}>
                       <Form.Item {...restField} label="Remark" name={[name, 'remark']}>
                         <Input />
@@ -200,10 +200,10 @@ const PrintGrnform = forwardRef((props, ref) => {
         </Form.List>
 
         {/* Condition of Goods */}
-        <h2>Condition of Goods</h2>
+
         <Row gutter={24}>
           <Col span={12}>
-            <Form.Item label="Condition of Goods" name="conditionOfGoods">
+            <Form.Item label="Terms and Conditon " name="termandcondition">
               <Input.TextArea />
             </Form.Item>
           </Col>
@@ -216,28 +216,41 @@ const PrintGrnform = forwardRef((props, ref) => {
 
         {/* Note and Signature */}
 
+
         <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>
           <div  >
             <div className='goods-receive-note-signature'>
-              Generated By :<Form><Input /></Form>
+              GENERATED  BY : :<Form><Input /></Form>
             </div>
             <div className='goods-receive-note-signature'>
               NAME & SIGNATURE :<Form><Input /></Form>
             </div>
             <div className='goods-receive-note-signature'>
-              Date & Time :<Form> <DatePicker showTime /></Form>
+              Date & Time :<Form> <Input /></Form>
             </div>
           </div>
-
           <div >
             <div className='goods-receive-note-signature'>
-              Received By (Custodian) :<Form><Input /></Form>
+              APPROVED BY : :<Form><Input /></Form>
             </div>
             <div className='goods-receive-note-signature'>
               NAME & SIGNATURE :<Form><Input /></Form>
             </div>
             <div className='goods-receive-note-signature'>
-              Date & Time :<Form> <DatePicker showTime /></Form>
+              Date & Time :<Form> <Input /></Form>
+            </div>
+
+
+          </div>
+          <div >
+            <div className='goods-receive-note-signature'>
+              ISSUED By (Custodian) :<Form><Input /></Form>
+            </div>
+            <div className='goods-receive-note-signature'>
+              NAME & SIGNATURE :<Form><Input /></Form>
+            </div>
+            <div className='goods-receive-note-signature'>
+              Date & Time :<Form> <Input /></Form>
             </div>
 
 
@@ -247,9 +260,30 @@ const PrintGrnform = forwardRef((props, ref) => {
 
 
 
-      </Form>
-    </div>
-  );
-});
+        {/* Submit Button */}
+        <div className='goods-receive-note-button-container'>
 
-export default PrintGrnform;
+          <Form.Item >
+            <Button type="primary" htmlType="save" style={{ width: '200px', margin: 16 }}>
+              Save
+            </Button>
+          </Form.Item>
+
+          <Form.Item >
+            <Button type="primary" htmlType="submit" style={{ backgroundColor: '#4CAF50', borderColor: '#4CAF50', width: '200px', margin: 16 }}>
+              Submit
+            </Button>
+          </Form.Item>
+          <Form.Item >
+            <Button type="primary" danger htmlType="save" style={{ width: '200px', margin: 16 }}>
+              Print
+            </Button>
+          </Form.Item>
+
+        </div>
+      </Form>
+    </div >
+  );
+};
+
+export default IssueNote;
