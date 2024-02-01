@@ -4,12 +4,10 @@ import { Table, Space, Button, Popconfirm, message } from "antd";
 
 const ItemsTable = ({ items, onEdit, onDelete }) => {
   const confirm = (e) => {
-    console.log(e);
     message.success("Item Deleted");
   };
 
   const cancel = (e) => {
-    console.log(e);
     message.error("Deletion Cancelled");
   };
 
@@ -74,18 +72,19 @@ const ItemsTable = ({ items, onEdit, onDelete }) => {
       fixed: "right",
       render: (_, record) => (
         <Space>
-          <Button
+          {/* <Button
             type="primary"
             className="saitheme-btn"
             onClick={() => onEdit(record)}
+            disabled
           >
             Edit
-          </Button>
+          </Button> */}
           <Popconfirm
             title="Delete the item"
             description="Are you sure to delete this item?"
             onConfirm={(e) => {
-              // onDelete(record.id);
+              onDelete(record.id);
               confirm(e);
             }}
             onCancel={cancel}

@@ -41,7 +41,6 @@ const VendorPage = ({
       } else {
         await saveVendor(values);
       }
-
       setVisible(false);
       setEditingVendor(null);
     } catch (error) {
