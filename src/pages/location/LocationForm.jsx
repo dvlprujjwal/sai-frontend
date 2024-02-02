@@ -61,7 +61,7 @@ const LocationForm = ({ onSubmit, initialValues }) => {
         <Col span={12}>
           <Form.Item
             name="zipcode"
-            label="Pin Code"
+            label="Zip Code"
             rules={[{ required: true, message: "Please enter Zip Code" }]}
           >
             <Input />

@@ -70,7 +70,7 @@ const OutwardGatePass = () => {
 
           {Type === '2' && (
             <Col span={8}>
-              <Form.Item label="CONSIGNOR DETAIL :" name="consignorDetail">
+              <Form.Item label="CONSIGNEE DETAIL:" name="consignorDetail">
                 <Input />
               </Form.Item>
               <Form.Item label="Supplier Code :" name="supplierCode">
@@ -118,12 +118,12 @@ const OutwardGatePass = () => {
 
           <Col span={8}>
             {Type === '1' && (
-              <Form.Item label="RETURN VOUCHER NO" name="returnVoucherNo">
+              <Form.Item label="ISSUE NOTE NO. :" name="issuenoteno">
                 <Input />
               </Form.Item>
             )}
             {Type === '2' && (
-              <Form.Item label="ACCEPTANCE NOTE NO." name="acceptanceNoteNo">
+              <Form.Item label="REJECTION NOTE NO.  :" name="rejectionNoteNo">
                 <Input />
               </Form.Item>
             )}
@@ -155,7 +155,20 @@ const OutwardGatePass = () => {
             </Form.Item>
           </Col>
         </Row>
+        <Row gutter={24}>
+          <Col span={8}>
+            <Form.Item label=" CHALLAN / INVOICE NO. :" name="consignorDetail">
+              <Input />
+            </Form.Item>
 
+          </Col>
+          <Col span={8}>
+
+            <Form.Item label="MODE OF DELIVERY  :" name="supplierCode">
+              <Input />
+            </Form.Item>
+          </Col>
+        </Row>
         {/* Item Details */}
         <h2>Item Details</h2>
 
@@ -190,21 +203,56 @@ const OutwardGatePass = () => {
                         <Input />
                       </Form.Item>
                     </Col>
-                    <Col span={6}>
-                      <Form.Item {...restField} label="Received Quantity" name={[name, 'receivedQuantity']}>
-                        <Input />
-                      </Form.Item>
-                    </Col>
-                    <Col span={6}>
-                      <Form.Item {...restField} label="Budget Head Procurement" name={[name, 'budgetHeadProcurement']}>
-                        <Input />
-                      </Form.Item>
-                    </Col>
-                    <Col span={6}>
-                      <Form.Item {...restField} label="Locator" name={[name, 'locator']}>
-                        <Input />
-                      </Form.Item>
-                    </Col>
+                    {Type === '1' && (
+                      <>
+                        <Col span={6}>
+                          <Form.Item {...restField} label=" Quantity" name={[name, 'quantity']}>
+                            <Input />
+                          </Form.Item>
+                        </Col>
+                        <Col span={6}>
+                          <Form.Item {...restField} label="REQUIRED FOR NO. OF DAYS" name={[name, 'budgetHeadProcurement']}>
+                            <Input />
+                          </Form.Item>
+                        </Col>  </>
+                    )}
+                    {Type === '2' && (
+                      <>
+
+                        <Col span={6}>
+                          <Form.Item {...restField} label=" REJECTED QUANTITY" name={[name, 'rejectQuantity']}>
+                            <Input />
+                          </Form.Item>
+                        </Col>
+                        <Col span={6}>
+                          <Form.Item {...restField} label=" RETURN QUANTITY " name={[name, 'returnQuantity']}>
+                            <Input />
+                          </Form.Item>
+                        </Col>
+                      </>
+                    )}
+                    {Type === '3' && (
+                      selectedOption === 'ISSUE' ? (
+                        <Col span={6}>
+                          <Form.Item {...restField} label="DELIVERED QUANTITY" name={[name, 'deliveredQuantity']}>
+                            <Input />
+                          </Form.Item>
+                        </Col>
+                      ) : (
+                        <>
+                          <Col span={6}>
+                            <Form.Item {...restField} label="REJECTED QUANTITY" name={[name, 'rejectQuantity']}>
+                              <Input />
+                            </Form.Item>
+                          </Col>
+                          <Col span={6}>
+                            <Form.Item {...restField} label="RETURN QUANTITY" name={[name, 'returnQuantity']}>
+                              <Input />
+                            </Form.Item>
+                          </Col>
+                        </>
+                      )
+                    )}
                     <Col span={5}>
                       <Form.Item {...restField} label="Remark" name={[name, 'remark']}>
                         <Input />
@@ -240,25 +288,37 @@ const OutwardGatePass = () => {
         <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>
           <div  >
             <div className='goods-receive-note-signature'>
-              Generated By :<Form><Input /></Form>
+              GENERATED  BY  :<Form><Input /></Form>
             </div>
             <div className='goods-receive-note-signature'>
               NAME & SIGNATURE :<Form><Input /></Form>
             </div>
             <div className='goods-receive-note-signature'>
-              Date & Time :<Form> <DatePicker showTime /></Form>
+              Date & Time :<Form> <Input /></Form>
             </div>
           </div>
-
           <div >
             <div className='goods-receive-note-signature'>
-              Received By (Custodian) :<Form><Input /></Form>
+              APPROVED BY :<Form><Input /></Form>
             </div>
             <div className='goods-receive-note-signature'>
               NAME & SIGNATURE :<Form><Input /></Form>
             </div>
             <div className='goods-receive-note-signature'>
-              Date & Time :<Form> <DatePicker showTime /></Form>
+              Date & Time :<Form> <Input /></Form>
+            </div>
+
+
+          </div>
+          <div >
+            <div className='goods-receive-note-signature'>
+              VARIFIED BY : <Form><Input /></Form>
+            </div>
+            <div className='goods-receive-note-signature'>
+              NAME & SIGNATURE :<Form><Input /></Form>
+            </div>
+            <div className='goods-receive-note-signature'>
+              Date & Time :<Form> <Input /></Form>
             </div>
 
 
