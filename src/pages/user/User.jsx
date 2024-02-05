@@ -87,7 +87,11 @@ const UserPage = ({ users, fetchUsers, updateUser, saveUser, deleteUser }) => {
       </div>
       <UserTable
         users={users.filter((user) =>
-          user.firstName.toLowerCase().includes(searchText.toLowerCase())
+          Object.values(user).some(
+            (value) =>
+              typeof value === "string" &&
+              value.toLowerCase().includes(searchText.toLowerCase())
+          )
         )}
         onEdit={handleEdit}
         onDelete={handleDelete}
