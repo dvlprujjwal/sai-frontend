@@ -83,7 +83,11 @@ const EmployeePage = ({
       </div>
       <EmployeeTable
         employees={employees.filter((employee) =>
-          employee.firstName.toLowerCase().includes(searchText.toLowerCase())
+          Object.values(employee).some(
+            (value) =>
+              typeof value === "string" &&
+              value.toLowerCase().includes(searchText.toLowerCase())
+          )
         )}
         onEdit={handleEdit}
         onDelete={handleDelete}

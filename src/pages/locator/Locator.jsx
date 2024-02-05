@@ -75,8 +75,13 @@ const LocatorPage = ({
       </div>
       <LocatorTable
         locators={locators.filter((locator) =>
-          locator.locatorCd.toLowerCase().includes(searchText.toLowerCase())
+          Object.values(locator).some(
+            (value) =>
+              typeof value === "string" &&
+              value.toLowerCase().includes(searchText.toLowerCase())
+          )
         )}
+
         onEdit={handleEdit}
         onDelete={handleDelete}
       />

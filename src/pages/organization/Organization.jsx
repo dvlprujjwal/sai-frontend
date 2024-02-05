@@ -74,11 +74,13 @@ const OrganizationPage = ({
         </Button>
       </div>
       <OrganizationTable
+    
         organizations={organizations.filter((organization) =>
-          organization.organizationName
-            .toLowerCase()
-            .includes(searchText.toLowerCase())
-        )}
+          Object.values(organization).some(
+            (value) =>
+              typeof value === "string" &&
+              value.toLowerCase().includes(searchText.toLowerCase())
+          ))}
         onEdit={handleEdit}
         onDelete={handleDelete}
       />
