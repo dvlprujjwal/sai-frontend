@@ -42,11 +42,18 @@ const ItemsPage = () => {
     "001": "Arrow Pullar",
     "002": "Arrow Liner",
     "003": "Arm Guard",
+    "004": "Arrow Rest Plastic",
+    "005": "Beiter Clicker",
+    "006": "Bow Guage",
+   
   };
 
   // const types = [{ id: "9", value: "NA" }];
   const types = {
     9: "NA",
+    1: "Track",
+    2: "Field",
+
   };
   // const disciplines = [
   //   { id: "01", value: "Archery" },
@@ -85,7 +92,8 @@ const ItemsPage = () => {
   // ];
   const sizes = {
     "001": "Normal",
-    "003": "Small",
+    "002": "0",
+    "003": "25",
   };
 
   // const usageCategories = [
@@ -124,6 +132,7 @@ const ItemsPage = () => {
     "02": "Silver",
     "03": "Multicoloured",
     "04": "White",
+    "07": "Yellow",
   };
 
   const getUoms = async () => {

@@ -52,7 +52,7 @@ const OrganizationForm = ({ onSubmit, initialValues }) => {
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item name="locationAddr" label="Location Address">
+          <Form.Item name="locationAddress" label="Location Address">
             <Input />
           </Form.Item>
         </Col>
