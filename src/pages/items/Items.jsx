@@ -45,7 +45,7 @@ const ItemsPage = () => {
     "004": "Arrow Rest Plastic",
     "005": "Beiter Clicker",
     "006": "Bow Guage",
-   
+
   };
 
   // const types = [{ id: "9", value: "NA" }];
@@ -369,8 +369,16 @@ const ItemsPage = () => {
         </Button>
       </div>
       <ItemsTable
+        // items={items.filter((item) =>
+        //   item.itemDescription.toLowerCase().includes(searchText.toLowerCase()) ||
+        //   item.itemCode.toLowerCase().includes(searchText.toLowerCase())
+        // )}
         items={items.filter((item) =>
-          item.itemDescription.toLowerCase().includes(searchText.toLowerCase())
+          Object.values(item).some(
+            (value) =>
+              typeof value === "string" &&
+              value.toLowerCase().includes(searchText.toLowerCase())
+          )
         )}
         onEdit={handleEdit}
         onDelete={handleDelete}

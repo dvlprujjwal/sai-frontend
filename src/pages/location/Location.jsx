@@ -123,8 +123,13 @@ const LocationPage = ({
       </div>
       <LocationTable
         locations={locations.filter((location) =>
-          location.locationName.toLowerCase().includes(searchText.toLowerCase())
+          Object.values(location).some(
+            (value) =>
+              typeof value === "string" &&
+              value.toLowerCase().includes(searchText.toLowerCase())
+          )
         )}
+
         onEdit={handleEdit}
         onDelete={handleDelete}
       />

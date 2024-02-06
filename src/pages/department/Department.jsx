@@ -80,9 +80,11 @@ const DepartmentPage = ({
       </div>
       <DepartmentTable
         departments={departments.filter((department) =>
-          department.departmentName
-            .toLowerCase()
-            .includes(searchText.toLowerCase())
+          Object.values(department).some(
+            (value) =>
+              typeof value === "string" &&
+              value.toLowerCase().includes(searchText.toLowerCase())
+          )
         )}
         onEdit={handleEdit}
         onDelete={handleDelete}

@@ -73,7 +73,11 @@ const VendorPage = ({
       </div>
       <VendorTable
         vendors={vendors.filter((vendor) =>
-          vendor.vendorName.toLowerCase().includes(searchText.toLowerCase())
+          Object.values(vendor).some(
+            (value) =>
+              typeof value === "string" &&
+              value.toLowerCase().includes(searchText.toLowerCase())
+          )
         )}
         onEdit={handleEdit}
         onDelete={handleDelete}
