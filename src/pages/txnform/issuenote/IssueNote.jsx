@@ -1,11 +1,12 @@
 // IssueNote.js
-import React, { useState, } from 'react';
-import { Form, Input, Select, DatePicker, Button, Row, Col, } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Form, Input, Select, DatePicker, Button, Row, Col, Typography } from 'antd';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
-
-
-
+import { fetchUserOrgDetails } from '../../../store/actions/UtilsAction'
+import { connect } from 'react-redux';
+import moment from 'moment';
 const { Option } = Select;
+const { Text, Title } = Typography;
 
 
 
@@ -14,11 +15,21 @@ const IssueNote = () => {
   const onFinish = (values) => {
     console.log('Received values:', values);
   };
+  const [currentDate, setCurrentDate] = useState(null);
+
+  useEffect(() => {
+    // Set defaultDate to the current date when the component mounts
+    setCurrentDate(moment());
+     // Dispatch the action to fetch user and organization details
+    fetchUserOrgDetails(2); // Pass the userId if required
+  }, []);
 
   const handleValuesChange = (_, allValues) => {
     setType(allValues.type);
   };
+  const dateFormat = 'YYYY/MM/DD'; // Define your desired date format
 
+console.log(currentDate)
   return (
 
     <div className="goods-receive-note-form-container">
@@ -27,12 +38,13 @@ const IssueNote = () => {
       <Form onFinish={onFinish} className="goods-receive-note-form" onValuesChange={handleValuesChange} layout="vertical">
         <Row>
           <Col span={6} offset={18}>
-            <Form.Item label="Date" name="date">
-              <DatePicker style={{ width: '100%' }} />
+            <Form.Item label="DATE" name="date">
+              <DatePicker style={{ width: '100%' }} defaultValue={currentDate} />
+ 
             </Form.Item>
           </Col>
           <Col span={6}>
-            <Form.Item label="Type" name="type">
+            <Form.Item label="TYPE" name="type">
               <Select>
                 <Option value="1">1. RETURNABLE</Option>
                 <Option value="2">2. NON RETURNABLE</Option>
@@ -49,9 +61,8 @@ const IssueNote = () => {
 
         <Row gutter={24}>
           <Col span={8}>
-            <Form.Item label="CONSIGNOR DETAIL :" name="consignorDetail">
-              <Input />
-            </Form.Item>
+
+            <Title strong underline level={2} type="danger" >CONSIGNOR DETAIL :-</Title>
             <Form.Item label="REGIONAL CENTER CODE :" name="regionalCenterCode">
               <Input />
             </Form.Item>
@@ -65,52 +76,57 @@ const IssueNote = () => {
               <Input />
             </Form.Item>
           </Col>
+          <Col span={8}>
 
-          {Type === '2' && (
-            <Col span={8}>
-              <Form.Item label="CONSUMER NAME :" name="consumerName">
-                <Input />
-              </Form.Item>
-              <Form.Item label="CONTACT NO. :" name="contactNo">
-                <Input />
-              </Form.Item>
-            </Col>
-          )}
+            <Title strong level={2} underline type='danger' > CONSIGNEE DETAIL :-</Title>
 
-          {Type === '1' && (
-            <Col span={8}>
-              <Form.Item label="CONSUMER NAME :" name="consumerName">
-                <Input />
-              </Form.Item>
-              <Form.Item label="CONTACT NO. :" name="contactNo">
-                <Input />
-              </Form.Item>
-            </Col>
-          )}
+            {Type === '2' && (
+              <>
 
-          {Type === '3' && (
-            <Col span={8}>
-              <Form.Item label="CONSIGNEE DETAIL" name="consignorDetail">
-                <Input />
-              </Form.Item>
-              <Form.Item label="REGIONAL CENTER CODE :" name="regionalCenterCode">
-                <Input />
-              </Form.Item>
-              <Form.Item label="REGIONAL CENTER NAME  :" name="regionalCenterName">
-                <Input />
-              </Form.Item>
-              <Form.Item label="ADDRESS :" name="consignorAddress">
-                <Input />
-              </Form.Item>
-              <Form.Item label="ZIP CODE :" name="consignorZipCode">
-                <Input />
-              </Form.Item>
-            </Col>
-          )}
+                <Form.Item label="CONSUMER NAME :" name="consumerName">
+                  <Input />
+                </Form.Item>
+                <Form.Item label="CONTACT NO. :" name="contactNo">
+                  <Input />
+                </Form.Item>
+              </>
 
+            )}
+
+            {Type === '1' && (
+              <>
+
+                <Form.Item label="CONSUMER NAME :" name="consumerName">
+                  <Input />
+                </Form.Item>
+                <Form.Item label="CONTACT NO. :" name="contactNo">
+                  <Input />
+                </Form.Item>
+              </>
+            )}
+
+            {Type === '3' && (
+              <>
+                <Form.Item label="REGIONAL CENTER CODE :" name="regionalCenterCode">
+                  <Input />
+                </Form.Item>
+                <Form.Item label="REGIONAL CENTER NAME  :" name="regionalCenterName">
+                  <Input />
+                </Form.Item>
+                <Form.Item label="ADDRESS :" name="consignorAddress">
+                  <Input />
+                </Form.Item>
+                <Form.Item label="ZIP CODE :" name="consignorZipCode">
+                  <Input />
+                </Form.Item>
+              </>
+            )}
+          </Col>
           <Col span={8}>
             {Type === '1' && (
               <>
+                <Form.Item >
+                </Form.Item>
                 <Form.Item label="DEMAND NOTE NO." name="demandNoteNo">
                   <Input />
                 </Form.Item>
@@ -119,8 +135,11 @@ const IssueNote = () => {
                 </Form.Item>
               </>
             )}
+
             {Type === '2' && (
               <>
+                <Form.Item >
+                </Form.Item>
                 <Form.Item label="DEMAND NOTE NO." name="demandNoteNo">
                   <Input />
                 </Form.Item>
@@ -130,40 +149,44 @@ const IssueNote = () => {
               </>
             )}
             {Type === '3' && (
-              <Form.Item label="INTER RD DEMAND NOTE :" name="interRdDemandNote">
-                <Input />
-              </Form.Item>
+              <>
+                <Form.Item >
+                </Form.Item>
+                <Form.Item label="INTER RD DEMAND NOTE :" name="interRdDemandNote">
+                  <Input />
+                </Form.Item>
+              </>
             )}
 
           </Col>
         </Row>
 
         {/* Item Details */}
-        <h2>Item Details</h2>
+        <h2>ITEM DETAILS</h2>
 
         <Form.List name="itemDetails" initialValue={[{}]}>
           {(fields, { add, remove }) => (
             <>
               <Form.Item style={{ textAlign: 'right' }}>
                 <Button type="dashed" onClick={() => add()} style={{ marginBottom: 8 }} icon={<PlusOutlined />}>
-                  Add Item
+                  ADD ITEM
                 </Button>
               </Form.Item>
               {fields.map(({ key, name, ...restField }) => (
                 <div key={key} style={{ marginBottom: 16, border: '1px solid #d9d9d9', padding: 16, borderRadius: 4 }}>
                   <Row gutter={24}>
                     <Col span={6}>
-                      <Form.Item {...restField} label="S.No." name={[name, 'sNo']}>
+                      <Form.Item {...restField} label="S.NO." name={[name, 'sNo']}>
                         <Input />
                       </Form.Item>
                     </Col>
                     <Col span={6}>
-                      <Form.Item {...restField} label="Item Code" name={[name, 'itemCode']}>
+                      <Form.Item {...restField} label="ITEM CODE" name={[name, 'itemCode']}>
                         <Input />
                       </Form.Item>
                     </Col>
                     <Col span={6}>
-                      <Form.Item {...restField} label="Item Description" name={[name, 'itemDescription']}>
+                      <Form.Item {...restField} label="ITEM DESCRIPTION" name={[name, 'itemDescription']}>
                         <Input />
                       </Form.Item>
                     </Col>
@@ -173,7 +196,7 @@ const IssueNote = () => {
                       </Form.Item>
                     </Col>
                     <Col span={6}>
-                      <Form.Item {...restField} label=" Quantity" name={[name, 'quantity']}>
+                      <Form.Item {...restField} label=" QUANTITY" name={[name, 'quantity']}>
                         <Input />
                       </Form.Item>
                     </Col>
@@ -185,7 +208,7 @@ const IssueNote = () => {
 
 
                     <Col span={5}>
-                      <Form.Item {...restField} label="Remark" name={[name, 'remark']}>
+                      <Form.Item {...restField} label="REMARK" name={[name, 'remark']}>
                         <Input />
                       </Form.Item>
                     </Col>
@@ -203,12 +226,12 @@ const IssueNote = () => {
 
         <Row gutter={24}>
           <Col span={12}>
-            <Form.Item label="Terms and Conditon " name="termandcondition">
+            <Form.Item label="TERMS AND CONDITION " name="termandcondition">
               <Input.TextArea />
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item label="Note" name="note">
+            <Form.Item label="NOTE" name="note">
               <Input.TextArea />
             </Form.Item>
           </Col>
@@ -226,7 +249,7 @@ const IssueNote = () => {
               NAME & SIGNATURE :<Form><Input /></Form>
             </div>
             <div className='goods-receive-note-signature'>
-              Date & Time :<Form> <Input /></Form>
+              DATE & TIME :<Form> <Input /></Form>
             </div>
           </div>
           <div >
@@ -237,7 +260,7 @@ const IssueNote = () => {
               NAME & SIGNATURE :<Form><Input /></Form>
             </div>
             <div className='goods-receive-note-signature'>
-              Date & Time :<Form> <Input /></Form>
+              DATE & TIME :<Form> <Input /></Form>
             </div>
 
 
@@ -250,7 +273,7 @@ const IssueNote = () => {
               NAME & SIGNATURE :<Form><Input /></Form>
             </div>
             <div className='goods-receive-note-signature'>
-              Date & Time :<Form> <Input /></Form>
+              DATE & TIME :<Form> <Input /></Form>
             </div>
 
 
@@ -286,4 +309,8 @@ const IssueNote = () => {
   );
 };
 
-export default IssueNote;
+const mapDispatchToProps = {
+  fetchUserOrgDetails: fetchUserOrgDetails
+};
+
+export default connect(null, mapDispatchToProps)(IssueNote);

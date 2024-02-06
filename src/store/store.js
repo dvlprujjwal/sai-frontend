@@ -9,6 +9,8 @@ import vendorReducer from "./reducers/VendorReducer";
 import organizationReducer from "./reducers/OrganizationReducer";
 import userReducer from "./reducers/UserReducer";
 import uomReducer from "./reducers/UOMReducer";
+import utilsReducer from "./reducers/UtilsReducer"; 
+
 const rootReducer = combineReducers({
   locations: locationReducer,
   departments: departmentReducer,
@@ -18,6 +20,7 @@ const rootReducer = combineReducers({
   organizations: organizationReducer,
   users: userReducer,
   uoms: uomReducer,
+  utils: utilsReducer 
 });
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
