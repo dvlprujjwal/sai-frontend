@@ -1,9 +1,9 @@
 // DemandNoteForm.js
 import React, { useState } from 'react';
-import { Form, Input, Button, Row, Col, DatePicker } from 'antd';
+import { Form, Input, Button, Row, Col, DatePicker, Typography } from 'antd';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 // import './DemandNoteForm.css';
-
+const { Title } = Typography;
 const { TextArea } = Input;
 
 const DemandNoteForm = () => {
@@ -18,7 +18,7 @@ const DemandNoteForm = () => {
       <Form onFinish={onFinish} className="goods-receive-note-form" layout="vertical">
         <Row>
           <Col span={6} offset={18}>
-            <Form.Item label="Date" name="date">
+            <Form.Item label="DATE" name="date">
               <DatePicker style={{ width: '100%' }} />
             </Form.Item>
           </Col>
@@ -34,9 +34,8 @@ const DemandNoteForm = () => {
 
         <Row gutter={24}>
           <Col span={8}>
-            <Form.Item label="CONSIGNEE DETAIL :" name="consigneeDetail">
-              <Input />
-            </Form.Item>
+            <Title strong level={2} underline type='danger' > CONSIGNEE DETAIL :-</Title>
+
             <Form.Item label="REGIONAL CENTER CODE :" name="regionalCenterCode">
               <Input />
             </Form.Item>
@@ -56,16 +55,15 @@ const DemandNoteForm = () => {
           </Col>
 
           <Col span={8}>
-            <Form.Item label="CONSIGNOR DETAIL :" name="consignorDetail">
+            <Title strong underline level={2} type="danger" >CONSIGNOR DETAIL :-</Title>
+
+            <Form.Item label="SUPPLIER CODE :" name="supplierCode">
               <Input />
             </Form.Item>
-            <Form.Item label="Supplier Code :" name="supplierCode">
+            <Form.Item label="SUPPLIER NAME :" name="supplierName">
               <Input />
             </Form.Item>
-            <Form.Item label="Supplier Name :" name="supplierName">
-              <Input />
-            </Form.Item>
-            <Form.Item label="Address:" name="supplierAddress">
+            <Form.Item label="ADDRESS:" name="supplierAddress">
               <Input />
             </Form.Item>
             <Form.Item label="ZIP CODE :" name="consigneeZipCode">
@@ -75,31 +73,31 @@ const DemandNoteForm = () => {
         </Row>
 
         {/* Item Details */}
-        <h2>Item Details</h2>
+        <h2>ITEM DETAILS</h2>
 
         <Form.List name="itemDetails" initialValue={[{}]}>
           {(fields, { add, remove }) => (
             <>
               <Form.Item style={{ textAlign: 'right' }}>
                 <Button type="dashed" onClick={() => add()} style={{ marginBottom: 8 }} icon={<PlusOutlined />}>
-                  Add Item
+                  ADD ITEM
                 </Button>
               </Form.Item>
               {fields.map(({ key, name, ...restField }) => (
                 <div key={key} style={{ marginBottom: 16, border: '1px solid #d9d9d9', padding: 16, borderRadius: 4 }}>
                   <Row gutter={24}>
                     <Col span={6}>
-                      <Form.Item {...restField} label="S.No." name={[name, 'sNo']}>
+                      <Form.Item {...restField} label="S.NO." name={[name, 'sNo']}>
                         <Input />
                       </Form.Item>
                     </Col>
                     <Col span={6}>
-                      <Form.Item {...restField} label="Item Code" name={[name, 'itemCode']}>
+                      <Form.Item {...restField} label="ITEM CODE" name={[name, 'itemCode']}>
                         <Input />
                       </Form.Item>
                     </Col>
                     <Col span={6}>
-                      <Form.Item {...restField} label="Item Description" name={[name, 'itemDescription']}>
+                      <Form.Item {...restField} label="ITEM DESCRIPTION" name={[name, 'itemDescription']}>
                         <Input />
                       </Form.Item>
                     </Col>
@@ -109,14 +107,14 @@ const DemandNoteForm = () => {
                       </Form.Item>
                     </Col>
                     <Col span={6}>
-                      <Form.Item {...restField} label=" Quantity" name={[name, 'receivedQuantity']}>
+                      <Form.Item {...restField} label=" QUANTITY" name={[name, 'receivedQuantity']}>
                         <Input />
                       </Form.Item>
                     </Col>
 
 
                     <Col span={5}>
-                      <Form.Item {...restField} label="Remark" name={[name, 'remark']}>
+                      <Form.Item {...restField} label="REMARK" name={[name, 'remark']}>
                         <Input />
                       </Form.Item>
                     </Col>
@@ -133,13 +131,13 @@ const DemandNoteForm = () => {
         {/* Terms and Condition */}
         <Row gutter={24}>
           <Col span={12}>
-            <h2>Terms and Condition</h2>
+            <h2>TERM AND CONDITION</h2>
             <Form.Item name="termsAndCondition">
               <TextArea rows={3} />
             </Form.Item>
           </Col>
           <Col span={12}>
-            <h2>Note</h2>
+            <h2>NOTE</h2>
             <Form.Item name="termsAndCondition">
               <TextArea rows={3} />
             </Form.Item>

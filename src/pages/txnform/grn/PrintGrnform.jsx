@@ -64,10 +64,10 @@ const PrintGrnform = forwardRef((props, ref) => {
               <Form.Item label="CONSIGNOR DETAIL :" name="consignorDetail">
                 <Input />
               </Form.Item>
-              <Form.Item label="Supplier Code :" name="supplierCode">
+              <Form.Item label="SUPPLIER CODE :" name="supplierCode">
                 <Input />
               </Form.Item>
-              <Form.Item label="Supplier Name :" name="supplierName">
+              <Form.Item label="SUPPLIER NAME :" name="supplierName">
                 <Input />
               </Form.Item>
               <Form.Item label="Address:" name="supplierAddress">

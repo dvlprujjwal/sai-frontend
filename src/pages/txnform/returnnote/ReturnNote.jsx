@@ -24,7 +24,7 @@ const RetunNote = () => {
       <Form onFinish={onFinish} className="goods-receive-note-form" onValuesChange={handleValuesChange} layout="vertical">
         <Row>
           <Col span={6} offset={18}>
-            <Form.Item label="Date" name="date">
+            <Form.Item label="DATE" name="date">
               <DatePicker style={{ width: '100%' }} />
             </Form.Item>
           </Col>
@@ -74,38 +74,38 @@ const RetunNote = () => {
             <Form.Item label="ISSUE NOTE NO." name="grnNo">
               <Input />
             </Form.Item>
-            <Form.Item label="Issue Date :" name="Issue Date ">
+            <Form.Item label="ISSUE DATE :" name="Issue Date ">
               <DatePicker style={{ width: '100%' }} />
             </Form.Item>
           </Col>
         </Row>
 
         {/* Item Details */}
-        <h2>Item Details</h2>
+        <h2>ITEM DETAILS</h2>
 
         <Form.List name="itemDetails" initialValue={[{}]}>
           {(fields, { add, remove }) => (
             <>
               <Form.Item style={{ textAlign: 'right' }}>
                 <Button type="dashed" onClick={() => add()} style={{ marginBottom: 8 }} icon={<PlusOutlined />}>
-                  Add Item
+                  ADD ITEM
                 </Button>
               </Form.Item>
               {fields.map(({ key, name, ...restField }) => (
                 <div key={key} style={{ marginBottom: 16, border: '1px solid #d9d9d9', padding: 16, borderRadius: 4 }}>
                   <Row gutter={24}>
                     <Col span={6}>
-                      <Form.Item {...restField} label="S.No." name={[name, 'sNo']}>
+                      <Form.Item {...restField} label="S.NO." name={[name, 'sNo']}>
                         <Input />
                       </Form.Item>
                     </Col>
                     <Col span={6}>
-                      <Form.Item {...restField} label="Item Code" name={[name, 'itemCode']}>
+                      <Form.Item {...restField} label="ITEM CODE" name={[name, 'itemCode']}>
                         <Input />
                       </Form.Item>
                     </Col>
                     <Col span={6}>
-                      <Form.Item {...restField} label="Item Description" name={[name, 'itemDescription']}>
+                      <Form.Item {...restField} label="ITEM DESCRIPTION" name={[name, 'itemDescription']}>
                         <Input />
                       </Form.Item>
                     </Col>
@@ -115,22 +115,22 @@ const RetunNote = () => {
                       </Form.Item>
                     </Col>
                     <Col span={6}>
-                      <Form.Item {...restField} label="Return Quantity" name={[name, 'returnQuantity']}>
+                      <Form.Item {...restField} label="RETURN QUANTITY" name={[name, 'returnQuantity']}>
                         <Input />
                       </Form.Item>
                     </Col>
                     <Col span={6}>
-                      <Form.Item {...restField} label="Approval Required For NO. Of Days" name={[name, 'APPROVAL REQUIRED FOR NO. OF DAYS']}>
+                      <Form.Item {...restField} label="APPROVAL REQUIRED FOR NO. OF DAYS" name={[name, 'APPROVAL REQUIRED FOR NO. OF DAYS']}>
                         <Input />
                       </Form.Item>
                     </Col>
                     <Col span={6}>
-                      <Form.Item {...restField} label="Condition Of Goods" name={[name, 'conditionOfgoods']}>
+                      <Form.Item {...restField} label="CONDITION OF GOODS" name={[name, 'conditionOfgoods']}>
                         <Input />
                       </Form.Item>
                     </Col>
                     <Col span={5}>
-                      <Form.Item {...restField} label="Remark" name={[name, 'remark']}>
+                      <Form.Item {...restField} label="REMARK" name={[name, 'remark']}>
                         <Input />
                       </Form.Item>
                     </Col>
@@ -145,15 +145,15 @@ const RetunNote = () => {
         </Form.List>
 
         {/* Condition of Goods */}
-        <h2>Terms and Conditon</h2>
+
         <Row gutter={24}>
           <Col span={12}>
-            <Form.Item label="Terms and Conditon" name="termsAndCondition">
+            <Form.Item label="TERM AND CONDITION" name="termsAndCondition">
               <Input.TextArea />
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item label="Note" name="note">
+            <Form.Item label="NOTE" name="note">
               <Input.TextArea />
             </Form.Item>
           </Col>
@@ -164,25 +164,25 @@ const RetunNote = () => {
         <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>
           <div  >
             <div className='goods-receive-note-signature'>
-              Returned By :<Form><Input /></Form>
+              RETURNED By :<Form><Input /></Form>
             </div>
             <div className='goods-receive-note-signature'>
               NAME & SIGNATURE :<Form><Input /></Form>
             </div>
             <div className='goods-receive-note-signature'>
-              Date & Time :<Form> <DatePicker showTime /></Form>
+              DATE & TIME :<Form> <Input /></Form>
             </div>
           </div>
 
           <div >
             <div className='goods-receive-note-signature'>
-              Varified By :<Form><Input /></Form>
+              VARIFIED  By :<Form><Input /></Form>
             </div>
             <div className='goods-receive-note-signature'>
               NAME & SIGNATURE :<Form><Input /></Form>
             </div>
             <div className='goods-receive-note-signature'>
-              Date & Time :<Form> <DatePicker showTime /></Form>
+              DATE & TIME :<Form> <Input /></Form>
             </div>
 
 
@@ -196,18 +196,18 @@ const RetunNote = () => {
 
           <Form.Item >
             <Button type="primary" htmlType="save" style={{ width: '200px', margin: 16 }}>
-              Save
+              SAVE
             </Button>
           </Form.Item>
 
           <Form.Item >
             <Button type="primary" htmlType="submit" style={{ backgroundColor: '#4CAF50', borderColor: '#4CAF50', width: '200px', margin: 16 }}>
-              Submit
+              SUBMIT
             </Button>
           </Form.Item>
           <Form.Item >
             <Button type="primary" danger htmlType="save" style={{ width: '200px', margin: 16 }}>
-              Print
+              PRINT
             </Button>
           </Form.Item>
 
