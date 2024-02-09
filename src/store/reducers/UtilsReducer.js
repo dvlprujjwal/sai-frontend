@@ -1,41 +1,26 @@
-// utilsReducers.js
 
-import {
-  FETCH_USER_ORG_DETAILS_REQUEST,
-  FETCH_USER_ORG_DETAILS_SUCCESS,
-  FETCH_USER_ORG_DETAILS_FAILURE
-} from '../actions/UtilsAction'; // Corrected import path
 
+// utilReducer.js
 const initialState = {
-  userOrgDetails: null,
-  loading: false,
-  error: null
+  userDetails: null,
+  organizationDetails: null,
 };
 
-const utilsReducer = (state = initialState, action) => {
+const utilReducer = (state = initialState, action) => {
   switch (action.type) {
-    case FETCH_USER_ORG_DETAILS_REQUEST:
+    case 'SET_USER_DETAILS':
       return {
         ...state,
-        loading: true,
-        error: null
+        userDetails: action.payload,
       };
-    case FETCH_USER_ORG_DETAILS_SUCCESS:
+    case 'SET_ORGANIZATION_DETAILS':
       return {
         ...state,
-        loading: false,
-        userOrgDetails: action.payload,
-        error: null
-      };
-    case FETCH_USER_ORG_DETAILS_FAILURE:
-      return {
-        ...state,
-        loading: false,
-        error: action.payload
+        organizationDetails: action.payload,
       };
     default:
       return state;
   }
 };
 
-export default utilsReducer;
+export default utilReducer;
