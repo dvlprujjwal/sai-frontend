@@ -2,11 +2,11 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Select, DatePicker, Button, Row, Col, Typography, AutoComplete } from 'antd';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
-import { fetchUserOrgDetails } from '../../../store/actions/UtilsAction'
-import { connect } from 'react-redux';
-import moment from 'moment';
+import dayjs from 'dayjs';
+import axios from 'axios';
+const dateFormat = 'YYYY/MM/DD';
 const { Option } = Select;
-const {  Title } = Typography;
+const { Title } = Typography;
 
 
 
@@ -14,54 +14,65 @@ const IssueNote = () => {
   const [Type, setType] = useState('1');
   const [form] = Form.useForm(); // Create form instance
 
-  const onFinish = (values) => {
-    console.log('Received values:', values);
-  };
-  const [currentDate, setCurrentDate] = useState(null);
-  const [itemDetails, setItemDetails] = useState([]);
+  const [itemData, setItemData] = useState([]);
+  const [formData, setFormData] = useState({
+    regionalCenterCode: '',
+    regionalCenterName: '',
+    consignorAddress: '',
+    consignorZipCode: ''
+  });
   useEffect(() => {
-    // Set defaultDate to the current date when the component mounts
-    setCurrentDate(moment());
-    // Fetch item details from the API
-    fetchItemDetails();
-    // Dispatch the action to fetch user and organization details
-    fetchUserOrgDetails(2); // Pass the userId if required
+
+    fetchItemData()
+    fetchUserDetails()
   }, []);
 
-  const fetchItemDetails = async () => {
+  const fetchItemData = async () => {
     try {
-      const response = await fetch('https://sai-services.azurewebsites.net/sai-inv-mgmt/master/getItemMaster');
-      const data = await response.json();
-      if (data.responseStatus.statusCode === 200) {
-        setItemDetails(data.responseData);
-      } else {
-        console.error('Error fetching item details:', data.responseStatus.message);
-      }
+      const apiUrl = 'https://sai-services.azurewebsites.net/sai-inv-mgmt/master/getItemMaster';
+      const response = await axios.get(apiUrl);
+      const { responseData } = response.data;
+      setItemData(responseData);
     } catch (error) {
-      console.error('Error fetching item details:', error);
+      console.error('Error fetching data:', error);
     }
+  };
+  const fetchUserDetails = async () => {
+    try {
+      const apiUrl = 'https://sai-services.azurewebsites.net/sai-inv-mgmt/login/authenticate';
+      const response = await axios.post(apiUrl, {
+        userCd: "string",
+        password: "string"
+      });
+
+      const { responseData } = response.data;
+      const { organizationDetails } = responseData;
+      const { userDetails } = responseData;
+      console.log('Fetched data:', organizationDetails);
+      // Update form data with fetched values
+      setFormData({
+        regionalCenterCode: organizationDetails.location,
+        regionalCenterName: organizationDetails.organizationName,
+        consignorAddress: organizationDetails.locationAddr,
+        consignorZipCode: organizationDetails.contactNo,
+        firstName: userDetails.firstName,
+        lastName: userDetails.lastName
+
+      });
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+
+  const onFinish = (values) => {
+    console.log('Received values:', values);
   };
 
   const handleValuesChange = (_, allValues) => {
     setType(allValues.type);
   };
-  const dateFormat = 'YYYY/MM/DD'; // Define your desired date format
 
-  const itemCodeSuggestions = itemDetails.map(item => item.itemMasterCd);
-  const itemDescSuggestions = itemDetails.map(item => item.itemMasterDesc);
-
-  const handleItemSelect = (value, fieldName, index) => {
-    const selectedItem = itemDetails.find(item => item.itemMasterCd === value || item.itemMasterDesc === value);
-    if (selectedItem) {
-      form.setFieldsValue({
-        [`itemDetails[${index}].itemMasterDesc`]:selectedItem.itemMasterDesc,
-        [`itemDetails[${index}].uom`]: selectedItem.uom,
-        [`itemDetails[${index}].quantity`]: selectedItem.quantity,
-        [`itemDetails[${index}].budgetHeadProcurement`]: selectedItem.budgetHeadProcurement,
-        [`itemDetails[${index}].remark`]: selectedItem.remark
-      });
-    }
-  };
   return (
 
     <div className="goods-receive-note-form-container">
@@ -71,8 +82,7 @@ const IssueNote = () => {
         <Row>
           <Col span={6} offset={18}>
             <Form.Item label="DATE" name="date">
-              <DatePicker style={{ width: '100%' }} defaultValue={currentDate} />
-
+              <DatePicker defaultValue={dayjs()} format={dateFormat} style={{ width: '100%' }} />
             </Form.Item>
           </Col>
           <Col span={6}>
@@ -85,8 +95,8 @@ const IssueNote = () => {
             </Form.Item>
           </Col>
           <Col span={6} offset={12}>
-            <Form.Item label="ISSUE NOTE NO." name="issueNoteNo">
-              <Input />
+            <Form.Item label="ISSUE NOTE NO." name="issueNoteNo ">
+              <Input disabled />
             </Form.Item>
           </Col>
         </Row>
@@ -95,18 +105,31 @@ const IssueNote = () => {
           <Col span={8}>
 
             <Title strong underline level={2} type="danger" >CONSIGNOR DETAIL :-</Title>
-            <Form.Item label="REGIONAL CENTER CODE :" name="regionalCenterCode">
-              <Input />
+            <Form.Item label="REGIONAL CENTER CODE" name="regionalCenterCode">
+              <Input value={formData.regionalCenterCode} />
+              <div style={{ display: 'none' }}>
+                {formData.regionalCenterCode}
+              </div>
             </Form.Item>
-            <Form.Item label="REGIONAL CENTER NAME  :" name="regionalCenterName">
-              <Input />
+            <Form.Item label="REGIONAL CENTER NAME " name="regionalCenterNameConsignor">
+              <Input value={formData.regionalCenterName} />
+              <div style={{ display: 'none' }}>
+                {formData.regionalCenterCode}
+              </div>
             </Form.Item>
-            <Form.Item label="ADDRESS :" name="consigneeAddress">
-              <Input />
+            <Form.Item label="ADDRESS :" name="consignorAddress">
+              <Input value={formData.consignorAddress} />
+              <div style={{ display: 'none' }}>
+                {formData.regionalCenterCode}
+              </div>
             </Form.Item>
-            <Form.Item label="ZIP CODE :" name="consigneeZipCode">
-              <Input />
+            <Form.Item label="ZIP CODE :" name="consignorZipCode">
+              <Input value={formData.consignorZipCode} />
+              <div style={{ display: 'none' }}>
+                {formData.regionalCenterCode}
+              </div>
             </Form.Item>
+
           </Col>
           <Col span={8}>
 
@@ -163,7 +186,7 @@ const IssueNote = () => {
                   <Input />
                 </Form.Item>
                 <Form.Item label="DEMAND NOTE DATE :" name="demandNoteDate">
-                  <Input />
+                  <DatePicker format={dateFormat} style={{ width: '100%' }} />
                 </Form.Item>
               </>
             )}
@@ -204,105 +227,55 @@ const IssueNote = () => {
                   ADD ITEM
                 </Button>
               </Form.Item>
-              {fields.map(({ key, name, ...restField }) => (
-                <div key={key} style={{ marginBottom: 16, border: '1px solid #d9d9d9', padding: 16, borderRadius: 4 }}>
-                  <Row gutter={24}>
-                    <Col span={6}>
-                      <Form.Item {...restField} label="S.NO." name={[name, 'sNo']}>
-                        <Input />
-                      </Form.Item>
-                    </Col>
-                    <Col span={6}>
-
-                      <Form.Item {...restField} label="ITEM CODE" name={[name, 'itemCode']}>
-                        <AutoComplete
-                          options={itemCodeSuggestions.map(item => ({ value: item }))}
-                          placeholder="Item Code"
-                        />
-                      </Form.Item>
-                    </Col>
-                    <Col span={6}>
-
-                      <Form.Item {...restField} label="ITEM DESCRIPTION" name={[name, 'itemDescription']}>
-                        <AutoComplete
-                          options={itemDescSuggestions.map(item => ({ value: item }))}
-                          placeholder="Item Description"
-                        />
-                      </Form.Item>
-
-                    </Col>
-                    <Col span={5}>
-                      <Form.Item {...restField} label="UOM" name={[name, 'uom']}>
-                        <Input />
-                      </Form.Item>
-                    </Col>
-                    <Col span={6}>
-                      <Form.Item {...restField} label=" QUANTITY" name={[name, 'quantity']}>
-                        <Input />
-                      </Form.Item>
-                    </Col>
-                    <Col span={6}>
-                      <Form.Item {...restField} label="REQUIRED FOR NO. OF DAYS" name={[name, 'budgetHeadProcurement']}>
-                        <Input />
-                      </Form.Item>
-                    </Col>
-
-
-                    <Col span={5}>
-                      <Form.Item {...restField} label="REMARK" name={[name, 'remark']}>
-                        <Input />
-                      </Form.Item>
-                    </Col>
-                    <Col span={1}>
-                      <MinusCircleOutlined onClick={() => remove(name)} style={{ marginTop: 8 }} />
-                    </Col>
-                  </Row>
-                </div>
-              ))}
-            </>
-          )}
-        </Form.List>
-        <Form.List name="itemDetails" initialValue={[{}]}>
-          {(fields, { add, remove }) => (
-            <>
-              <Form.Item style={{ textAlign: 'right' }}>
-                <Button type="dashed" onClick={() => add()} style={{ marginBottom: 8 }} icon={<PlusOutlined />}>
-                  ADD ITEM
-                </Button>
-              </Form.Item>
               {fields.map(({ key, name, ...restField }, index) => (
                 <div key={key} style={{ marginBottom: 16, border: '1px solid #d9d9d9', padding: 16, borderRadius: 4 }}>
                   <Row gutter={24}>
                     <Col span={6}>
-                      <Form.Item {...restField} label="S.NO." name={[name, 'sNo']}>
-                        <Input />
+
+                      <Form.Item {...restField} label="S.NO." name={[name, 'sNo']} >
+                        <Input value={index + 1} />
+                        <span style={{ display: 'none' }}>{index + 1}</span>
                       </Form.Item>
                     </Col>
                     <Col span={6}>
                       <Form.Item {...restField} label="ITEM CODE" name={[name, 'itemCode']}>
                         <AutoComplete
-                          options={itemDetails.map(item => ({ value: item.itemMasterCd }))}
-                          placeholder="Item Code"
-                          onSelect={value => handleItemSelect(value, 'itemCode', index)}
+                          style={{ width: '100%' }}
+                          options={itemData.map(item => ({ value: item.itemMasterCd }))}
+                          placeholder="Enter item code"
+                          filterOption={(inputValue, option) =>
+                            option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+                          }
                         />
                       </Form.Item>
                     </Col>
                     <Col span={6}>
                       <Form.Item {...restField} label="ITEM DESCRIPTION" name={[name, 'itemDescription']}>
                         <AutoComplete
-                          options={itemDetails.map(item => ({ value: item.itemMasterDesc }))}
-                          placeholder="Item Description"
-                          onSelect={value => handleItemSelect(value, 'itemDescription', index)}
+                          style={{ width: '100%' }}
+                          options={itemData.map(item => ({ value: item.itemMasterDesc }))}
+                          placeholder="Enter item description"
+                          filterOption={(inputValue, option) =>
+                            option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+                          }
                         />
                       </Form.Item>
                     </Col>
                     <Col span={5}>
                       <Form.Item {...restField} label="UOM" name={[name, 'uom']}>
-                        <Input />
+                        <AutoComplete
+                          style={{ width: '100%' }}
+                          options={itemData.map(item => ({ value: item.uom }))}
+                          placeholder="Enter UOM"
+                          filterOption={(inputValue, option) =>
+                            option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+                          }
+                        />
                       </Form.Item>
                     </Col>
+
                     <Col span={6}>
-                      <Form.Item {...restField} label=" QUANTITY" name={[name, 'quantity']}>
+                      <Form.Item {...restField} label="REQUIRED QUANTITY" name={[name, 'requiredQuantity']}>
                         <Input />
                       </Form.Item>
                     </Col>
@@ -311,6 +284,7 @@ const IssueNote = () => {
                         <Input />
                       </Form.Item>
                     </Col>
+
                     <Col span={5}>
                       <Form.Item {...restField} label="REMARK" name={[name, 'remark']}>
                         <Input />
@@ -325,6 +299,7 @@ const IssueNote = () => {
             </>
           )}
         </Form.List>
+
         {/* Condition of Goods */}
 
         <Row gutter={24}>
@@ -346,37 +321,37 @@ const IssueNote = () => {
         <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>
           <div  >
             <div className='goods-receive-note-signature'>
-              GENERATED  BY :<Form><Input /></Form>
+              GENERATED  BY
             </div>
             <div className='goods-receive-note-signature'>
-              NAME & SIGNATURE :<Form><Input /></Form>
+              NAME & SIGNATURE :<Form><Input value={formData.firstName + " " + formData.lastName} /></Form>
             </div>
             <div className='goods-receive-note-signature'>
-              DATE & TIME :<Form> <Input /></Form>
+              DATE & TIME :<DatePicker defaultValue={dayjs()} format={dateFormat} style={{ width: '58%' }} />
             </div>
           </div>
           <div >
             <div className='goods-receive-note-signature'>
-              APPROVED BY :<Form><Input /></Form>
+              APPROVED BY
             </div>
             <div className='goods-receive-note-signature'>
               NAME & SIGNATURE :<Form><Input /></Form>
             </div>
             <div className='goods-receive-note-signature'>
-              DATE & TIME :<Form> <Input /></Form>
+              DATE & TIME :<DatePicker defaultValue={dayjs()} format={dateFormat} style={{ width: '58%' }} />
             </div>
 
 
           </div>
           <div >
             <div className='goods-receive-note-signature'>
-              ISSUED BY (CUSTODIAN) :<Form><Input /></Form>
+              ISSUED BY (CUSTODIAN)
             </div>
             <div className='goods-receive-note-signature'>
               NAME & SIGNATURE :<Form><Input /></Form>
             </div>
             <div className='goods-receive-note-signature'>
-              DATE & TIME :<Form> <Input /></Form>
+              DATE & TIME :<DatePicker defaultValue={dayjs()} format={dateFormat} style={{ width: '58%' }} />
             </div>
 
 
@@ -412,8 +387,5 @@ const IssueNote = () => {
   );
 };
 
-const mapDispatchToProps = {
-  fetchUserOrgDetails: fetchUserOrgDetails
-};
 
-export default connect(null, mapDispatchToProps)(IssueNote);
+export default IssueNote;

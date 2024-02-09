@@ -1,7 +1,10 @@
 // OutwardGatePass.js
-import React, { useState, } from 'react';
-import { Form, Input, Select, DatePicker, Button, Row, Col, Typography } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Form, Input, Select, DatePicker, Button, Row, Col, Typography, AutoComplete } from 'antd';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
+import dayjs from 'dayjs';
+import axios from 'axios';
+const dateFormat = 'YYYY/MM/DD';
 const { Option } = Select;
 const { Text, Title } = Typography;
 
@@ -9,6 +12,58 @@ const { Text, Title } = Typography;
 const OutwardGatePass = () => {
   const [Type, setType] = useState('1');
   const [selectedOption, setSelectedOption] = useState(null);
+  const [itemData, setItemData] = useState([]);
+  const [formData, setFormData] = useState({
+    regionalCenterCode: '',
+    regionalCenterName: '',
+    consignorAddress: '',
+    consignorZipCode: ''
+  });
+  useEffect(() => {
+
+    fetchItemData()
+    fetchUserDetails()
+  }, []);
+
+  const fetchItemData = async () => {
+    try {
+      const apiUrl = 'https://sai-services.azurewebsites.net/sai-inv-mgmt/master/getItemMaster';
+      const response = await axios.get(apiUrl);
+      const { responseData } = response.data;
+      setItemData(responseData);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+  const fetchUserDetails = async () => {
+    try {
+      const apiUrl = 'https://sai-services.azurewebsites.net/sai-inv-mgmt/login/authenticate';
+      const response = await axios.post(apiUrl, {
+        userCd: "string",
+        password: "string"
+      });
+
+      const { responseData } = response.data;
+      const { organizationDetails } = responseData;
+      const { userDetails } = responseData;
+      console.log('Fetched data:', organizationDetails);
+      // Update form data with fetched values
+      setFormData({
+        regionalCenterCode: organizationDetails.location,
+        regionalCenterName: organizationDetails.organizationName,
+        consignorAddress: organizationDetails.locationAddr,
+        consignorZipCode: organizationDetails.contactNo,
+        firstName: userDetails.firstName,
+        lastName: userDetails.lastName
+
+      });
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+
+
   const onFinish = (values) => {
     console.log('Received values:', values);
   };
@@ -30,7 +85,7 @@ const OutwardGatePass = () => {
         <Row>
           <Col span={6} offset={18}>
             <Form.Item label="DATE" name="date">
-              <DatePicker style={{ width: '100%' }} />
+              <DatePicker defaultValue={dayjs()} format={dateFormat} style={{ width: '100%' }} />
             </Form.Item>
           </Col>
           <Col span={6}>
@@ -44,7 +99,7 @@ const OutwardGatePass = () => {
           </Col>
           <Col span={6} offset={12}>
             <Form.Item label="OUTER GATE PASS NO." name="grnNo">
-              <Input />
+              <Input disabled />
             </Form.Item>
           </Col>
         </Row>
@@ -52,18 +107,32 @@ const OutwardGatePass = () => {
         <Row gutter={24}>
           <Col span={8}>
             <Title strong underline level={2} type="danger" >CONSIGNOR DETAIL :-</Title>
-            <Form.Item label="REGIONAL CENTER CODE :" name="regionalCenterCode">
-              <Input />
+            <Form.Item label="REGIONAL CENTER CODE" name="regionalCenterCode">
+              <Input value={formData.regionalCenterCode} />
+              <div style={{ display: 'none' }}>
+                {formData.regionalCenterCode}
+              </div>
             </Form.Item>
-            <Form.Item label="REGIONAL CENTER NAME  :" name="regionalCenterName">
-              <Input />
+            <Form.Item label="REGIONAL CENTER NAME " name="regionalCenterNameConsignor">
+              <Input value={formData.regionalCenterName} />
+              <div style={{ display: 'none' }}>
+                {formData.regionalCenterCode}
+              </div>
             </Form.Item>
-            <Form.Item label="ADDRESS :" name="consigneeAddress">
-              <Input />
+            <Form.Item label="ADDRESS :" name="consignorAddress">
+              <Input value={formData.consignorAddress} />
+              <div style={{ display: 'none' }}>
+                {formData.regionalCenterCode}
+              </div>
+
             </Form.Item>
-            <Form.Item label="ZIP CODE :" name="consigneeZipCode">
-              <Input />
+            <Form.Item label="ZIP CODE :" name="consignorZipCode">
+              <Input value={formData.consignorZipCode} />
+              <div style={{ display: 'none' }}>
+                {formData.regionalCenterCode}
+              </div>
             </Form.Item>
+
           </Col>
           <Col span={8}>
             <Title strong level={2} underline type='danger' > CONSIGNEE DETAIL :-</Title>
@@ -180,27 +249,49 @@ const OutwardGatePass = () => {
                   ADD ITEM
                 </Button>
               </Form.Item>
-              {fields.map(({ key, name, ...restField }) => (
+              {fields.map(({ key, name, ...restField }, index) => (
                 <div key={key} style={{ marginBottom: 16, border: '1px solid #d9d9d9', padding: 16, borderRadius: 4 }}>
                   <Row gutter={24}>
                     <Col span={6}>
-                      <Form.Item {...restField} label="S.NO." name={[name, 'sNo']}>
-                        <Input />
+                      <Form.Item {...restField} label="S.NO." name={[name, 'sNo']} >
+                        <Input value={index + 1} />
+                        <span style={{ display: 'none' }}>{index + 1}</span>
                       </Form.Item>
                     </Col>
                     <Col span={6}>
                       <Form.Item {...restField} label="ITEM CODE" name={[name, 'itemCode']}>
-                        <Input />
+                        <AutoComplete
+                          style={{ width: '100%' }}
+                          options={itemData.map(item => ({ value: item.itemMasterCd }))}
+                          placeholder="Enter item code"
+                          filterOption={(inputValue, option) =>
+                            option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+                          }
+                        />
                       </Form.Item>
                     </Col>
                     <Col span={6}>
                       <Form.Item {...restField} label="ITEM DESCRIPTION" name={[name, 'itemDescription']}>
-                        <Input />
+                        <AutoComplete
+                          style={{ width: '100%' }}
+                          options={itemData.map(item => ({ value: item.itemMasterDesc }))}
+                          placeholder="Enter item description"
+                          filterOption={(inputValue, option) =>
+                            option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+                          }
+                        />
                       </Form.Item>
                     </Col>
                     <Col span={5}>
                       <Form.Item {...restField} label="UOM" name={[name, 'uom']}>
-                        <Input />
+                        <AutoComplete
+                          style={{ width: '100%' }}
+                          options={itemData.map(item => ({ value: item.uom }))}
+                          placeholder="Enter UOM"
+                          filterOption={(inputValue, option) =>
+                            option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+                          }
+                        />
                       </Form.Item>
                     </Col>
                     {Type === '1' && (
@@ -285,46 +376,46 @@ const OutwardGatePass = () => {
 
         {/* Note and Signature */}
 
+
         <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>
           <div  >
             <div className='goods-receive-note-signature'>
-              GENERATED  BY  :<Form><Input /></Form>
+              GENERATED  BY
             </div>
             <div className='goods-receive-note-signature'>
-              NAME & SIGNATURE :<Form><Input /></Form>
+              NAME & SIGNATURE :<Form><Input value={formData.firstName + " " + formData.lastName} /></Form>
             </div>
             <div className='goods-receive-note-signature'>
-              DATE & TIME :<Form> <Input /></Form>
+              DATE & TIME :<DatePicker defaultValue={dayjs()} format={dateFormat} style={{ width: '58%' }} />
             </div>
           </div>
           <div >
             <div className='goods-receive-note-signature'>
-              APPROVED BY :<Form><Input /></Form>
+              APPROVED BY
             </div>
             <div className='goods-receive-note-signature'>
               NAME & SIGNATURE :<Form><Input /></Form>
             </div>
             <div className='goods-receive-note-signature'>
-              DATE & TIME :<Form> <Input /></Form>
+              DATE & TIME :<DatePicker defaultValue={dayjs()} format={dateFormat} style={{ width: '58%' }} />
             </div>
 
 
           </div>
           <div >
             <div className='goods-receive-note-signature'>
-              VARIFIED BY : <Form><Input /></Form>
+              ISSUED BY (CUSTODIAN)
             </div>
             <div className='goods-receive-note-signature'>
               NAME & SIGNATURE :<Form><Input /></Form>
             </div>
             <div className='goods-receive-note-signature'>
-              DATE & TIME :<Form> <Input /></Form>
+              DATE & TIME :<DatePicker defaultValue={dayjs()} format={dateFormat} style={{ width: '58%' }} />
             </div>
 
 
           </div>
         </div>
-
 
 
         {/* Submit Button */}
