@@ -120,7 +120,7 @@ const InwardGatePass = () => {
     try {
       const apiUrl = 'https://sai-services.azurewebsites.net/sai-inv-mgmt/login/authenticate';
       const response = await axios.post(apiUrl, {
-        userCd: "string",
+        userCd: "dkg",
         password: "string"
       });
 
@@ -162,29 +162,29 @@ const InwardGatePass = () => {
       setFormData(prevFormData => ({
         ...prevFormData,
 
-        issueName: processData.issueName,
-        approvedName: processData.approvedName,
-        processId: processData.processId,
+        issueName: processData?.issueName,
+        approvedName: processData?.approvedName,
+        processId: processData?.processId,
 
-        crRegionalCenterCd: processData.crRegionalCenterCd,
-        crRegionalCenterName: processData.crRegionalCenterName,
-        crAddress: processData.crAddress,
-        crZipcode: processData.crZipcode,
+        crRegionalCenterCd: processData?.crRegionalCenterCd,
+        crRegionalCenterName: processData?.crRegionalCenterName,
+        crAddress: processData?.crAddress,
+        crZipcode: processData?.crZipcode,
 
-        consumerName: processData.consumerName,
-        contactNo: processData.contactNo,
+        consumerName: processData?.consumerName,
+        contactNo: processData?.contactNo,
 
         items: itemList.map(item => ({
-          srNo: item.sNo,
-          itemCode: item.itemCode,
-          itemDesc: item.itemDesc,
-          uom: item.uom,
-          quantity: item.quantity,
-          noOfDays: item.requiredDays,
-          remarks: item.remarks,
-          conditionOfGoods: item.conditionOfGoods,
-          budgetHeadProcurement: item.budgetHeadProcurement,
-          locatorId: item.locatorId
+          srNo: item?.sNo,
+          itemCode: item?.itemCode,
+          itemDesc: item?.itemDesc,
+          uom: item?.uom,
+          quantity: item?.quantity,
+          noOfDays: item?.requiredDays,
+          remarks: item?.remarks,
+          conditionOfGoods: item?.conditionOfGoods,
+          budgetHeadProcurement: item?.budgetHeadProcurement,
+          locatorId: item?.locatorId
         }))
       }));
       // Handle response data as needed
@@ -392,30 +392,37 @@ const InwardGatePass = () => {
                 </Form.Item>
               </>
             )}
-            <Form.Item label="NOA NO." name="noaNo">
-              <Input onChange={(e) => handleChange("noaNo", e.target.value)} />
-            </Form.Item>
-            <Form.Item label="NOA DATE" name="noaDate">
-              <DatePicker format={dateFormat} style={{ width: '100%' }} onChange={(date, dateString) => handleChange("noaDate", dateString)} />
-            </Form.Item>
-            <Form.Item label="DATE OF DELIVERY" name="dateOfDelivery">
-              <DatePicker format={dateFormat} style={{ width: '100%' }} onChange={(date, dateString) => handleChange("dateOfDelivery", dateString)} />
-            </Form.Item>
+            {(Type === 'IOP' || Type === 'PO') && (
+              <>
+                <Form.Item label="NOA NO." name="noaNo">
+                  <Input onChange={(e) => handleChange("noaNo", e.target.value)} />
+                </Form.Item>
+                <Form.Item label="NOA DATE" name="noaDate">
+                  <DatePicker format={dateFormat} style={{ width: '100%' }} onChange={(date, dateString) => handleChange("noaDate", dateString)} />
+                </Form.Item>
+                <Form.Item label="DATE OF DELIVERY" name="dateOfDelivery">
+                  <DatePicker format={dateFormat} style={{ width: '100%' }} onChange={(date, dateString) => handleChange("dateOfDelivery", dateString)} />
+                </Form.Item>
+              </>
+            )}
           </Col>
         </Row>
-        <Row gutter={24}>
-          <Col span={8}>
-            <Form.Item label=" CHALLAN / INVOICE NO. :" name="challanNo">
-              <Input onChange={(e) => handleChange("challanNo", e.target.value)} />
-            </Form.Item>
+        {(Type === 'IOP' || Type === 'PO') && (
+          <Row gutter={24}>
+            <Col span={8}>
+              <Form.Item label=" CHALLAN / INVOICE NO. :" name="challanNo">
+                <Input onChange={(e) => handleChange("challanNo", e.target.value)} />
+              </Form.Item>
 
-          </Col>
-          <Col span={8}>
-            <Form.Item label="MODE OF DELIVERY  :" name="modeOfDelivery">
-              <Input onChange={(e) => handleChange("modeOfDelivery", e.target.value)} />
-            </Form.Item>
-          </Col>
-        </Row>
+            </Col>
+            <Col span={8}>
+
+              <Form.Item label="MODE OF DELIVERY  :" name="modeOfDelivery">
+                <Input onChange={(e) => handleChange("modeOfDelivery", e.target.value)} />
+              </Form.Item>
+            </Col>
+          </Row>
+        )}
         {/* Item Details */}
         <h2>ITEM DETAILS</h2>
 
@@ -446,7 +453,13 @@ const InwardGatePass = () => {
                             option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
                           }
                           value={formData.items?.[index]?.itemCode}
-                          onChange={(value) => itemHandleChange(`itemCode`, value, index)}
+                          onChange={(value) => {
+                            itemHandleChange(`itemCode`, value, index)
+                            // Find the selected item
+                            const selectedItem = itemData.find(item => item.itemMasterCd === value);
+
+
+                          }}
                         />
                         <span style={{ display: 'none' }}>{index + 1}</span>
                       </Form.Item>

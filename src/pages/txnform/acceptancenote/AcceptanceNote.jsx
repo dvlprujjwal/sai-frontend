@@ -115,7 +115,7 @@ const AcceptanceNote = () => {
     try {
       const apiUrl = 'https://sai-services.azurewebsites.net/sai-inv-mgmt/login/authenticate';
       const response = await axios.post(apiUrl, {
-        userCd: "string",
+        userCd: "dkg",
         password: "string"
       });
 
@@ -158,23 +158,23 @@ const AcceptanceNote = () => {
       setFormData(prevFormData => ({
         ...prevFormData,
 
-        issueName: processData.issueName,
-        approvedName: processData.approvedName,
-        processId: processData.processId,
+        issueName: processData?.issueName,
+        approvedName: processData?.approvedName,
+        processId: processData?.processId,
 
-        ceRegionalCenterCd: processData.ceRegionalCenterCd,
-        ceRegionalCenterName: processData.ceRegionalCenterName,
-        ceAddress: processData.ceAddress,
-        ceZipcode: processData.ceZipcode,
+        ceRegionalCenterCd: processData?.ceRegionalCenterCd,
+        ceRegionalCenterName: processData?.ceRegionalCenterName,
+        ceAddress: processData?.ceAddress,
+        ceZipcode: processData?.ceZipcode,
 
-        consumerName: processData.consumerName,
-        contactNo: processData.contactNo,
+        consumerName: processData?.consumerName,
+        contactNo: processData?.contactNo,
 
         items: itemList.map(item => ({
           srNo: item.sNo,
           itemCode: item.itemCode,
           itemDesc: item.itemDesc,
-          uom: item.uom,
+          uom: item?.uom,
           quantity: item.quantity,
           noOfDays: item.requiredDays,
           remarks: item.remarks,

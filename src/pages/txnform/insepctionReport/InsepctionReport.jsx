@@ -116,7 +116,7 @@ const InsepctionReport = () => {
     try {
       const apiUrl = 'https://sai-services.azurewebsites.net/sai-inv-mgmt/login/authenticate';
       const response = await axios.post(apiUrl, {
-        userCd: "string",
+        userCd: "dkg",
         password: "string"
       });
 
@@ -158,33 +158,33 @@ const InsepctionReport = () => {
       setFormData(prevFormData => ({
         ...prevFormData,
 
-        issueName: processData.issueName,
-        approvedName: processData.approvedName,
-        processId: processData.processId,
+        issueName: processData?.issueName,
+        approvedName: processData?.approvedName,
+        processId: processData?.processId,
 
-        crRegionalCenterCd: processData.crRegionalCenterCd,
-        crRegionalCenterName: processData.crRegionalCenterName,
-        crAddress: processData.crAddress,
-        crZipcode: processData.crZipcode,
+        crRegionalCenterCd: processData?.crRegionalCenterCd,
+        crRegionalCenterName: processData?.crRegionalCenterName,
+        crAddress: processData?.crAddress,
+        crZipcode: processData?.crZipcode,
 
-        consumerName: processData.consumerName,
-        contactNo: processData.contactNo,
+        consumerName: processData?.consumerName,
+        contactNo: processData?.contactNo,
 
-        supplierCode: processData.supplierCode,
-        supplierName: processData.supplierCode,
-        address:processData.crAddress,
-          
+        supplierCode: processData?.supplierCode,
+        supplierName: processData?.supplierCode,
+        address: processData?.crAddress,
+
         items: itemList.map(item => ({
-          srNo: item.sNo,
-          itemCode: item.itemCode,
-          itemDesc: item.itemDesc,
-          uom: item.uom,
-          quantity: item.quantity,
-          noOfDays: item.requiredDays,
-          remarks: item.remarks,
-          conditionOfGoods: item.conditionOfGoods,
-          budgetHeadProcurement: item.budgetHeadProcurement,
-          locatorId: item.locatorId
+          srNo: item?.sNo,
+          itemCode: item?.itemCode,
+          itemDesc: item?.itemDesc,
+          uom: item?.uom,
+          quantity: item?.quantity,
+          noOfDays: item?.requiredDays,
+          remarks: item?.remarks,
+          conditionOfGoods: item?.conditionOfGoods,
+          budgetHeadProcurement: item?.budgetHeadProcurement,
+          locatorId: item?.locatorId
         }))
       }));
       // Handle response data as needed
@@ -553,9 +553,9 @@ const InsepctionReport = () => {
 
         </div>
         <Modal title="Insepction Report  saved successfully" visible={isModalOpen} onOk={handleOk} >
-        {successMessage && <p>{successMessage}</p>}
-        {errorMessage && <p>{errorMessage}</p>}
-      </Modal>
+          {successMessage && <p>{successMessage}</p>}
+          {errorMessage && <p>{errorMessage}</p>}
+        </Modal>
       </Form>
     </div >
   );

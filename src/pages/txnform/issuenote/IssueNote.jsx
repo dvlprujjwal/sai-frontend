@@ -79,7 +79,7 @@ const IssueNote = () => {
       updatedItems[index] = {
         ...updatedItems[index],
         [fieldName]: value === "" ? null : value,
-        srNo: 2,
+        srNo: 1,
         uom: "string",
         conditionOfGoods: "string", // Hard-coded data
         budgetHeadProcurement: "string", // Hard-coded data
@@ -115,7 +115,7 @@ const IssueNote = () => {
     try {
       const apiUrl = 'https://sai-services.azurewebsites.net/sai-inv-mgmt/login/authenticate';
       const response = await axios.post(apiUrl, {
-        userCd: "string",
+        userCd: "dkg",
         password: "string"
       });
 
