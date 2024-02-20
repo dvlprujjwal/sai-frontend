@@ -117,7 +117,7 @@ const RetunNote = () => {
         regionalCenterCd:"20",
         regionalCenterName: organizationDetails.location,
         address: organizationDetails.locationAddr,
-        zipCode:"131021",
+        zipcode:"131021",
         genName: userDetails.firstName,
         userId: "string",
         genDate: currentDate.format(dateFormat),
