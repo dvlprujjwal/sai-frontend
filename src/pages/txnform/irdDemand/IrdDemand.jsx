@@ -47,10 +47,10 @@ const DemandNoteForm = () => {
       console.log('Fetched data:', organizationDetails);
       // Update form data with fetched values
       setFormData({
-        regionalCenterCode: organizationDetails.location,
-        regionalCenterName: organizationDetails.organizationName,
+        regionalCenterCode: "20",
+        regionalCenterName: organizationDetails.location,
         consigneeAddress: organizationDetails.locationAddr,
-        consigneeZipCode: organizationDetails.contactNo,
+        consigneeZipCode: "131021",
         firstName: userDetails.firstName,
         lastName: userDetails.lastName
 

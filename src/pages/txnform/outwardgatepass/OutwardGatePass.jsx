@@ -131,10 +131,10 @@ const OutwardGatePass = () => {
       console.log('Fetched data:', organizationDetails);
       // Update form data with fetched values
       setFormData({
-        crRegionalCenterCd: organizationDetails.location,
-        crRegionalCenterName: organizationDetails.organizationName,
+        crRegionalCenterCd:"20",
+        crRegionalCenterName: organizationDetails.location,
         crAddress: organizationDetails.locationAddr,
-        crZipcode: "",
+        crZipcode: "131021",
         genName: userDetails.firstName,
         noaDate: currentDate.format(dateFormat),
         dateOfDelivery:currentDate.format(dateFormat),

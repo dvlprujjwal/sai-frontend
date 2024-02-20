@@ -114,12 +114,11 @@ const RetunNote = () => {
       console.log('Fetched data:', organizationDetails);
       // Update form data with fetched values
       setFormData({
-        regionalCenterCd: organizationDetails.location,
-        regionalCenterName: organizationDetails.organizationName,
+        regionalCenterCd:"20",
+        regionalCenterName: organizationDetails.location,
         address: organizationDetails.locationAddr,
-        zipCode: "",
+        zipCode:"131021",
         genName: userDetails.firstName,
-
         userId: "string",
         genDate: currentDate.format(dateFormat),
         issueDate: currentDate.format(dateFormat),
@@ -254,7 +253,7 @@ const RetunNote = () => {
           </Col>
           <Col span={6} offset={12}>
             <Form.Item label="RETURN NOTE NO." name="returnNoteNo">
-              <Input disabled onChange={(e) => handleChange("returnNoteNo", e.target.value)} />
+              <Input  disabled onChange={(e) => handleChange("returnNoteNo", e.target.value)} />
             </Form.Item>
           </Col>
         </Row>
