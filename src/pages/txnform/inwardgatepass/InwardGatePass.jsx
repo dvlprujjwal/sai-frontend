@@ -136,6 +136,8 @@ const InwardGatePass = () => {
         ceAddress: organizationDetails.locationAddr,
         ceZipcode: "",
         genName: userDetails.firstName,
+        noaDate: currentDate.format(dateFormat),
+        dateOfDelivery:currentDate.format(dateFormat),
         userId: "string",
         genDate: currentDate.format(dateFormat),
         issueDate: currentDate.format(dateFormat),

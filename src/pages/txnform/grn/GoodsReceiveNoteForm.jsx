@@ -137,6 +137,8 @@ const GoodsReceiveNoteForm = () => {
         ceZipcode: "",
         genName: userDetails.firstName,
         userId: "string",
+        noaDate: currentDate.format(dateFormat),
+        dateOfDelivery:currentDate.format(dateFormat),
         genDate: currentDate.format(dateFormat),
         issueDate: currentDate.format(dateFormat),
         approvedDate: currentDate.format(dateFormat),

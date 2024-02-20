@@ -141,12 +141,12 @@ const RetunNote = () => {
       const responseData = response.data.responseData;
       const { processData, itemList } = responseData;
       console.log('API Response:', response.data);
+      
       setFormData(prevFormData => ({
         ...prevFormData,
 
-
         processId: processData?.processId,
-
+        issueNoteDt:  processData?.issueNoteDt,
         consumerName: processData?.consumerName,
         contactNo: processData?.contactNo,
 
