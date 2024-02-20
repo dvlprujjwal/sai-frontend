@@ -312,6 +312,7 @@ const ItemsPage = () => {
     setEditingItem(null);
     const tempItem = {
       ...values,
+      
       uomId: Number(values.uomId),
       createUserId: "12345",
       endDate: values.endDate.format("DD/MM/YYYY"),
