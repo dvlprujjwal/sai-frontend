@@ -68,3 +68,53 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+{
+  "genDate": "string",
+  "genName": "string",
+  "issueDate": "string",
+  "issueName": "string",
+  "approvedDate": "string",
+  "approvedName": "string",
+  "processId": "string",
+  "type": "string",
+  "gatePassDate": "string",
+  "gatePassNo": "string",
+  "ceRegionalCenterCd": "string",
+  "ceRegionalCenterName": "string",
+  "ceAddress": "string",
+  "ceZipcode": "string",
+  "crRegionalCenterCd": "string",
+  "crRegionalCenterName": "string",
+  "crAddress": "string",
+  "crZipcode": "string",
+  "consumerName": "string",
+  "contactNo": "string",
+  "noaNo": "string",
+  "noaDate": "string",
+  "dateOfDelivery": "string",
+  "modeOfDelivery": "string",
+  "challanNo": "string",
+  "supplierCode": "string",
+  "supplierName": "string",
+  "noteType": "string",
+  "rejectionNoteNo": "string",
+  "items": [
+    {
+      "srNo": 0,
+      "itemCode": "string",
+      "itemDesc": "string",
+      "uom": "string",
+      "quantity": 0,
+      "noOfDays": 0,
+      "remarks": "string",
+      "conditionOfGoods": "string",
+      "budgetHeadProcurement": "string",
+      "locatorId": "string"
+    }
+  ],
+  "userId": "string",
+  "termsCondition": "string",
+  "note": "string"
+}

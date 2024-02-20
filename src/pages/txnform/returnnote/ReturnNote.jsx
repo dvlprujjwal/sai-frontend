@@ -1,6 +1,6 @@
 // RetunNote.js
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Select, DatePicker, Button, Row, Col, AutoComplete } from 'antd';
+import { Form, Input, Select, DatePicker, Button, Row, Col, AutoComplete, Modal, message } from 'antd';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import axios from 'axios';
@@ -10,14 +10,79 @@ const dateFormat = 'YYYY/MM/DD';
 const { Option } = Select;
 const RetunNote = () => {
   const [Type, setType] = useState('1');
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const [itemData, setItemData] = useState([]);
   const [formData, setFormData] = useState({
-    regionalCenterCode: '',
+    genDate: '',
+    genName: '',
+    issueDate: '',
+    issueName: '',
+    approvedDate: '',
+    approvedName: '',
+    returnNoteNo: '',
+    returnNoteDt: '',
+    processId: '',
+    issueNoteNo: '',
+    issueNoteDt: '',
+    type: '',
+    regionalCenterCd: '',
     regionalCenterName: '',
-    consignorAddress: '',
-    consignorZipCode: ''
+    address: '',
+    zipcode: '',
+    consumerName: '',
+    contactNo: '',
+    termsCondition: '',
+    note: '',
+    items: [
+      {
+        srNo: 0,
+        itemCode: '',
+        itemDesc: '',
+        uom: '',
+        quantity: 0,
+        noOfDays: 0,
+        remarks: '',
+        conditionOfGoods: '',
+        budgetHeadProcurement: '',
+        locatorId: ''
+      }
+    ],
+    userId: ''
   });
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleChange = (fieldName, value) => {
+    setFormData(prevValues => ({
+      ...prevValues,
+      [fieldName]: value === "" ? null : value
+    }));
+  };
+
+  const itemHandleChange = (fieldName, value, index) => {
+    setFormData(prevValues => {
+      const updatedItems = [...(prevValues.items || [])];
+      updatedItems[index] = {
+        ...updatedItems[index],
+        [fieldName]: value === "" ? null : value,
+        uom: "string",
+        conditionOfGoods: "string", // Hard-coded data
+        budgetHeadProcurement: "string", // Hard-coded data
+        locatorId: "string", // Hard-coded data
+      };
+      return {
+        ...prevValues,
+        items: updatedItems
+      };
+    });
+  };
   useEffect(() => {
 
     fetchItemData()
@@ -45,25 +110,128 @@ const RetunNote = () => {
       const { responseData } = response.data;
       const { organizationDetails } = responseData;
       const { userDetails } = responseData;
+      const currentDate = dayjs();
       console.log('Fetched data:', organizationDetails);
       // Update form data with fetched values
       setFormData({
-        regionalCenterCode: organizationDetails.location,
+        regionalCenterCd: organizationDetails.location,
         regionalCenterName: organizationDetails.organizationName,
-        consignorAddress: organizationDetails.locationAddr,
-        consignorZipCode: organizationDetails.contactNo,
-        firstName: userDetails.firstName,
-        lastName: userDetails.lastName
+        address: organizationDetails.locationAddr,
+        zipCode: "",
+        genName: userDetails.firstName,
 
+        userId: "string",
+        genDate: currentDate.format(dateFormat),
+        issueDate: currentDate.format(dateFormat),
+        approvedDate: currentDate.format(dateFormat),
+        returnNoteDt: currentDate.format(dateFormat),
+        returnNoteNo: "string",
       });
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   };
+  const handleIssueNoteNoChange = async (value) => {
+    try {
+      const apiUrl = 'https://sai-services.azurewebsites.net/sai-inv-mgmt/getSubProcessDtls';
+      const response = await axios.post(apiUrl, {
+        processId: value,
+        processStage: "ISN",
+      });
+      const responseData = response.data.responseData;
+      const { processData, itemList } = responseData;
+      console.log('API Response:', response.data);
+      setFormData(prevFormData => ({
+        ...prevFormData,
 
-  const onFinish = (values) => {
-    console.log('Received values:', values);
+
+        processId: processData.processId,
+
+        consumerName: processData.consumerName,
+        contactNo: processData.contactNo,
+
+        items: itemList.map(item => ({
+          srNo: item.sNo,
+          itemCode: item.itemCode,
+          itemDesc: item.itemDesc,
+          uom: item.uom,
+          quantity: item.quantity,
+          noOfDays: item.requiredDays,
+          remarks: item.remarks,
+          conditionOfGoods: item.conditionOfGoods,
+          budgetHeadProcurement: item.budgetHeadProcurement,
+          locatorId: item.locatorId
+        }))
+      }));
+      // Handle response data as needed
+    } catch (error) {
+      console.error('Error fetching sub process details:', error);
+      // Handle error
+    }
   };
+
+  const onFinish = async (values) => {
+    try {
+      const formDataCopy = { ...formData };
+
+      // Ensure all fields are present
+      const allFields = [
+        "genDate",
+        "genName",
+        "issueDate",
+        "issueName",
+        "approvedDate",
+        "approvedName",
+        "returnNoteNo",
+        "returnNoteDt",
+        "processId",
+        "issueNoteNo",
+        "issueNoteDt",
+        "type",
+        "regionalCenterCd",
+        "regionalCenterName",
+        "address",
+        "zipcode",
+        "consumerName",
+        "contactNo",
+        "termsCondition",
+        "note",
+        "items",
+        "userId"
+      ];
+
+      allFields.forEach(field => {
+        if (!(field in formDataCopy)) {
+          formDataCopy[field] = "";
+        }
+      });
+
+      const apiUrl = 'https://sai-services.azurewebsites.net/sai-inv-mgmt/saveReturnNote';
+      const response = await axios.post(apiUrl, formDataCopy);
+      console.log('API Response:', response.data);
+      // Handle success response here
+      if (response.status === 200 && response.data && response.data.responseStatus && response.data.responseStatus.message === 'Success') {
+        // Access the specific success message data if available
+        const { processId, processType, subProcessId } = response.data.responseData;
+        setFormData({
+          returnNoteNo: processId,
+        });
+        setSuccessMessage(`Return Note successfully! Return Note : ${processId}, Process Type: ${processType}, Sub Process ID: ${subProcessId}`);
+        showModal();
+        message.success(`Return Note successfully! Process ID: ${processId}, Process Type: ${processType}, Sub Process ID: ${subProcessId}`);
+
+      } else {
+        // Display a generic success message if specific data is not available
+        message.error('Failed to Return Note. Please try again later.');
+      }
+
+    } catch (error) {
+      console.error('Error saving Return Note:', error);
+      // Handle error response here
+    }
+  };
+
+
 
   const handleValuesChange = (_, allValues) => {
     setType(allValues.type);
@@ -77,16 +245,16 @@ const RetunNote = () => {
       <Form onFinish={onFinish} className="goods-receive-note-form" onValuesChange={handleValuesChange} layout="vertical">
         <Row>
           <Col span={6} offset={18}>
-            <Form.Item label="DATE" name="date">
-              <DatePicker defaultValue={dayjs()} format={dateFormat} style={{ width: '100%' }} />
+            <Form.Item label="DATE" name="returnNoteDt">
+              <DatePicker defaultValue={dayjs()} format={dateFormat} style={{ width: '100%' }} name="returnNoteDt" onChange={(date, dateString) => handleChange("returnNoteDt", dateString)} />
             </Form.Item>
           </Col>
           <Col span={6}>
 
           </Col>
           <Col span={6} offset={12}>
-            <Form.Item label="RETURN NOTE NO." name="grnNo">
-              <Input />
+            <Form.Item label="RETURN NOTE NO." name="returnNoteNo">
+              <Input disabled onChange={(e) => handleChange("returnNoteNo", e.target.value)} />
             </Form.Item>
           </Col>
         </Row>
@@ -94,38 +262,44 @@ const RetunNote = () => {
         <Row gutter={24}>
           <Col span={8}>
 
-            <Form.Item label="REGIONAL CENTER CODE" name="regionalCenterCode">
-              <Input value={formData.regionalCenterCode} />
+            <Form.Item label="REGIONAL CENTER CODE" name="regionalCenterCd">
+              <Input value={formData.regionalCenterCd} />
               <div style={{ display: 'none' }}>
-                {formData.regionalCenterCode}
+                {formData.regionalCenterCd}
               </div>
             </Form.Item>
-            <Form.Item label="REGIONAL CENTER NAME " name="regionalCenterNameConsignor">
+            <Form.Item label="REGIONAL CENTER NAME " name="regionalCenterName">
               <Input value={formData.regionalCenterName} />
               <div style={{ display: 'none' }}>
-                {formData.regionalCenterCode}
+                {formData.regionalCenterCd}
               </div>
             </Form.Item>
-            <Form.Item label="ADDRESS :" name="consignorAddress">
-              <Input value={formData.consignorAddress} />
+            <Form.Item label="ADDRESS :" name="address">
+              <Input value={formData.address} />
               <div style={{ display: 'none' }}>
-                {formData.regionalCenterCode}
+                {formData.regionalCenterCd}
               </div>
             </Form.Item>
-            <Form.Item label="ZIP CODE :" name="consignorZipCode">
-              <Input value={formData.consignorZipCode} />
+            <Form.Item label="ZIP CODE :" name="zipcode">
+              <Input value={formData.zipcode} />
               <div style={{ display: 'none' }}>
-                {formData.regionalCenterCode}
+                {formData.regionalCenterCd}
               </div>
             </Form.Item>
           </Col>
 
           <Col span={8}>
-            <Form.Item label="CONSUMER NAME :" name="consumerName">
-              <Input />
+            <Form.Item label="CONSUMER NAME :" name="consumerName" initialValue={formData.consumerName}>
+              <Input value={formData.consumerName} onChange={(e) => handleChange("consumerName", e.target.value)} />
+              <div style={{ display: 'none' }}>
+                {formData.regionalCenterCd}
+              </div>
             </Form.Item>
-            <Form.Item label="CONTACT NO. :" name="contactNo">
-              <Input />
+            <Form.Item label="CONTACT NO. :" name="contactNo" initialValue={formData.contactNo}>
+              <Input value={formData.contactNo} onChange={(e) => handleChange("contactNo", e.target.value)} />
+              <div style={{ display: 'none' }}>
+                {formData.zipcode}
+              </div>
             </Form.Item>
           </Col>
 
@@ -133,11 +307,13 @@ const RetunNote = () => {
 
 
           <Col span={8}>
-            <Form.Item label="ISSUE NOTE NO." name="grnNo">
-              <Input />
+            <Form.Item label="ISSUE NOTE NO. :" name="issueNoteNo">
+              <Input onChange={(e) => handleIssueNoteNoChange(e.target.value)} />
             </Form.Item>
-            <Form.Item label="ISSUE DATE :" name="Issue Date ">
-              <DatePicker style={{ width: '100%' }} />
+            <Form.Item label="ISSUE DATE :" name="issueNoteDt ">
+
+              <DatePicker format={dateFormat} style={{ width: '100%' }} onChange={(date, dateString) => handleChange("issueNoteDt", dateString)} />
+
             </Form.Item>
           </Col>
         </Row>
@@ -145,7 +321,7 @@ const RetunNote = () => {
         {/* Item Details */}
         <h2>ITEM DETAILS</h2>
 
-        <Form.List name="itemDetails" initialValue={[{}]}>
+        <Form.List name="itemDetails" initialValue={formData.items || [{}]}>
           {(fields, { add, remove }) => (
             <>
               <Form.Item style={{ textAlign: 'right' }}>
@@ -158,13 +334,13 @@ const RetunNote = () => {
                   <Row gutter={24}>
                     <Col span={6}>
 
-                      <Form.Item {...restField} label="S.NO." name={[name, 'sNo']} >
-                        <Input value={index + 1} />
+                      <Form.Item {...restField} label="S.NO." name={[name, 'srNo']}  >
+                        <Input value={formData.items?.[index]?.srNo} onChange={(e) => e.target && itemHandleChange(`srNo`, e.target.value, index)} />
                         <span style={{ display: 'none' }}>{index + 1}</span>
                       </Form.Item>
                     </Col>
                     <Col span={6}>
-                      <Form.Item {...restField} label="ITEM CODE" name={[name, 'itemCode']}>
+                      <Form.Item {...restField} label="ITEM CODE" name={[name, 'itemCode']} initialValue={formData.items?.[index]?.itemCode}>
                         <AutoComplete
                           style={{ width: '100%' }}
                           options={itemData.map(item => ({ value: item.itemMasterCd }))}
@@ -172,11 +348,14 @@ const RetunNote = () => {
                           filterOption={(inputValue, option) =>
                             option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
                           }
+                          value={formData.items?.[index]?.itemCode}
+                          onChange={(value) => itemHandleChange(`itemCode`, value, index)}
                         />
+                        <span style={{ display: 'none' }}>{index + 1}</span>
                       </Form.Item>
                     </Col>
                     <Col span={6}>
-                      <Form.Item {...restField} label="ITEM DESCRIPTION" name={[name, 'itemDescription']}>
+                      <Form.Item {...restField} label="ITEM DESCRIPTION" name={[name, 'itemDesc']}>
                         <AutoComplete
                           style={{ width: '100%' }}
                           options={itemData.map(item => ({ value: item.itemMasterDesc }))}
@@ -184,7 +363,11 @@ const RetunNote = () => {
                           filterOption={(inputValue, option) =>
                             option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
                           }
+                          onChange={(value) => itemHandleChange(`itemDesc`, value, index)}
+                          value={formData.items?.[index]?.itemDesc}
+
                         />
+                        <span style={{ display: 'none' }}>{index + 1}</span>
                       </Form.Item>
                     </Col>
                     <Col span={5}>
@@ -196,27 +379,32 @@ const RetunNote = () => {
                           filterOption={(inputValue, option) =>
                             option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
                           }
+                          onChange={(value) => itemHandleChange(`uom`, value, index)}
+
+
                         />
                       </Form.Item>
                     </Col>
                     <Col span={6}>
-                      <Form.Item {...restField} label="RETURN QUANTITY" name={[name, 'returnQuantity']}>
-                        <Input />
+                      <Form.Item {...restField} label="RETURN QUANTITY" name={[name, 'quantity']}>
+                        <Input value={formData.items?.[index]?.quantity} onChange={(e) => itemHandleChange(`quantity`, e.target.value, index)} />
+                        <span style={{ display: 'none' }}>{index + 1}</span>
                       </Form.Item>
                     </Col>
                     <Col span={6}>
-                      <Form.Item {...restField} label="APPROVAL REQUIRED FOR NO. OF DAYS" name={[name, 'APPROVAL REQUIRED FOR NO. OF DAYS']}>
-                        <Input />
+                      <Form.Item {...restField} label="APPROVAL REQUIRED FOR NO. OF DAYS" name={[name, 'noOfDays']}>
+                        <Input value={formData.items?.[index]?.noOfDays} onChange={(e) => itemHandleChange(`noOfDays`, e.target.value, index)} />
+                        <span style={{ display: 'none' }}>{index + 1}</span>
                       </Form.Item>
                     </Col>
                     <Col span={6}>
                       <Form.Item {...restField} label="CONDITION OF GOODS" name={[name, 'conditionOfgoods']}>
-                        <Input />
+                        <Input onChange={(e) => itemHandleChange(`conditionOfgoods`, e.target.value, index)} />
                       </Form.Item>
                     </Col>
                     <Col span={5}>
-                      <Form.Item {...restField} label="REMARK" name={[name, 'remark']}>
-                        <Input />
+                      <Form.Item {...restField} label="REMARK" name={[name, 'remarks']}>
+                        <Input onChange={(e) => itemHandleChange(`remarks`, e.target.value, index)} />
                       </Form.Item>
                     </Col>
                     <Col span={1}>
@@ -233,30 +421,31 @@ const RetunNote = () => {
 
         <Row gutter={24}>
           <Col span={12}>
-            <Form.Item label="TERM AND CONDITION" name="termsAndCondition">
-              <Input.TextArea />
+            <Form.Item label="TERMS AND CONDITION :" name="termsCondition">
+              <Input.TextArea onChange={(e) => handleChange("termsCondition", e.target.value)} />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item label="NOTE" name="note">
-              <Input.TextArea />
+              <Input.TextArea onChange={(e) => handleChange("note", e.target.value)} />
             </Form.Item>
           </Col>
         </Row>
+
 
         {/* Note and Signature */}
 
         <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>
 
-          <div  >
+          <div>
             <div className='goods-receive-note-signature'>
               GENERATED  BY
             </div>
             <div className='goods-receive-note-signature'>
-              NAME & SIGNATURE :<Form><Input value={formData.firstName + " " + formData.lastName} /></Form>
+              NAME & SIGNATURE :<Form><Input value={formData.genName} name="genName" onChange={(e) => handleChange("genName", e.target.value)} /></Form>
             </div>
             <div className='goods-receive-note-signature'>
-              DATE & TIME :<DatePicker defaultValue={dayjs()} format={dateFormat} style={{ width: '58%' }} />
+              DATE & TIME :<DatePicker defaultValue={dayjs()} format={dateFormat} style={{ width: '58%' }} name="genDate" onChange={(date, dateString) => handleChange("genDate", dateString)} />
             </div>
           </div>
           <div  >
@@ -264,10 +453,10 @@ const RetunNote = () => {
               RETURNED By
             </div>
             <div className='goods-receive-note-signature'>
-              NAME & SIGNATURE :<Form><Input /></Form>
+              NAME & SIGNATURE :<Form><Input value={formData.approvedName} name='approvedName' onChange={(e) => handleChange("approvedName", e.target.value)} /></Form>
             </div>
             <div className='goods-receive-note-signature'>
-            DATE & TIME :<DatePicker defaultValue={dayjs()} format={dateFormat} style={{ width: '58%' }} />
+              DATE & TIME :<DatePicker defaultValue={dayjs()} format={dateFormat} style={{ width: '58%' }} name='approvedDate' onChange={(date, dateString) => handleChange("approvedDate", dateString)} />
             </div>
           </div>
 
@@ -276,10 +465,10 @@ const RetunNote = () => {
               VARIFIED  By
             </div>
             <div className='goods-receive-note-signature'>
-              NAME & SIGNATURE :<Form><Input /></Form>
+              NAME & SIGNATURE :<Form><Input name='issueName' onChange={(e) => handleChange("issueName", e.target.value)} /></Form>
             </div>
             <div className='goods-receive-note-signature'>
-            DATE & TIME :<DatePicker defaultValue={dayjs()} format={dateFormat} style={{ width: '58%' }} />
+              DATE & TIME :<DatePicker defaultValue={dayjs()} format={dateFormat} style={{ width: '58%' }} name='issueDate' onChange={(date, dateString) => handleChange("issueDate", dateString)} />
             </div>
 
 
@@ -309,6 +498,10 @@ const RetunNote = () => {
           </Form.Item>
 
         </div>
+        <Modal title="Return Note saved successfully" visible={isModalOpen} onOk={handleOk} >
+          {successMessage && <p>{successMessage}</p>}
+          {errorMessage && <p>{errorMessage}</p>}
+        </Modal>
       </Form>
     </div >
   );
