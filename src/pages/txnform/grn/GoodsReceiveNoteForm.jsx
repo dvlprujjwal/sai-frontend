@@ -131,14 +131,14 @@ const GoodsReceiveNoteForm = () => {
       const currentDate = dayjs();
       // Update form data with fetched values
       setFormData({
-        ceRegionalCenterCd: organizationDetails.location,
-        ceRegionalCenterName: organizationDetails.organizationName,
+        ceRegionalCenterCd: "20",
+        ceRegionalCenterName: organizationDetails.location,
         ceAddress: organizationDetails.locationAddr,
-        ceZipcode: "",
+        ceZipcode: "131021",
         genName: userDetails.firstName,
         userId: "string",
         noaDate: currentDate.format(dateFormat),
-        dateOfDelivery:currentDate.format(dateFormat),
+        dateOfDelivery: currentDate.format(dateFormat),
         genDate: currentDate.format(dateFormat),
         issueDate: currentDate.format(dateFormat),
         approvedDate: currentDate.format(dateFormat),
@@ -452,7 +452,7 @@ const GoodsReceiveNoteForm = () => {
                         <span style={{ display: 'none' }}>{index + 1}</span>
                       </Form.Item>
                     </Col>
-                
+
                     <Col span={6}>
                       <Form.Item {...restField} label="ITEM DESCRIPTION" name={[name, 'itemDesc']}>
                         <AutoComplete

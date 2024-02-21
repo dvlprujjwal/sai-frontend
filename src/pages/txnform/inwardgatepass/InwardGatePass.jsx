@@ -131,10 +131,10 @@ const InwardGatePass = () => {
       const currentDate = dayjs();
       // Update form data with fetched values
       setFormData({
-        ceRegionalCenterCd: organizationDetails.location,
-        ceRegionalCenterName: organizationDetails.organizationName,
+        ceRegionalCenterCd:"20",
+        ceRegionalCenterName: organizationDetails.location,
         ceAddress: organizationDetails.locationAddr,
-        ceZipcode: "",
+        ceZipcode: "131021",
         genName: userDetails.firstName,
         noaDate: currentDate.format(dateFormat),
         dateOfDelivery:currentDate.format(dateFormat),
