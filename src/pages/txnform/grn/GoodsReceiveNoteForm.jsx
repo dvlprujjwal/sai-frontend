@@ -137,6 +137,8 @@ const GoodsReceiveNoteForm = () => {
         ceZipcode: "",
         genName: userDetails.firstName,
         userId: "string",
+        noaDate: currentDate.format(dateFormat),
+        dateOfDelivery:currentDate.format(dateFormat),
         genDate: currentDate.format(dateFormat),
         issueDate: currentDate.format(dateFormat),
         approvedDate: currentDate.format(dateFormat),
@@ -450,12 +452,7 @@ const GoodsReceiveNoteForm = () => {
                         <span style={{ display: 'none' }}>{index + 1}</span>
                       </Form.Item>
                     </Col>
-                    <Col span={6}>
-                      <Form.Item {...restField} label="ON HAND QUANTITY  " >
-                        <Input value={formData.items?.[index]?.quantity} />
-
-                      </Form.Item>
-                    </Col>
+                
                     <Col span={6}>
                       <Form.Item {...restField} label="ITEM DESCRIPTION" name={[name, 'itemDesc']}>
                         <AutoComplete
