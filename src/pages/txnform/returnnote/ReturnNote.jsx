@@ -103,7 +103,7 @@ const RetunNote = () => {
     try {
       const apiUrl = 'https://sai-services.azurewebsites.net/sai-inv-mgmt/login/authenticate';
       const response = await axios.post(apiUrl, {
-        userCd: "string",
+        userCd: "dkg",
         password: "string"
       });
 
@@ -145,22 +145,22 @@ const RetunNote = () => {
         ...prevFormData,
 
 
-        processId: processData.processId,
+        processId: processData?.processId,
 
-        consumerName: processData.consumerName,
-        contactNo: processData.contactNo,
+        consumerName: processData?.consumerName,
+        contactNo: processData?.contactNo,
 
         items: itemList.map(item => ({
-          srNo: item.sNo,
-          itemCode: item.itemCode,
-          itemDesc: item.itemDesc,
-          uom: item.uom,
-          quantity: item.quantity,
-          noOfDays: item.requiredDays,
-          remarks: item.remarks,
-          conditionOfGoods: item.conditionOfGoods,
-          budgetHeadProcurement: item.budgetHeadProcurement,
-          locatorId: item.locatorId
+          srNo: item?.sNo,
+          itemCode: item?.itemCode,
+          itemDesc: item?.itemDesc,
+          uom: item?.uom,
+          quantity: item?.quantity,
+          noOfDays: item?.requiredDays,
+          remarks: item?.remarks,
+          conditionOfGoods: item?.conditionOfGoods,
+          budgetHeadProcurement: item?.budgetHeadProcurement,
+          locatorId: item?.locatorId
         }))
       }));
       // Handle response data as needed
@@ -404,7 +404,8 @@ const RetunNote = () => {
                     </Col>
                     <Col span={5}>
                       <Form.Item {...restField} label="REMARK" name={[name, 'remarks']}>
-                        <Input onChange={(e) => itemHandleChange(`remarks`, e.target.value, index)} />
+                        <Input value={formData.items?.[index]?.remarks} onChange={(e) => itemHandleChange(`remarks`, e.target.value, index)} />
+                        <span style={{ display: 'none' }}>{index + 1}</span>
                       </Form.Item>
                     </Col>
                     <Col span={1}>

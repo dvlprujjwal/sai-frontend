@@ -120,7 +120,7 @@ const GoodsReceiveNoteForm = () => {
     try {
       const apiUrl = 'https://sai-services.azurewebsites.net/sai-inv-mgmt/login/authenticate';
       const response = await axios.post(apiUrl, {
-        userCd: "string",
+        userCd: "dkg",
         password: "string"
       });
 
@@ -161,29 +161,29 @@ const GoodsReceiveNoteForm = () => {
       setFormData(prevFormData => ({
         ...prevFormData,
 
-        issueName: processData.issueName,
-        approvedName: processData.approvedName,
-        processId: processData.processId,
+        issueName: processData?.issueName,
+        approvedName: processData?.approvedName,
+        processId: processData?.processId,
 
-        crRegionalCenterCd: processData.crRegionalCenterCd,
-        crRegionalCenterName: processData.crRegionalCenterName,
-        crAddress: processData.crAddress,
-        crZipcode: processData.crZipcode,
+        crRegionalCenterCd: processData?.crRegionalCenterCd,
+        crRegionalCenterName: processData?.crRegionalCenterName,
+        crAddress: processData?.crAddress,
+        crZipcode: processData?.crZipcode,
 
-        consumerName: processData.consumerName,
-        contactNo: processData.contactNo,
+        consumerName: processData?.consumerName,
+        contactNo: processData?.contactNo,
 
         items: itemList.map(item => ({
-          srNo: item.sNo,
-          itemCode: item.itemCode,
-          itemDesc: item.itemDesc,
-          uom: item.uom,
-          quantity: item.quantity,
-          noOfDays: item.requiredDays,
-          remarks: item.remarks,
-          conditionOfGoods: item.conditionOfGoods,
-          budgetHeadProcurement: item.budgetHeadProcurement,
-          locatorId: item.locatorId
+          srNo: item?.sNo,
+          itemCode: item?.itemCode,
+          itemDesc: item?.itemDesc,
+          uom: item?.uom,
+          quantity: item?.quantity,
+          noOfDays: item?.requiredDays,
+          remarks: item?.remarks,
+          conditionOfGoods: item?.conditionOfGoods,
+          budgetHeadProcurement: item?.budgetHeadProcurement,
+          locatorId: item?.locatorId
         }))
       }));
       // Handle response data as needed
@@ -399,15 +399,19 @@ const GoodsReceiveNoteForm = () => {
                 <Input />
               </Form.Item>
             )}
-            <Form.Item label="NOA NO." name="noaNo">
-              <Input onChange={(e) => handleChange("noaNo", e.target.value)} />
-            </Form.Item>
-            <Form.Item label="NOA DATE" name="noaDate">
-              <DatePicker format={dateFormat} style={{ width: '100%' }} onChange={(date, dateString) => handleChange("noaDate", dateString)} />
-            </Form.Item>
-            <Form.Item label="DATE OF DELIVERY" name="dateOfDelivery">
-              <DatePicker format={dateFormat} style={{ width: '100%' }} onChange={(date, dateString) => handleChange("dateOfDelivery", dateString)} />
-            </Form.Item>
+            {(Type === 'IOP' || Type === 'PO') && (
+              <>
+                <Form.Item label="NOA NO." name="noaNo">
+                  <Input onChange={(e) => handleChange("noaNo", e.target.value)} />
+                </Form.Item>
+                <Form.Item label="NOA DATE" name="noaDate">
+                  <DatePicker format={dateFormat} style={{ width: '100%' }} onChange={(date, dateString) => handleChange("noaDate", dateString)} />
+                </Form.Item>
+                <Form.Item label="DATE OF DELIVERY" name="dateOfDelivery">
+                  <DatePicker format={dateFormat} style={{ width: '100%' }} onChange={(date, dateString) => handleChange("dateOfDelivery", dateString)} />
+                </Form.Item>
+              </>
+            )}
           </Col>
         </Row>
 
@@ -444,6 +448,12 @@ const GoodsReceiveNoteForm = () => {
                           onChange={(value) => itemHandleChange(`itemCode`, value, index)}
                         />
                         <span style={{ display: 'none' }}>{index + 1}</span>
+                      </Form.Item>
+                    </Col>
+                    <Col span={6}>
+                      <Form.Item {...restField} label="ON HAND QUANTITY  " >
+                        <Input value={formData.items?.[index]?.quantity} />
+
                       </Form.Item>
                     </Col>
                     <Col span={6}>
@@ -494,7 +504,8 @@ const GoodsReceiveNoteForm = () => {
                     </Col>
                     <Col span={5}>
                       <Form.Item {...restField} label="REMARK" name={[name, 'remarks']}>
-                        <Input onChange={(e) => itemHandleChange(`remarks`, e.target.value, index)} />
+                        <Input value={formData.items?.[index]?.remarks} onChange={(e) => itemHandleChange(`remarks`, e.target.value, index)} />
+                        <span style={{ display: 'none' }}>{index + 1}</span>
                       </Form.Item>
                     </Col>
                     <Col span={1}>

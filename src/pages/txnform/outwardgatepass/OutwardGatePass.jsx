@@ -1,6 +1,6 @@
 // OutwardGatePass.js
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Select, DatePicker, Button, Row, Col, Typography, AutoComplete,message,Modal } from 'antd';
+import { Form, Input, Select, DatePicker, Button, Row, Col, Typography, AutoComplete, message, Modal } from 'antd';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import axios from 'axios';
@@ -120,7 +120,7 @@ const OutwardGatePass = () => {
     try {
       const apiUrl = 'https://sai-services.azurewebsites.net/sai-inv-mgmt/login/authenticate';
       const response = await axios.post(apiUrl, {
-        userCd: "string",
+        userCd: "dkg",
         password: "string"
       });
 
@@ -161,29 +161,29 @@ const OutwardGatePass = () => {
       setFormData(prevFormData => ({
         ...prevFormData,
 
-        issueName: processData.issueName,
-        approvedName: processData.approvedName,
-        processId: processData.processId,
+        issueName: processData?.issueName,
+        approvedName: processData?.approvedName,
+        processId: processData?.processId,
 
-        ceRegionalCenterCd: processData.ceRegionalCenterCd,
-        ceRegionalCenterName: processData.ceRegionalCenterName,
-        ceAddress: processData.ceAddress,
-        ceZipcode: processData.ceZipcode,
+        ceRegionalCenterCd: processData?.ceRegionalCenterCd,
+        ceRegionalCenterName: processData?.ceRegionalCenterName,
+        ceAddress: processData?.ceAddress,
+        ceZipcode: processData?.ceZipcode,
 
-        consumerName: processData.consumerName,
-        contactNo: processData.contactNo,
+        consumerName: processData?.consumerName,
+        contactNo: processData?.contactNo,
 
         items: itemList.map(item => ({
-          srNo: item.sNo,
-          itemCode: item.itemCode,
-          itemDesc: item.itemDesc,
-          uom: item.uom,
-          quantity: item.quantity,
-          noOfDays: item.requiredDays,
-          remarks: item.remarks,
-          conditionOfGoods: item.conditionOfGoods,
-          budgetHeadProcurement: item.budgetHeadProcurement,
-          locatorId: item.locatorId
+          srNo: item?.sNo,
+          itemCode: item?.itemCode,
+          itemDesc: item?.itemDesc,
+          uom: item?.uom,
+          quantity: item?.quantity,
+          noOfDays: item?.requiredDays,
+          remarks: item?.remarks,
+          conditionOfGoods: item?.conditionOfGoods,
+          budgetHeadProcurement: item?.budgetHeadProcurement,
+          locatorId: item?.locatorId
         }))
       }));
       // Handle response data as needed
@@ -348,16 +348,28 @@ const OutwardGatePass = () => {
             {Type === 'IOP' && (
               <>
                 <Form.Item label="REGIONAL CENTER CODE :" name="ceRegionalCenterCd">
-                  <Input onChange={(e) => handleChange("ceRegionalCenterCd", e.target.value)} />
+                  <Input value={formData.ceRegionalCenterCd} onChange={(e) => handleChange("ceRegionalCenterCd", e.target.value)} />
+                  <div style={{ display: 'none' }}>
+                    {formData.ceRegionalCenterCd}
+                  </div>
                 </Form.Item>
                 <Form.Item label="REGIONAL CENTER NAME  :" name="ceRegionalCenterName">
-                  <Input onChange={(e) => handleChange("ceRegionalCenterName", e.target.value)} />
+                  <Input value={formData.ceRegionalCenterName} onChange={(e) => handleChange("ceRegionalCenterName", e.target.value)} />
+                  <div style={{ display: 'none' }}>
+                    {formData.ceRegionalCenterCd}
+                  </div>
                 </Form.Item>
                 <Form.Item label="ADDRESS :" name="ceAddress">
-                  <Input onChange={(e) => handleChange("ceAddress", e.target.value)} />
+                  <Input value={formData.ceAddress} onChange={(e) => handleChange("ceAddress", e.target.value)} />
+                  <div style={{ display: 'none' }}>
+                    {formData.ceRegionalCenterCd}
+                  </div>
                 </Form.Item>
                 <Form.Item label="ZIP CODE :" name="ceZipcode">
-                  <Input onChange={(e) => handleChange("ceZipcode", e.target.value)} />
+                  <Input value={formData.ceZipcode} onChange={(e) => handleChange("ceZipcode", e.target.value)} />
+                  <div style={{ display: 'none' }}>
+                    {formData.ceRegionalCenterCd}
+                  </div>
                 </Form.Item>
               </>
             )}
@@ -385,7 +397,7 @@ const OutwardGatePass = () => {
                   </Select>
                 </Form.Item>
                 {selectedOption === 'ISSUE' ? <Form.Item label="ISSUE NOTE NO. :" name="issuenoteno">
-                  <Input onChange={(e) => handleChange("issuenoteno", e.target.value)} />
+                  <Input onChange={(e) => handleIssueNoteNoChange(e.target.value)} />
                 </Form.Item> : <Form.Item label="REJECTION NOTE NO.  :" name="rejectionNoteNo">
                   <Input onChange={(e) => handleChange("rejectionNoteNo", e.target.value)} />
                 </Form.Item>
@@ -393,31 +405,37 @@ const OutwardGatePass = () => {
 
               </>
             )}
-            <Form.Item label="NOA NO." name="noaNo">
-              <Input onChange={(e) => handleChange("noaNo", e.target.value)} />
-            </Form.Item>
-            <Form.Item label="NOA DATE" name="noaDate">
-              <DatePicker format={dateFormat} style={{ width: '100%' }} onChange={(date, dateString) => handleChange("noaDate", dateString)} />
-            </Form.Item>
-            <Form.Item label="DATE OF DELIVERY" name="dateOfDelivery">
-              <DatePicker format={dateFormat} style={{ width: '100%' }} onChange={(date, dateString) => handleChange("dateOfDelivery", dateString)} />
-            </Form.Item>
+            {(Type === 'IOP' || Type === 'PO') && (
+              <>
+                <Form.Item label="NOA NO." name="noaNo">
+                  <Input onChange={(e) => handleChange("noaNo", e.target.value)} />
+                </Form.Item>
+                <Form.Item label="NOA DATE" name="noaDate">
+                  <DatePicker format={dateFormat} style={{ width: '100%' }} onChange={(date, dateString) => handleChange("noaDate", dateString)} />
+                </Form.Item>
+                <Form.Item label="DATE OF DELIVERY" name="dateOfDelivery">
+                  <DatePicker format={dateFormat} style={{ width: '100%' }} onChange={(date, dateString) => handleChange("dateOfDelivery", dateString)} />
+                </Form.Item>
+              </>
+            )}
           </Col>
         </Row>
-        <Row gutter={24}>
-          <Col span={8}>
-            <Form.Item label=" CHALLAN / INVOICE NO. :" name="challanNo">
-              <Input onChange={(e) => handleChange("challanNo", e.target.value)} />
-            </Form.Item>
+        {(Type === 'IOP' || Type === 'PO') && (
+          <Row gutter={24}>
+            <Col span={8}>
+              <Form.Item label=" CHALLAN / INVOICE NO. :" name="challanNo">
+                <Input onChange={(e) => handleChange("challanNo", e.target.value)} />
+              </Form.Item>
 
-          </Col>
-          <Col span={8}>
+            </Col>
+            <Col span={8}>
 
-            <Form.Item label="MODE OF DELIVERY  :" name="modeOfDelivery">
-              <Input onChange={(e) => handleChange("modeOfDelivery", e.target.value)} />
-            </Form.Item>
-          </Col>
-        </Row>
+              <Form.Item label="MODE OF DELIVERY  :" name="modeOfDelivery">
+                <Input onChange={(e) => handleChange("modeOfDelivery", e.target.value)} />
+              </Form.Item>
+            </Col>
+          </Row>
+        )}
         {/* Item Details */}
         <h2>ITEM DETAILS</h2>
 
