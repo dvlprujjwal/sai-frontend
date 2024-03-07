@@ -24,6 +24,7 @@ import OutwardGatePass from '../pages/txnform/outwardgatepass/OutwardGatePass';
 import InwardGatePass from '../pages/txnform/inwardgatepass/InwardGatePass';
 import AcceptanceNote from '../pages/txnform/acceptancenote/AcceptanceNote';
 import RejectionNote from '../pages/txnform/rejectionnote/RejectionNote';
+import Itemdemandsearch from '../components/Itemdemandsearch';
 
 const RoutesComponent = () => {
   return (
@@ -51,7 +52,9 @@ const RoutesComponent = () => {
       <Route path="/trans/inspection" element={<InsepctionReport />} />
       <Route path="/trans/acceptance" element={<AcceptanceNote />} />
       <Route path="/trans/rejection" element={<RejectionNote />} />
-
+     { <Route path="/itemsearch" element={<Itemdemandsearch />} />
+  }
+     
     </Routes>
   );
 };

@@ -1,14 +1,15 @@
 // IssueNote.js
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Select, DatePicker, Button, Row, Col, Typography, AutoComplete, message,Modal  } from 'antd';
+import { Form, Input, Select, DatePicker, Button, Row, Col, Typography, AutoComplete, message, Modal, Popover, Table } from 'antd';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import axios from 'axios';
+import ItemSearchFilter from '../../../components/ItemSearchFilter';
 import moment from "moment";
 const dateFormat = 'YYYY/MM/DD';
 const { Option } = Select;
 const { Title } = Typography;
-
+const { Search } = Input;
 
 const IssueNote = () => {
   const [Type, setType] = useState('IRP');
@@ -17,6 +18,11 @@ const IssueNote = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [itemData, setItemData] = useState([]);
+  const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [searchValue, setSearchValue] = useState('');
+  const [selectedItems, setSelectedItems] = useState([]); // State to hold selected item data
+
   const [formData, setFormData] = useState({
     genDate: "",
     genName: "",
@@ -95,6 +101,114 @@ const IssueNote = () => {
 
 
   useEffect(() => {
+    // Fetch data from the API
+    fetch('https://sai-services.azurewebsites.net/sai-inv-mgmt/master/getItemMaster')
+      .then(response => response.json())
+      .then(data => {
+        setData(data.responseData);
+        setFilteredData(data.responseData); // Initially set filtered data to all data
+      })
+      .catch(error => console.error('Error fetching data:', error));
+  }, []);
+
+  const handleSearch = (value) => {
+    setSearchValue(value);
+    // Filter data based on any field
+    const filtered = data.filter(item => {
+      // Check if any field includes the search value
+      return Object.values(item).some(field => {
+        if (typeof field === 'string') {
+          return field.toLowerCase().includes(value.toLowerCase());
+        }
+        return false;
+      });
+    });
+    setFilteredData(filtered);
+  };
+
+  const handleSelectItem = (record) => {
+    // Check if the item is already selected
+    const index = selectedItems.findIndex(item => item.id === record.id);
+    if (index === -1) {
+      setSelectedItems(prevItems => [...prevItems, record]); // Update selected items state
+    } else {
+      // If item is already selected, deselect it
+      const updatedItems = [...selectedItems];
+      updatedItems.splice(index, 1);
+      setSelectedItems(updatedItems);
+
+    }
+  };
+
+  const columns = [
+    { title: "S NO.", dataIndex: "id", key: "id", fixed: "left", width: 80 },
+    {
+      title: "ITEM CODE",
+      dataIndex: "itemMasterCd",
+      key: "itemCode",
+    },
+    {
+      title: "ITEM DESCRIPTION",
+      dataIndex: "itemMasterDesc",
+      key: "itemMasterDesc",
+    },
+    { title: "UOM", dataIndex: "uom", key: "uom" },
+    {
+      title: "QUANTITY ON HAND",
+      dataIndex: "quantity",
+      key: "quantity",
+    },
+    { title: "LOCATION", dataIndex: "locationId", key: "location" },
+    {
+      title: "LOCATOR CODE",
+      dataIndex: "locatorId",
+      key: "locatorCode",
+    },
+    { title: "PRICE", dataIndex: "price", key: "price" },
+    { title: "VENDOR DETAIL", dataIndex: "vendorId", key: "vendorDetail" },
+    { title: "CATEGORY", dataIndex: "category", key: "category" },
+    { title: "SUB-CATEGORY", dataIndex: "subCategory", key: "subCategory" },
+    { title: "Type", dataIndex: "type", key: "type" },
+    { title: "Disciplines", dataIndex: "disciplines", key: "disciplines" },
+    { title: "Brand", dataIndex: "brandId", key: "brand" },
+    { title: "Size", dataIndex: "size", key: "size" },
+    { title: "Colour", dataIndex: "colorId", key: "colour" },
+    {
+      title: "Usage Category",
+      dataIndex: "usageCategory",
+      key: "usageCategory",
+    },
+    {
+      title: "MINIMUM STOCK LEVEL",
+      dataIndex: "minStockLevel",
+      key: "minStockLevel",
+    },
+    {
+      title: "MAXIMUM STOCK LEVEL",
+      dataIndex: "maxStockLevel",
+      key: "maxStockLevel",
+    },
+    { title: "RE ORDER POINT", dataIndex: "reOrderPoint", key: "reOrderPoint" },
+    { title: "STATUS", dataIndex: "status", key: "status" },
+    { title: "END DATE", dataIndex: "endDate", key: "endDate" },
+    {
+      title: "Actions",
+      key: "actions",
+      fixed: "right",
+      render: (text, record) => (
+        <Button
+          type={selectedItems.some(item => item.id === record.id) ? "warning" : "primary"}
+
+          onClick={() => handleSelectItem(record)}
+        >
+          {selectedItems.some(item => item.id === record.id) ? "Deselect" : "Select"}
+        </Button>
+      ),
+    },
+  ];
+
+
+  useEffect(() => {
 
     fetchItemData()
     fetchUserDetails()
@@ -127,7 +241,7 @@ const IssueNote = () => {
       console.log('Fetched data:', organizationDetails);
       // Update form data with fetched values
       setFormData({
-        crRegionalCenterCd:"20",
+        crRegionalCenterCd: "20",
         crRegionalCenterName: organizationDetails.location,
         crAddress: organizationDetails.locationAddr,
         crZipcode: "131021",
@@ -172,12 +286,12 @@ const IssueNote = () => {
         // Access the specific success message data if available
         const { processId, processType, subProcessId } = response.data.responseData;
         setFormData({
-          issueNoteNo:processId,
+          issueNoteNo: processId,
         });
         setSuccessMessage(`Issue note saved successfully! Issue Note No : ${processId}, Process Type: ${processType}, Sub Process ID: ${subProcessId}`);
         showModal();
         message.success(`Issue note saved successfully! Process ID: ${processId}, Process Type: ${processType}, Sub Process ID: ${subProcessId}`);
-      
+
       } else {
         // Display a generic success message if specific data is not available
         message.error('Failed to save issue note. Please try again later.');
@@ -223,8 +337,8 @@ const IssueNote = () => {
             <Form.Item label="ISSUE NOTE NO." name="issueNoteNo">
               <Input value={formData.issueNoteNo} onChange={(e) => handleChange("issueNoteNo", e.target.value)} disabled />
               <div style={{ display: 'none' }}>
-              {formData.issueNoteNo}
-            </div>
+                {formData.issueNoteNo}
+              </div>
             </Form.Item>
           </Col>
         </Row>
@@ -328,8 +442,33 @@ const IssueNote = () => {
 
         {/* Item Details */}
         <h2>ITEM DETAILS</h2>
-
-        <Form.List name="items" initialValue={[{}]}>
+        <div style={{ width: '300px' }}>
+          <Popover
+            content={
+              <Table
+                dataSource={filteredData}
+                columns={columns}
+                pagination={false}
+                scroll={{ x: "max-content" }}
+                style={{ width: '1000px' }}
+              />
+            }
+            title="Filtered Item Data"
+            trigger="click"
+            visible={searchValue !== '' && filteredData.length > 0}
+            style={{ width: '200px' }}
+            placement="right"
+          >
+            <Search
+              placeholder="Search Item Data"
+              allowClear
+              enterButton="Search"
+              size="large"
+              onSearch={handleSearch}
+            />
+          </Popover>
+        </div>
+        <Form.List name="items" initialValue={formData.items || [{}]}>
           {(fields, { add, remove }) => (
             <>
               <Form.Item style={{ textAlign: 'right' }}>
@@ -342,14 +481,13 @@ const IssueNote = () => {
                   <Row gutter={24}>
                     <Col span={6}>
 
-
                       <Form.Item {...restField} label="S.NO." name={[name, 'srNo']} >
                         <Input value={index + 1} onChange={(e) => itemHandleChange(`srNo`, e.target.value, index)} />
                         <span style={{ display: 'none' }}>{index + 1}</span>
                       </Form.Item>
                     </Col>
                     <Col span={6}>
-                      <Form.Item {...restField} label="ITEM CODE" name={[name, 'itemCode']}>
+                      <Form.Item {...restField} label="ITEM CODE" name={[name, 'itemCode']} initialValue={formData.items?.[index]?.itemCode}>
                         <AutoComplete
                           style={{ width: '100%' }}
                           options={itemData.map(item => ({ value: item.itemMasterCd }))}
@@ -357,8 +495,10 @@ const IssueNote = () => {
                           filterOption={(inputValue, option) =>
                             option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
                           }
+                          value={formData.items?.[index]?.itemCode}
                           onChange={(value) => itemHandleChange(`itemCode`, value, index)}
                         />
+                        <span style={{ display: 'none' }}>{index + 1}</span>
                       </Form.Item>
                     </Col>
                     <Col span={6}>
@@ -371,7 +511,10 @@ const IssueNote = () => {
                             option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
                           }
                           onChange={(value) => itemHandleChange(`itemDesc`, value, index)}
+                          value={formData.items?.[index]?.itemDesc}
+
                         />
+                        <span style={{ display: 'none' }}>{index + 1}</span>
                       </Form.Item>
                     </Col>
                     <Col span={5}>
@@ -485,9 +628,9 @@ const IssueNote = () => {
 
         </div>
         <Modal title="Issue note saved successfully" visible={isModalOpen} onOk={handleOk} >
-        {successMessage && <p>{successMessage}</p>}
-        {errorMessage && <p>{errorMessage}</p>}
-      </Modal>
+          {successMessage && <p>{successMessage}</p>}
+          {errorMessage && <p>{errorMessage}</p>}
+        </Modal>
       </Form>
     </div >
   );

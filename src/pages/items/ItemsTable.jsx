@@ -33,7 +33,7 @@ const ItemsTable = ({ items, onEdit, onDelete }) => {
     },
     { title: "LOCATION", dataIndex: "location", key: "location" },
     {
-      title: "LOCATOR CODE/Desc",
+      title: "LOCATOR CODE",
       dataIndex: "locatorCode",
       key: "locatorCode",
     },

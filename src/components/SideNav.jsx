@@ -40,42 +40,42 @@ const menuItems = [
   { key: '11', icon: <CreditCardOutlined />, label: 'Vendors', path: '/vendor' },
   { key: '12', icon: <AccountBookOutlined />, label: 'Quick Codes', path: '/quickcode' },
 
-  // {
-  //   key: '14',  label: 'Issue-Return Process', path: '/transaction', children: [
-  //     { key: '8.2', label: 'Demand', path: '/trans/demand' },
-  //     { key: '8.4', label: 'Issue Note', path: '/trans/issue' },
-  //     { key: '8.5', label: 'Outward Gate Pass', path: '/trans/outward' },
-  //     { key: '8.6', label: 'Inward Gate Pass', path: '/trans/inward' },
-  //     { key: '8.7', label: 'Return Note', path: '/trans/return' },
-  //     { key: '8.1', label: 'GRN', path: '/trans/grn' },
+  {
+    key: '14',  label: 'Issue-Return Process', path: '/transaction', children: [
+      { key: '8.2', label: 'Demand', path: '/trans/demand' },
+      { key: '8.4', label: 'Issue Note', path: '/trans/issue' },
+      { key: '8.5', label: 'Outward Gate Pass', path: '/trans/outward' },
+      { key: '8.6', label: 'Inward Gate Pass', path: '/trans/inward' },
+      { key: '8.7', label: 'Return Note', path: '/trans/return' },
+      { key: '8.1', label: 'GRN', path: '/trans/grn' },
    
-  //   ]
-  // }, {
-  //   key: '15',  label: 'PURCHASE ORDER PROCESS', path: '/transaction', children: [
-  //     { key: '8.2', label: 'Demand', path: '/trans/demand' },
-  //     { key: '8.6', label: 'Inward Gate Pass', path: '/trans/inward' },
-  //     { key: '8.8', label: 'Inspection Report', path: '/trans/inspection' },
-  //     { key: '8.9', label: 'Acceptance Note', path: '/trans/acceptance' },
-  //     { key: '8.1', label: 'GRN', path: '/trans/grn' },
-  //     { key: '8.10', label: 'Rejection Note', path: '/trans/rejection' },
-  //     { key: '8.5', label: 'Outward Gate Pass', path: '/trans/outward' },
+    ]
+  }, {
+    key: '15',  label: 'PURCHASE ORDER PROCESS', path: '/transaction', children: [
+      { key: '8.2', label: 'Demand', path: '/trans/demand' },
+      { key: '8.6', label: 'Inward Gate Pass', path: '/trans/inward' },
+      { key: '8.8', label: 'Inspection Report', path: '/trans/inspection' },
+      { key: '8.9', label: 'Acceptance Note', path: '/trans/acceptance' },
+      { key: '8.1', label: 'GRN', path: '/trans/grn' },
+      { key: '8.10', label: 'Rejection Note', path: '/trans/rejection' },
+      { key: '8.5', label: 'Outward Gate Pass', path: '/trans/outward' },
      
-  //   ]
-  // },
-  // {
-  //   key: '8',label: 'INTER - ORG. PROCESS', path: '/transaction', children: [
-  //     { key: '8.3', label: 'IRD Demand', path: '/trans/ird-demand' },
-  //     { key: '8.4', label: 'Issue Note', path: '/trans/issue' },
-  //     { key: '8.5', label: 'Outward Gate Pass', path: '/trans/outward' },
-  //     { key: '8.6', label: 'Inward Gate Pass', path: '/trans/inward' },
-  //     { key: '8.8', label: 'Inspection Report', path: '/trans/inspection' },
-  //     { key: '8.9', label: 'Acceptance Note', path: '/trans/acceptance' },
-  //     { key: '8.1', label: 'GRN', path: '/trans/grn' },
-  //     { key: '8.10', label: 'Rejection Note', path: '/trans/rejection' },
-  //     { key: '8.7', label: 'Return Note', path: '/trans/return' },
+    ]
+  },
+  {
+    key: '8',label: 'INTER - ORG. PROCESS', path: '/transaction', children: [
+      { key: '8.3', label: 'IRD Demand', path: '/trans/ird-demand' },
+      { key: '8.4', label: 'Issue Note', path: '/trans/issue' },
+      { key: '8.5', label: 'Outward Gate Pass', path: '/trans/outward' },
+      { key: '8.6', label: 'Inward Gate Pass', path: '/trans/inward' },
+      { key: '8.8', label: 'Inspection Report', path: '/trans/inspection' },
+      { key: '8.9', label: 'Acceptance Note', path: '/trans/acceptance' },
+      { key: '8.1', label: 'GRN', path: '/trans/grn' },
+      { key: '8.10', label: 'Rejection Note', path: '/trans/rejection' },
+      { key: '8.7', label: 'Return Note', path: '/trans/return' },
 
-  //   ]
-  // },
+    ]
+  },
   {
     key: '8', icon: <TransactionOutlined />, label: 'Transactions', path: '/transaction', children: [
       { key: '8.2', label: 'Demand', path: '/trans/demand' },
@@ -91,6 +91,8 @@ const menuItems = [
 
     ]
   },
+  { key: '21', icon: <EnvironmentOutlined />, label: 'ItemDemandSearch', path: '/itemsearch' },
+
 ];
 
 

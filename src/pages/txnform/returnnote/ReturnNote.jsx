@@ -114,10 +114,10 @@ const RetunNote = () => {
       console.log('Fetched data:', organizationDetails);
       // Update form data with fetched values
       setFormData({
-        regionalCenterCd:"20",
+        regionalCenterCd: "20",
         regionalCenterName: organizationDetails.location,
         address: organizationDetails.locationAddr,
-        zipcode:"131021",
+        zipcode: "131021",
         genName: userDetails.firstName,
         userId: "string",
         genDate: currentDate.format(dateFormat),
@@ -140,12 +140,21 @@ const RetunNote = () => {
       const responseData = response.data.responseData;
       const { processData, itemList } = responseData;
       console.log('API Response:', response.data);
-      
+      const issueNoteDtMilliseconds = processData?.issueNoteDt;
+      console.log("issueNoteDtMilliseconds:", issueNoteDtMilliseconds);
+
+
+      if (issueNoteDtMilliseconds) {
+        const formattedDate = dayjs(issueNoteDtMilliseconds * 1000).format('YYYY/MM/DD');
+        console.log(formattedDate); // This will log the date in 'YYYY/MM/DD' format
+      } else {
+        console.log("issueNoteDt is not available");
+      }
       setFormData(prevFormData => ({
         ...prevFormData,
 
         processId: processData?.processId,
-        issueNoteDt:  processData?.issueNoteDt,
+        issueNoteDt: processData?.issueNoteDt,
         consumerName: processData?.consumerName,
         contactNo: processData?.contactNo,
 
@@ -253,7 +262,7 @@ const RetunNote = () => {
           </Col>
           <Col span={6} offset={12}>
             <Form.Item label="RETURN NOTE NO." name="returnNoteNo">
-              <Input  disabled onChange={(e) => handleChange("returnNoteNo", e.target.value)} />
+              <Input disabled onChange={(e) => handleChange("returnNoteNo", e.target.value)} />
             </Form.Item>
           </Col>
         </Row>

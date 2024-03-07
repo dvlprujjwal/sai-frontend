@@ -5,6 +5,7 @@ import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import axios from 'axios';
 import moment from 'moment';
+import ItemSearchFilter from '../../../components/ItemSearchFilter';
 const dateFormat = 'YYYY/MM/DD';
 const { Option } = Select;
 const { Text, Title } = Typography;
@@ -63,7 +64,8 @@ const InwardGatePass = () => {
     ],
     userId: '',
     termsCondition: '',
-    note: ''
+    note: '',
+    processType: ""
   });
 
   const showModal = () => {
@@ -131,20 +133,20 @@ const InwardGatePass = () => {
       const currentDate = dayjs();
       // Update form data with fetched values
       setFormData({
-        ceRegionalCenterCd:"20",
+        ceRegionalCenterCd: "20",
         ceRegionalCenterName: organizationDetails.location,
         ceAddress: organizationDetails.locationAddr,
         ceZipcode: "131021",
         genName: userDetails.firstName,
         noaDate: currentDate.format(dateFormat),
-        dateOfDelivery:currentDate.format(dateFormat),
+        dateOfDelivery: currentDate.format(dateFormat),
         userId: "string",
         genDate: currentDate.format(dateFormat),
         issueDate: currentDate.format(dateFormat),
         approvedDate: currentDate.format(dateFormat),
         gatePassDate: currentDate.format(dateFormat),
         gatePassNo: "string",
-
+        type: "string"
       });
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -259,7 +261,7 @@ const InwardGatePass = () => {
 
     <div className="goods-receive-note-form-container">
       <h1>Sports Authority of India - Inward Gate Pass</h1>
-
+      
       <Form onFinish={onFinish} className="goods-receive-note-form" onValuesChange={handleValuesChange} layout="vertical">
         <Row>
           <Col span={6} offset={18}>
@@ -269,7 +271,7 @@ const InwardGatePass = () => {
           </Col>
           <Col span={6}>
             <Form.Item label="TYPE" name="type">
-              <Select onChange={(value) => handleChange("type", value)}>
+              <Select onChange={(value) => handleChange("processType", value)}>
                 <Option value="IRP">1. Issue/Return</Option>
                 <Option value="PO">2. Purchase Order</Option>
                 <Option value="IOP">3. Inter-Org Transaction</Option>
@@ -425,12 +427,15 @@ const InwardGatePass = () => {
             </Col>
           </Row>
         )}
+
         {/* Item Details */}
         <h2>ITEM DETAILS</h2>
 
         <Form.List name="itemDetails" initialValue={formData.items || [{}]}>
           {(fields, { add, remove }) => (
             <>
+        <ItemSearchFilter />
+              
               <Form.Item style={{ textAlign: 'right' }}>
                 <Button type="dashed" onClick={() => add()} style={{ marginBottom: 8 }} icon={<PlusOutlined />}>
                   ADD ITEM
